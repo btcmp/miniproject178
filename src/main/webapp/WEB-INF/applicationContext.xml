@@ -9,7 +9,7 @@
 		http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
 		">
 
-	<context:component-scan base-package="com.bankmega.traning"></context:component-scan>
+	<context:component-scan base-package="com.miniproject.training"></context:component-scan>
 	<tx:annotation-driven/>
 	<!-- Datasource dataSource = new DataSource() -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
@@ -24,28 +24,28 @@
 	 <property name="dataSource" ref="dataSource"></property>
 	 <property name="annotatedClasses">
 			<list>
-				<value>com.bankmega.traning.model.Employee</value>
-				<value>com.bankmega.traning.model.User1</value>
-				<value>com.bankmega.traning.model.User</value>
-				<value>com.bankmega.traning.model.Role1</value>
-				<value>com.bankmega.traning.model.Role</value>
-				<value>com.bankmega.traning.model.Department</value>
-				<value>com.bankmega.traning.model.Menu_Access</value>
-				<value>com.bankmega.traning.model.Menu</value>
-				<value>com.bankmega.traning.model.Question</value>
-				<value>com.bankmega.traning.model.Version</value>
-				<value>com.bankmega.traning.model.VersionDetail</value>
-				<value>com.bankmega.traning.model.Feedback</value>
-				<value>com.bankmega.traning.model.Biodata</value>
-				<value>com.bankmega.traning.model.Assignment</value>
-				<value>com.bankmega.traning.model.Monitoring</value>
-				<value>com.bankmega.traning.model.Office</value>
-				<value>com.bankmega.traning.model.Room</value>
-				<value>com.bankmega.traning.model.Category</value>
-				<value>com.bankmega.traning.model.BootcampTestType</value>
-				<value>com.bankmega.traning.model.Technology</value>
-				<value>com.bankmega.traning.model.TechnologyTrainer</value>
-				<value>com.bankmega.traning.model.Trainer</value>
+				<value>com.miniproject.training.model.Employee</value>
+				<value>com.miniproject.training.model.User1</value>
+				<value>com.miniproject.training.model.User</value>
+				<value>com.miniproject.training.model.Role1</value>
+				<value>com.miniproject.training.model.Role</value>
+				<value>com.miniproject.training.model.Department</value>
+				<value>com.miniproject.training.model.Menu_Access</value>
+				<value>com.miniproject.training.model.Menu</value>
+				<value>com.miniproject.training.model.Question</value>
+				<value>com.miniproject.training.model.Version</value>
+				<value>com.miniproject.training.model.VersionDetail</value>
+				<value>com.miniproject.training.model.Feedback</value>
+				<value>com.miniproject.training.model.Biodata</value>
+				<value>com.miniproject.training.model.Assignment</value>
+				<value>com.miniproject.training.model.Monitoring</value>
+				<value>com.miniproject.training.model.Office</value>
+				<value>com.miniproject.training.model.Room</value>
+				<value>com.miniproject.training.model.Category</value>
+				<value>com.miniproject.training.model.BootcampTestType</value>
+				<value>com.miniproject.training.model.Technology</value>
+				<value>com.miniproject.training.model.TechnologyTrainer</value>
+				<value>com.miniproject.training.model.Trainer</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
