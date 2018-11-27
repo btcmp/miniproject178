@@ -105,7 +105,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="#"> BIODATA DATA TABLE </a>
+						<a class="navbar-brand" href="#"> BIODATA TABLE </a>
 					</div>
 				</div>
 			</nav>
