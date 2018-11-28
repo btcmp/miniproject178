@@ -17,6 +17,10 @@
     }
 }
 
+#addOffice{
+	overflow-y: scroll;
+}
+
 #map {
     position: relative;
     width: 100%;
