@@ -196,16 +196,15 @@ input.parsley-error {
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalCenterTitle">Question</h5>
 				</div>
-				<form:form commandName="questionForm" action="${pageContext.request.contextPath }/question/save" method="POST">
+				<form action="#" method="POST">
 					<div class="modal-body">
-						<form:textarea path="question" rows="5" cols="70" placeholder="Enter a question"></form:textarea>
+						<textarea id="question" path="question" rows="5" cols="70" placeholder="Enter a question"></textarea>
 					</div>
 					<div class="modal-footer">
-						<form:button type="submit" id="add-question" class="btn btn-primary">Add</form:button>
-						<form:button type="button" class="btn btn-secondary"
-							data-dismiss="modal">Cancel</form:button>
+						<button type="submit" id="saveQuestion" class="btn btn-primary">Add</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 					</div>
-				</form:form>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -247,6 +246,48 @@ input.parsley-error {
 <script
 	src="${pageContext.request.contextPath}/resources/assets/js/demo.js"></script>
 <script type="text/javascript">
+	jQuery(document).ready(function() {
+		$('#saveQuestion').click(function(event) {
+			event.preventDefault();
+			var question = jQuery('#question').val();
+			
+			var question = {
+					question: question,
+			};
+			console.log(question);
+			
+			 $.ajax({
+			     url: '${pageContext.request.contextPath}/question/save',
+			     type: 'POST',
+			     dataType: 'json',
+			     data: JSON.stringify({ Id: "1", Desc : "Name" }),
+			     contentType: "application/json; charset=utf-8",
+			     success: function (data) {
+			                  alert("Success!!!")
+			              },
+			     error: function (xhrequest, ErrorText, thrownError) {
+			                        alert("Error")
+			              }
+			 });
+			
+			 /* jQuery.ajax({
+				url: '${pageContext.request.contextPath}/question/save',
+				type: 'post',
+				beforeSend: function(){
+					console.log(question);
+					console.log('mau contact server..');
+				},
+				contentType: 'application/json',
+				data: JSON.stringify(question),
+				success: function(data) {
+					console.log('dapat data dari server');
+					console.log(data);
+					window.location = '${pageContext.request.contextPath}/question'
+				}
+			}); */
+		});
+	});
+
 	$(document)
 			.ready(
 					function() {

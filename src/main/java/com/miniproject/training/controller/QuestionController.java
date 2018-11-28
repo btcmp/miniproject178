@@ -11,9 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.miniproject.training.model.Question;
 import com.miniproject.training.service.QuestionService;
@@ -25,11 +28,6 @@ public class QuestionController {
 	@Autowired
 	QuestionService questionService;
 	
-	@ModelAttribute("questionForm")
-	public Question getQuestionForm() {
-		return new Question();
-	}
-	
 	@RequestMapping
 	public String view(Model model) {
 		List<Question> questions = questionService.getAllQuestions();
@@ -38,12 +36,10 @@ public class QuestionController {
 	}
 	
 	@RequestMapping(value="/save", method=RequestMethod.POST)
-	public String saving(@Valid @ModelAttribute("questionForm") Question question, BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			return "question";
-		}
+	@ResponseBody
+	public Question saving(@RequestBody Question question) {
 		questionService.saving(question);
-		return "redirect:/question";
+		return question;
 	}
 	
 	//delete hapus

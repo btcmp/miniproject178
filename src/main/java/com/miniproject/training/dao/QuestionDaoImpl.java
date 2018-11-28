@@ -20,7 +20,7 @@ public class QuestionDaoImpl implements QuestionDao {
 	
 	public List<Question> getAllQuestions() {
 		// TODO Auto-generated method stub
-		String hql = "from Question";
+		String hql = "from Question where isDelete = '0'";
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery(hql);
 		List<Question> questions = query.list();

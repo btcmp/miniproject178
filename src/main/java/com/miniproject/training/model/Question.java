@@ -37,8 +37,8 @@ public class Question {
 	@Column(name = "DELETED_ON", nullable = true)
 	@Temporal(TemporalType.DATE)
 	private Date deletedOn;
-	@Column(name = "IS_DELETE", nullable = true)
-	private Boolean isDelete;
+	@Column(name = "IS_DELETE")
+	private boolean isDelete = false;
 	@OneToMany(mappedBy = "question")
 	private List<VersionDetail> versionDetail;
 	
