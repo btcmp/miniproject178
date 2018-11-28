@@ -14,10 +14,6 @@ public final class biodata_jsp extends org.apache.jasper.runtime.HttpJspBase
   private org.apache.jasper.runtime.TagHandlerPool _005fjspx_005ftagPool_005fc_005furl_0026_005fvar_005fvalue_005fnobody;
   private org.apache.jasper.runtime.TagHandlerPool _005fjspx_005ftagPool_005fc_005fforEach_0026_005fvar_005fitems;
   private org.apache.jasper.runtime.TagHandlerPool _005fjspx_005ftagPool_005fc_005fout_0026_005fvalue_005fnobody;
-  private org.apache.jasper.runtime.TagHandlerPool _005fjspx_005ftagPool_005fform_005fform_0026_005fmethod_005fcommandName_005faction;
-  private org.apache.jasper.runtime.TagHandlerPool _005fjspx_005ftagPool_005fform_005finput_0026_005ftype_005fplaceholder_005fpath_005fclass_005fnobody;
-  private org.apache.jasper.runtime.TagHandlerPool _005fjspx_005ftagPool_005fform_005fbutton_0026_005ftype_005fclass;
-  private org.apache.jasper.runtime.TagHandlerPool _005fjspx_005ftagPool_005fform_005fbutton_0026_005ftype_005fdata_002ddismiss_005fclass;
 
   private javax.el.ExpressionFactory _el_expressionfactory;
   private org.apache.AnnotationProcessor _jsp_annotationprocessor;
@@ -30,10 +26,6 @@ public final class biodata_jsp extends org.apache.jasper.runtime.HttpJspBase
     _005fjspx_005ftagPool_005fc_005furl_0026_005fvar_005fvalue_005fnobody = org.apache.jasper.runtime.TagHandlerPool.getTagHandlerPool(getServletConfig());
     _005fjspx_005ftagPool_005fc_005fforEach_0026_005fvar_005fitems = org.apache.jasper.runtime.TagHandlerPool.getTagHandlerPool(getServletConfig());
     _005fjspx_005ftagPool_005fc_005fout_0026_005fvalue_005fnobody = org.apache.jasper.runtime.TagHandlerPool.getTagHandlerPool(getServletConfig());
-    _005fjspx_005ftagPool_005fform_005fform_0026_005fmethod_005fcommandName_005faction = org.apache.jasper.runtime.TagHandlerPool.getTagHandlerPool(getServletConfig());
-    _005fjspx_005ftagPool_005fform_005finput_0026_005ftype_005fplaceholder_005fpath_005fclass_005fnobody = org.apache.jasper.runtime.TagHandlerPool.getTagHandlerPool(getServletConfig());
-    _005fjspx_005ftagPool_005fform_005fbutton_0026_005ftype_005fclass = org.apache.jasper.runtime.TagHandlerPool.getTagHandlerPool(getServletConfig());
-    _005fjspx_005ftagPool_005fform_005fbutton_0026_005ftype_005fdata_002ddismiss_005fclass = org.apache.jasper.runtime.TagHandlerPool.getTagHandlerPool(getServletConfig());
     _el_expressionfactory = _jspxFactory.getJspApplicationContext(getServletConfig().getServletContext()).getExpressionFactory();
     _jsp_annotationprocessor = (org.apache.AnnotationProcessor) getServletConfig().getServletContext().getAttribute(org.apache.AnnotationProcessor.class.getName());
   }
@@ -42,10 +34,6 @@ public final class biodata_jsp extends org.apache.jasper.runtime.HttpJspBase
     _005fjspx_005ftagPool_005fc_005furl_0026_005fvar_005fvalue_005fnobody.release();
     _005fjspx_005ftagPool_005fc_005fforEach_0026_005fvar_005fitems.release();
     _005fjspx_005ftagPool_005fc_005fout_0026_005fvalue_005fnobody.release();
-    _005fjspx_005ftagPool_005fform_005fform_0026_005fmethod_005fcommandName_005faction.release();
-    _005fjspx_005ftagPool_005fform_005finput_0026_005ftype_005fplaceholder_005fpath_005fclass_005fnobody.release();
-    _005fjspx_005ftagPool_005fform_005fbutton_0026_005ftype_005fclass.release();
-    _005fjspx_005ftagPool_005fform_005fbutton_0026_005ftype_005fdata_002ddismiss_005fclass.release();
   }
 
   public void _jspService(HttpServletRequest request, HttpServletResponse response)
@@ -237,7 +225,7 @@ public final class biodata_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\t                           \t\t<form action=\"");
       out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.proprietaryEvaluate("${pageContext.request.contextPath }", java.lang.String.class, (PageContext)_jspx_page_context, null, false));
       out.write("/biodata\">\n");
-      out.write("\t                           \t\t\t<input type=\"search\" path=\"search\" placeholder=\"Search by Name\"/>\n");
+      out.write("\t                           \t\t\t<input type=\"search\" id=\"search\" placeholder=\"Search by Name\"/>\n");
       out.write("\t                           \t\t\t<button type=\"button\" id=\"tambahBiodata\" class=\"btn btn-sm btn-primary\"> + </button>\n");
       out.write("                       \t\t\t\t</form>\n");
       out.write("\t                     \t\t</div>\n");
@@ -297,10 +285,32 @@ public final class biodata_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\t\t     \t\n");
       out.write("\t\t     \t<div class=\"modal-body\">\n");
       out.write("\t\t     \t\t\n");
-      out.write("\t\t     \t\t");
-      if (_jspx_meth_form_005fform_005f0(_jspx_page_context))
-        return;
-      out.write("\n");
+      out.write("\t\t     \t\t<form action=\"");
+      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.proprietaryEvaluate("${pageContext.request.contextPath }", java.lang.String.class, (PageContext)_jspx_page_context, null, false));
+      out.write("/biodata/save\" method=\"POST\">\n");
+      out.write("\t\t\t\t      \t<div class=\"form-group\">\n");
+      out.write("\t\t\t\t\t\t\t<input type=\"text\" id=\"name\" class=\"form-control\" placeholder=\"Name\" />\n");
+      out.write("\t\t\t\t\t\t</div>\n");
+      out.write("\t\t\t\t\t\t<div class=\"form-group\">\n");
+      out.write("\t\t\t\t\t\t\t<input type=\"text\" id=\"lastEducation\" class=\"form-control\" placeholder=\"Last Education\" />\n");
+      out.write("\t\t\t\t\t\t</div>\n");
+      out.write("\t\t\t\t\t\t<div class=\"form-group\">\n");
+      out.write("\t\t\t\t\t\t\t<input type=\"text\" id=\"educationalLevel\" class=\"form-control\" placeholder=\"Educational Level\" />\n");
+      out.write("\t\t\t\t\t\t</div>\n");
+      out.write("\t\t\t\t\t\t<div class=\"form-group\">\n");
+      out.write("\t\t\t\t\t\t\t<input type=\"text\" id=\"majors\" class=\"form-control\" placeholder=\"Majors\" />\n");
+      out.write("\t\t\t\t\t\t</div>\n");
+      out.write("\t\t\t\t\t\t<div class=\"form-group\">\n");
+      out.write("\t\t\t\t\t\t\t<input type=\"text\" id=\"gpa\" class=\"form-control\" placeholder=\"GPA\" />\n");
+      out.write("\t\t\t\t\t\t</div>\t\n");
+      out.write("\t\t\t\t\t\t\n");
+      out.write("\t\t\t\t\t\t<div class=\"modal-footer\">\n");
+      out.write("\t\t\t\t\t\t\t<button type=\"submit\" id=\"saving\" class=\"btn btn-primary\">Save</button>\n");
+      out.write("\t\t\t\t\t\t\t<button type=\"submit\" id=\"canceling\" class=\"btn btn-secondary\" data-dismiss=\"modal\">Cancel</button>\n");
+      out.write("\t\t\t\t\t\t</div>\n");
+      out.write("\t\t\t\t\t\t\n");
+      out.write("\t\t\t\t\t</form>\n");
+      out.write("\t\t     \t </div>\n");
       out.write("\t\t    </div>\n");
       out.write("\t\t</div>\n");
       out.write("\t</div>\n");
@@ -355,6 +365,44 @@ public final class biodata_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("<script type=\"text/javascript\">\n");
       out.write("\n");
       out.write("\t$(document).ready(function(){\n");
+      out.write("\t\tvar button=jQuery('#saving').click(function(event){\n");
+      out.write("\t\t\tevent.preventDefault();\n");
+      out.write("\t\t\t\n");
+      out.write("\t\t\tvar name=jQuery('#name').val();\n");
+      out.write("\t\t\tvar lasted=jQuery('#lastEducation').val();\n");
+      out.write("\t\t\tvar edlev=jQuery('#educationalLevel').val();\n");
+      out.write("\t\t\tvar majors=jQuery('#majors').val();\n");
+      out.write("\t\t\tvar gpa=jQuery('#gpa').val();\n");
+      out.write("\t\t\t\n");
+      out.write("\t\t\tvar biodata={\n");
+      out.write("\t\t\t\t\tname:name,\n");
+      out.write("\t\t\t\t\tlasted:lasted,\n");
+      out.write("\t\t\t\t\tedlev:edlev,\n");
+      out.write("\t\t\t\t\tmajors:majors,\n");
+      out.write("\t\t\t\t\tgpa:gpa\n");
+      out.write("\t\t\t\t\t\n");
+      out.write("\t\t\t}\n");
+      out.write("\t\t\t\n");
+      out.write("\t\t\tjQuery.ajax({\n");
+      out.write("\t\t\t\turl:'");
+      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.proprietaryEvaluate("${pageContext.request.contextPath}", java.lang.String.class, (PageContext)_jspx_page_context, null, false));
+      out.write("/biodata/save',\n");
+      out.write("\t\t\t\ttype:'POST',\n");
+      out.write("\t\t\t\tbeforeSend: function(){\n");
+      out.write("\t\t\t\t\tconsole.log(biodata);\n");
+      out.write("\t\t\t\t\tconsole.log('contact server');\n");
+      out.write("\t\t\t\t},\n");
+      out.write("\t\t\t\tcontentType:'application/json',\n");
+      out.write("\t\t\t\tdata:JSON.stringify(biodata),\n");
+      out.write("\t\t\t\tsuccess: function(data){\n");
+      out.write("\t\t\t\t\tconsole.log(data);\n");
+      out.write("\t\t\t\t\twindow.location='");
+      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.proprietaryEvaluate("${pageContext.request.contextPath}", java.lang.String.class, (PageContext)_jspx_page_context, null, false));
+      out.write("/biodata'\n");
+      out.write("\t\t\t\t}\n");
+      out.write("\t\t\t})\n");
+      out.write("\t\t});\n");
+      out.write("\t\t\n");
       out.write("\t\t//setting up datepicker\n");
       out.write("\t\t$('#birthDate123').datepicker();\n");
       out.write("\t\tfunction ajaxSetUp() {\n");
@@ -543,330 +591,6 @@ public final class biodata_jsp extends org.apache.jasper.runtime.HttpJspBase
       return true;
     }
     _005fjspx_005ftagPool_005fc_005fout_0026_005fvalue_005fnobody.reuse(_jspx_th_c_005fout_005f2);
-    return false;
-  }
-
-  private boolean _jspx_meth_form_005fform_005f0(PageContext _jspx_page_context)
-          throws Throwable {
-    PageContext pageContext = _jspx_page_context;
-    JspWriter out = _jspx_page_context.getOut();
-    //  form:form
-    org.springframework.web.servlet.tags.form.FormTag _jspx_th_form_005fform_005f0 = (org.springframework.web.servlet.tags.form.FormTag) _005fjspx_005ftagPool_005fform_005fform_0026_005fmethod_005fcommandName_005faction.get(org.springframework.web.servlet.tags.form.FormTag.class);
-    _jspx_th_form_005fform_005f0.setPageContext(_jspx_page_context);
-    _jspx_th_form_005fform_005f0.setParent(null);
-    // /WEB-INF/pages/biodata.jsp(189,9) name = action type = null reqTime = true required = false fragment = false deferredValue = false expectedTypeName = null deferredMethod = false methodSignature = null
-    _jspx_th_form_005fform_005f0.setAction((java.lang.String) org.apache.jasper.runtime.PageContextImpl.proprietaryEvaluate("${pageContext.request.contextPath }/biodata/save", java.lang.String.class, (PageContext)_jspx_page_context, null, false));
-    // /WEB-INF/pages/biodata.jsp(189,9) name = commandName type = null reqTime = true required = false fragment = false deferredValue = false expectedTypeName = null deferredMethod = false methodSignature = null
-    _jspx_th_form_005fform_005f0.setCommandName("biodataForm");
-    // /WEB-INF/pages/biodata.jsp(189,9) name = method type = null reqTime = true required = false fragment = false deferredValue = false expectedTypeName = null deferredMethod = false methodSignature = null
-    _jspx_th_form_005fform_005f0.setMethod("POST");
-    int[] _jspx_push_body_count_form_005fform_005f0 = new int[] { 0 };
-    try {
-      int _jspx_eval_form_005fform_005f0 = _jspx_th_form_005fform_005f0.doStartTag();
-      if (_jspx_eval_form_005fform_005f0 != javax.servlet.jsp.tagext.Tag.SKIP_BODY) {
-        do {
-          out.write("\n");
-          out.write("\t\t\t\t      \t<div class=\"form-group\">\n");
-          out.write("\t\t\t\t\t\t\t");
-          if (_jspx_meth_form_005finput_005f0(_jspx_th_form_005fform_005f0, _jspx_page_context, _jspx_push_body_count_form_005fform_005f0))
-            return true;
-          out.write("\n");
-          out.write("\t\t\t\t\t\t</div>\n");
-          out.write("\t\t\t\t\t\t<div class=\"form-group\">\n");
-          out.write("\t\t\t\t\t\t\t");
-          if (_jspx_meth_form_005finput_005f1(_jspx_th_form_005fform_005f0, _jspx_page_context, _jspx_push_body_count_form_005fform_005f0))
-            return true;
-          out.write("\n");
-          out.write("\t\t\t\t\t\t</div>\n");
-          out.write("\t\t\t\t\t\t<div class=\"form-group\">\n");
-          out.write("\t\t\t\t\t\t\t");
-          if (_jspx_meth_form_005finput_005f2(_jspx_th_form_005fform_005f0, _jspx_page_context, _jspx_push_body_count_form_005fform_005f0))
-            return true;
-          out.write("\n");
-          out.write("\t\t\t\t\t\t</div>\n");
-          out.write("\t\t\t\t\t\t<div class=\"form-group\">\n");
-          out.write("\t\t\t\t\t\t\t");
-          if (_jspx_meth_form_005finput_005f3(_jspx_th_form_005fform_005f0, _jspx_page_context, _jspx_push_body_count_form_005fform_005f0))
-            return true;
-          out.write("\n");
-          out.write("\t\t\t\t\t\t</div>\n");
-          out.write("\t\t\t\t\t\t<div class=\"form-group\">\n");
-          out.write("\t\t\t\t\t\t\t");
-          if (_jspx_meth_form_005finput_005f4(_jspx_th_form_005fform_005f0, _jspx_page_context, _jspx_push_body_count_form_005fform_005f0))
-            return true;
-          out.write("\n");
-          out.write("\t\t\t\t\t\t</div>\t\n");
-          out.write("\t\t\t\t\t\n");
-          out.write("\t\t     \t </div>\n");
-          out.write("\t\t     \t \n");
-          out.write("\t\t     \t <div class=\"modal-footer\">\n");
-          out.write("\t\t\t        ");
-          if (_jspx_meth_form_005fbutton_005f0(_jspx_th_form_005fform_005f0, _jspx_page_context, _jspx_push_body_count_form_005fform_005f0))
-            return true;
-          out.write("\n");
-          out.write("\t\t\t        ");
-          if (_jspx_meth_form_005fbutton_005f1(_jspx_th_form_005fform_005f0, _jspx_page_context, _jspx_push_body_count_form_005fform_005f0))
-            return true;
-          out.write("\n");
-          out.write("\t\t\t     </div>\n");
-          out.write("\t\t\t     ");
-          int evalDoAfterBody = _jspx_th_form_005fform_005f0.doAfterBody();
-          if (evalDoAfterBody != javax.servlet.jsp.tagext.BodyTag.EVAL_BODY_AGAIN)
-            break;
-        } while (true);
-      }
-      if (_jspx_th_form_005fform_005f0.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
-        return true;
-      }
-    } catch (Throwable _jspx_exception) {
-      while (_jspx_push_body_count_form_005fform_005f0[0]-- > 0)
-        out = _jspx_page_context.popBody();
-      _jspx_th_form_005fform_005f0.doCatch(_jspx_exception);
-    } finally {
-      _jspx_th_form_005fform_005f0.doFinally();
-      _005fjspx_005ftagPool_005fform_005fform_0026_005fmethod_005fcommandName_005faction.reuse(_jspx_th_form_005fform_005f0);
-    }
-    return false;
-  }
-
-  private boolean _jspx_meth_form_005finput_005f0(javax.servlet.jsp.tagext.JspTag _jspx_th_form_005fform_005f0, PageContext _jspx_page_context, int[] _jspx_push_body_count_form_005fform_005f0)
-          throws Throwable {
-    PageContext pageContext = _jspx_page_context;
-    JspWriter out = _jspx_page_context.getOut();
-    //  form:input
-    org.springframework.web.servlet.tags.form.InputTag _jspx_th_form_005finput_005f0 = (org.springframework.web.servlet.tags.form.InputTag) _005fjspx_005ftagPool_005fform_005finput_0026_005ftype_005fplaceholder_005fpath_005fclass_005fnobody.get(org.springframework.web.servlet.tags.form.InputTag.class);
-    _jspx_th_form_005finput_005f0.setPageContext(_jspx_page_context);
-    _jspx_th_form_005finput_005f0.setParent((javax.servlet.jsp.tagext.Tag) _jspx_th_form_005fform_005f0);
-    // /WEB-INF/pages/biodata.jsp(191,7) null
-    _jspx_th_form_005finput_005f0.setDynamicAttribute(null, "type", new String("text"));
-    // /WEB-INF/pages/biodata.jsp(191,7) name = path type = null reqTime = true required = true fragment = false deferredValue = false expectedTypeName = null deferredMethod = false methodSignature = null
-    _jspx_th_form_005finput_005f0.setPath("name");
-    // /WEB-INF/pages/biodata.jsp(191,7) null
-    _jspx_th_form_005finput_005f0.setDynamicAttribute(null, "class", new String("form-control"));
-    // /WEB-INF/pages/biodata.jsp(191,7) null
-    _jspx_th_form_005finput_005f0.setDynamicAttribute(null, "placeholder", new String("Name"));
-    int[] _jspx_push_body_count_form_005finput_005f0 = new int[] { 0 };
-    try {
-      int _jspx_eval_form_005finput_005f0 = _jspx_th_form_005finput_005f0.doStartTag();
-      if (_jspx_th_form_005finput_005f0.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
-        return true;
-      }
-    } catch (Throwable _jspx_exception) {
-      while (_jspx_push_body_count_form_005finput_005f0[0]-- > 0)
-        out = _jspx_page_context.popBody();
-      _jspx_th_form_005finput_005f0.doCatch(_jspx_exception);
-    } finally {
-      _jspx_th_form_005finput_005f0.doFinally();
-      _005fjspx_005ftagPool_005fform_005finput_0026_005ftype_005fplaceholder_005fpath_005fclass_005fnobody.reuse(_jspx_th_form_005finput_005f0);
-    }
-    return false;
-  }
-
-  private boolean _jspx_meth_form_005finput_005f1(javax.servlet.jsp.tagext.JspTag _jspx_th_form_005fform_005f0, PageContext _jspx_page_context, int[] _jspx_push_body_count_form_005fform_005f0)
-          throws Throwable {
-    PageContext pageContext = _jspx_page_context;
-    JspWriter out = _jspx_page_context.getOut();
-    //  form:input
-    org.springframework.web.servlet.tags.form.InputTag _jspx_th_form_005finput_005f1 = (org.springframework.web.servlet.tags.form.InputTag) _005fjspx_005ftagPool_005fform_005finput_0026_005ftype_005fplaceholder_005fpath_005fclass_005fnobody.get(org.springframework.web.servlet.tags.form.InputTag.class);
-    _jspx_th_form_005finput_005f1.setPageContext(_jspx_page_context);
-    _jspx_th_form_005finput_005f1.setParent((javax.servlet.jsp.tagext.Tag) _jspx_th_form_005fform_005f0);
-    // /WEB-INF/pages/biodata.jsp(194,7) null
-    _jspx_th_form_005finput_005f1.setDynamicAttribute(null, "type", new String("text"));
-    // /WEB-INF/pages/biodata.jsp(194,7) name = path type = null reqTime = true required = true fragment = false deferredValue = false expectedTypeName = null deferredMethod = false methodSignature = null
-    _jspx_th_form_005finput_005f1.setPath("lastEducation");
-    // /WEB-INF/pages/biodata.jsp(194,7) null
-    _jspx_th_form_005finput_005f1.setDynamicAttribute(null, "class", new String("form-control"));
-    // /WEB-INF/pages/biodata.jsp(194,7) null
-    _jspx_th_form_005finput_005f1.setDynamicAttribute(null, "placeholder", new String("Last Education"));
-    int[] _jspx_push_body_count_form_005finput_005f1 = new int[] { 0 };
-    try {
-      int _jspx_eval_form_005finput_005f1 = _jspx_th_form_005finput_005f1.doStartTag();
-      if (_jspx_th_form_005finput_005f1.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
-        return true;
-      }
-    } catch (Throwable _jspx_exception) {
-      while (_jspx_push_body_count_form_005finput_005f1[0]-- > 0)
-        out = _jspx_page_context.popBody();
-      _jspx_th_form_005finput_005f1.doCatch(_jspx_exception);
-    } finally {
-      _jspx_th_form_005finput_005f1.doFinally();
-      _005fjspx_005ftagPool_005fform_005finput_0026_005ftype_005fplaceholder_005fpath_005fclass_005fnobody.reuse(_jspx_th_form_005finput_005f1);
-    }
-    return false;
-  }
-
-  private boolean _jspx_meth_form_005finput_005f2(javax.servlet.jsp.tagext.JspTag _jspx_th_form_005fform_005f0, PageContext _jspx_page_context, int[] _jspx_push_body_count_form_005fform_005f0)
-          throws Throwable {
-    PageContext pageContext = _jspx_page_context;
-    JspWriter out = _jspx_page_context.getOut();
-    //  form:input
-    org.springframework.web.servlet.tags.form.InputTag _jspx_th_form_005finput_005f2 = (org.springframework.web.servlet.tags.form.InputTag) _005fjspx_005ftagPool_005fform_005finput_0026_005ftype_005fplaceholder_005fpath_005fclass_005fnobody.get(org.springframework.web.servlet.tags.form.InputTag.class);
-    _jspx_th_form_005finput_005f2.setPageContext(_jspx_page_context);
-    _jspx_th_form_005finput_005f2.setParent((javax.servlet.jsp.tagext.Tag) _jspx_th_form_005fform_005f0);
-    // /WEB-INF/pages/biodata.jsp(197,7) null
-    _jspx_th_form_005finput_005f2.setDynamicAttribute(null, "type", new String("text"));
-    // /WEB-INF/pages/biodata.jsp(197,7) name = path type = null reqTime = true required = true fragment = false deferredValue = false expectedTypeName = null deferredMethod = false methodSignature = null
-    _jspx_th_form_005finput_005f2.setPath("educationalLevel");
-    // /WEB-INF/pages/biodata.jsp(197,7) null
-    _jspx_th_form_005finput_005f2.setDynamicAttribute(null, "class", new String("form-control"));
-    // /WEB-INF/pages/biodata.jsp(197,7) null
-    _jspx_th_form_005finput_005f2.setDynamicAttribute(null, "placeholder", new String("Educational Level"));
-    int[] _jspx_push_body_count_form_005finput_005f2 = new int[] { 0 };
-    try {
-      int _jspx_eval_form_005finput_005f2 = _jspx_th_form_005finput_005f2.doStartTag();
-      if (_jspx_th_form_005finput_005f2.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
-        return true;
-      }
-    } catch (Throwable _jspx_exception) {
-      while (_jspx_push_body_count_form_005finput_005f2[0]-- > 0)
-        out = _jspx_page_context.popBody();
-      _jspx_th_form_005finput_005f2.doCatch(_jspx_exception);
-    } finally {
-      _jspx_th_form_005finput_005f2.doFinally();
-      _005fjspx_005ftagPool_005fform_005finput_0026_005ftype_005fplaceholder_005fpath_005fclass_005fnobody.reuse(_jspx_th_form_005finput_005f2);
-    }
-    return false;
-  }
-
-  private boolean _jspx_meth_form_005finput_005f3(javax.servlet.jsp.tagext.JspTag _jspx_th_form_005fform_005f0, PageContext _jspx_page_context, int[] _jspx_push_body_count_form_005fform_005f0)
-          throws Throwable {
-    PageContext pageContext = _jspx_page_context;
-    JspWriter out = _jspx_page_context.getOut();
-    //  form:input
-    org.springframework.web.servlet.tags.form.InputTag _jspx_th_form_005finput_005f3 = (org.springframework.web.servlet.tags.form.InputTag) _005fjspx_005ftagPool_005fform_005finput_0026_005ftype_005fplaceholder_005fpath_005fclass_005fnobody.get(org.springframework.web.servlet.tags.form.InputTag.class);
-    _jspx_th_form_005finput_005f3.setPageContext(_jspx_page_context);
-    _jspx_th_form_005finput_005f3.setParent((javax.servlet.jsp.tagext.Tag) _jspx_th_form_005fform_005f0);
-    // /WEB-INF/pages/biodata.jsp(200,7) null
-    _jspx_th_form_005finput_005f3.setDynamicAttribute(null, "type", new String("text"));
-    // /WEB-INF/pages/biodata.jsp(200,7) name = path type = null reqTime = true required = true fragment = false deferredValue = false expectedTypeName = null deferredMethod = false methodSignature = null
-    _jspx_th_form_005finput_005f3.setPath("majors");
-    // /WEB-INF/pages/biodata.jsp(200,7) null
-    _jspx_th_form_005finput_005f3.setDynamicAttribute(null, "class", new String("form-control"));
-    // /WEB-INF/pages/biodata.jsp(200,7) null
-    _jspx_th_form_005finput_005f3.setDynamicAttribute(null, "placeholder", new String("Majors"));
-    int[] _jspx_push_body_count_form_005finput_005f3 = new int[] { 0 };
-    try {
-      int _jspx_eval_form_005finput_005f3 = _jspx_th_form_005finput_005f3.doStartTag();
-      if (_jspx_th_form_005finput_005f3.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
-        return true;
-      }
-    } catch (Throwable _jspx_exception) {
-      while (_jspx_push_body_count_form_005finput_005f3[0]-- > 0)
-        out = _jspx_page_context.popBody();
-      _jspx_th_form_005finput_005f3.doCatch(_jspx_exception);
-    } finally {
-      _jspx_th_form_005finput_005f3.doFinally();
-      _005fjspx_005ftagPool_005fform_005finput_0026_005ftype_005fplaceholder_005fpath_005fclass_005fnobody.reuse(_jspx_th_form_005finput_005f3);
-    }
-    return false;
-  }
-
-  private boolean _jspx_meth_form_005finput_005f4(javax.servlet.jsp.tagext.JspTag _jspx_th_form_005fform_005f0, PageContext _jspx_page_context, int[] _jspx_push_body_count_form_005fform_005f0)
-          throws Throwable {
-    PageContext pageContext = _jspx_page_context;
-    JspWriter out = _jspx_page_context.getOut();
-    //  form:input
-    org.springframework.web.servlet.tags.form.InputTag _jspx_th_form_005finput_005f4 = (org.springframework.web.servlet.tags.form.InputTag) _005fjspx_005ftagPool_005fform_005finput_0026_005ftype_005fplaceholder_005fpath_005fclass_005fnobody.get(org.springframework.web.servlet.tags.form.InputTag.class);
-    _jspx_th_form_005finput_005f4.setPageContext(_jspx_page_context);
-    _jspx_th_form_005finput_005f4.setParent((javax.servlet.jsp.tagext.Tag) _jspx_th_form_005fform_005f0);
-    // /WEB-INF/pages/biodata.jsp(203,7) null
-    _jspx_th_form_005finput_005f4.setDynamicAttribute(null, "type", new String("text"));
-    // /WEB-INF/pages/biodata.jsp(203,7) name = path type = null reqTime = true required = true fragment = false deferredValue = false expectedTypeName = null deferredMethod = false methodSignature = null
-    _jspx_th_form_005finput_005f4.setPath("gpa");
-    // /WEB-INF/pages/biodata.jsp(203,7) null
-    _jspx_th_form_005finput_005f4.setDynamicAttribute(null, "class", new String("form-control"));
-    // /WEB-INF/pages/biodata.jsp(203,7) null
-    _jspx_th_form_005finput_005f4.setDynamicAttribute(null, "placeholder", new String("GPA"));
-    int[] _jspx_push_body_count_form_005finput_005f4 = new int[] { 0 };
-    try {
-      int _jspx_eval_form_005finput_005f4 = _jspx_th_form_005finput_005f4.doStartTag();
-      if (_jspx_th_form_005finput_005f4.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
-        return true;
-      }
-    } catch (Throwable _jspx_exception) {
-      while (_jspx_push_body_count_form_005finput_005f4[0]-- > 0)
-        out = _jspx_page_context.popBody();
-      _jspx_th_form_005finput_005f4.doCatch(_jspx_exception);
-    } finally {
-      _jspx_th_form_005finput_005f4.doFinally();
-      _005fjspx_005ftagPool_005fform_005finput_0026_005ftype_005fplaceholder_005fpath_005fclass_005fnobody.reuse(_jspx_th_form_005finput_005f4);
-    }
-    return false;
-  }
-
-  private boolean _jspx_meth_form_005fbutton_005f0(javax.servlet.jsp.tagext.JspTag _jspx_th_form_005fform_005f0, PageContext _jspx_page_context, int[] _jspx_push_body_count_form_005fform_005f0)
-          throws Throwable {
-    PageContext pageContext = _jspx_page_context;
-    JspWriter out = _jspx_page_context.getOut();
-    //  form:button
-    org.springframework.web.servlet.tags.form.ButtonTag _jspx_th_form_005fbutton_005f0 = (org.springframework.web.servlet.tags.form.ButtonTag) _005fjspx_005ftagPool_005fform_005fbutton_0026_005ftype_005fclass.get(org.springframework.web.servlet.tags.form.ButtonTag.class);
-    _jspx_th_form_005fbutton_005f0.setPageContext(_jspx_page_context);
-    _jspx_th_form_005fbutton_005f0.setParent((javax.servlet.jsp.tagext.Tag) _jspx_th_form_005fform_005f0);
-    // /WEB-INF/pages/biodata.jsp(209,11) null
-    _jspx_th_form_005fbutton_005f0.setDynamicAttribute(null, "type", new String("submit"));
-    // /WEB-INF/pages/biodata.jsp(209,11) null
-    _jspx_th_form_005fbutton_005f0.setDynamicAttribute(null, "class", new String("btn btn-primary"));
-    int[] _jspx_push_body_count_form_005fbutton_005f0 = new int[] { 0 };
-    try {
-      int _jspx_eval_form_005fbutton_005f0 = _jspx_th_form_005fbutton_005f0.doStartTag();
-      if (_jspx_eval_form_005fbutton_005f0 != javax.servlet.jsp.tagext.Tag.SKIP_BODY) {
-        do {
-          out.write("Save");
-          int evalDoAfterBody = _jspx_th_form_005fbutton_005f0.doAfterBody();
-          if (evalDoAfterBody != javax.servlet.jsp.tagext.BodyTag.EVAL_BODY_AGAIN)
-            break;
-        } while (true);
-      }
-      if (_jspx_th_form_005fbutton_005f0.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
-        return true;
-      }
-    } catch (Throwable _jspx_exception) {
-      while (_jspx_push_body_count_form_005fbutton_005f0[0]-- > 0)
-        out = _jspx_page_context.popBody();
-      _jspx_th_form_005fbutton_005f0.doCatch(_jspx_exception);
-    } finally {
-      _jspx_th_form_005fbutton_005f0.doFinally();
-      _005fjspx_005ftagPool_005fform_005fbutton_0026_005ftype_005fclass.reuse(_jspx_th_form_005fbutton_005f0);
-    }
-    return false;
-  }
-
-  private boolean _jspx_meth_form_005fbutton_005f1(javax.servlet.jsp.tagext.JspTag _jspx_th_form_005fform_005f0, PageContext _jspx_page_context, int[] _jspx_push_body_count_form_005fform_005f0)
-          throws Throwable {
-    PageContext pageContext = _jspx_page_context;
-    JspWriter out = _jspx_page_context.getOut();
-    //  form:button
-    org.springframework.web.servlet.tags.form.ButtonTag _jspx_th_form_005fbutton_005f1 = (org.springframework.web.servlet.tags.form.ButtonTag) _005fjspx_005ftagPool_005fform_005fbutton_0026_005ftype_005fdata_002ddismiss_005fclass.get(org.springframework.web.servlet.tags.form.ButtonTag.class);
-    _jspx_th_form_005fbutton_005f1.setPageContext(_jspx_page_context);
-    _jspx_th_form_005fbutton_005f1.setParent((javax.servlet.jsp.tagext.Tag) _jspx_th_form_005fform_005f0);
-    // /WEB-INF/pages/biodata.jsp(210,11) null
-    _jspx_th_form_005fbutton_005f1.setDynamicAttribute(null, "type", new String("button"));
-    // /WEB-INF/pages/biodata.jsp(210,11) null
-    _jspx_th_form_005fbutton_005f1.setDynamicAttribute(null, "class", new String("btn btn-warning"));
-    // /WEB-INF/pages/biodata.jsp(210,11) null
-    _jspx_th_form_005fbutton_005f1.setDynamicAttribute(null, "data-dismiss", new String("modal"));
-    int[] _jspx_push_body_count_form_005fbutton_005f1 = new int[] { 0 };
-    try {
-      int _jspx_eval_form_005fbutton_005f1 = _jspx_th_form_005fbutton_005f1.doStartTag();
-      if (_jspx_eval_form_005fbutton_005f1 != javax.servlet.jsp.tagext.Tag.SKIP_BODY) {
-        do {
-          out.write("Cancel");
-          int evalDoAfterBody = _jspx_th_form_005fbutton_005f1.doAfterBody();
-          if (evalDoAfterBody != javax.servlet.jsp.tagext.BodyTag.EVAL_BODY_AGAIN)
-            break;
-        } while (true);
-      }
-      if (_jspx_th_form_005fbutton_005f1.doEndTag() == javax.servlet.jsp.tagext.Tag.SKIP_PAGE) {
-        return true;
-      }
-    } catch (Throwable _jspx_exception) {
-      while (_jspx_push_body_count_form_005fbutton_005f1[0]-- > 0)
-        out = _jspx_page_context.popBody();
-      _jspx_th_form_005fbutton_005f1.doCatch(_jspx_exception);
-    } finally {
-      _jspx_th_form_005fbutton_005f1.doFinally();
-      _005fjspx_005ftagPool_005fform_005fbutton_0026_005ftype_005fdata_002ddismiss_005fclass.reuse(_jspx_th_form_005fbutton_005f1);
-    }
     return false;
   }
 }
