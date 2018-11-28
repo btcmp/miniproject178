@@ -28,7 +28,7 @@ public class Role {
 	private String description;
 	@Column(name="created_by",nullable=false)
 	private Long createdBy;
-	@Column(name="created_on",nullable=false)
+	@Column(name="created_on",nullable=true)
 	@Temporal(TemporalType.DATE)
 	private Date createdOn;
 	@Column(name="modified_by")

@@ -43,7 +43,7 @@
 				authorities-by-username-query=
 					"select 
 					  au.username, 
-					  r.name FROM t_role ur
+					  ur.name FROM t_role ur
 					inner join t_user au
 					on ur.id = au.role_id
 					where au.username = ? " />
