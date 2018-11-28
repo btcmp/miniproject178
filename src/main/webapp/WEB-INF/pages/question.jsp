@@ -275,12 +275,12 @@ input.parsley-error {
 												ajaxSetUp();
 												$
 														.ajax({
-															url : '${pageContext.request.contextPath}/department/delete/'
+															url : '${pageContext.request.contextPath}/question/delete/'
 																	+ id,
 															type : 'DELETE',
 															success : function(
 																	data) {
-																window.location = "${pageContext.request.contextPath}/department";
+																window.location = "${pageContext.request.contextPath}/question";
 															},
 															error : function() {
 																alert('delete data failed..!!');

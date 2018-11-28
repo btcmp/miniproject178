@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.miniproject.training.model.Department;
 import com.miniproject.training.model.Question;
 
 @Repository
@@ -33,6 +34,16 @@ public class QuestionDaoImpl implements QuestionDao {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
 		session.save(question);
+	}
+	
+	public void delete(Long id) {
+		// TODO Auto-generated method stub
+		Question quest = new Question();
+		quest.setId(id);
+		Session session = sessionFactory.getCurrentSession();
+		//session.delete(dept);
+		session.delete(session.get(Question.class, id));
+		session.flush();
 	}
 
 }
