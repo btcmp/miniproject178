@@ -152,6 +152,7 @@
                                             <th>NAME</th>
                                             <th>CONTACT</th>
                                             <th>STATUS</th>
+                                            <th></th>
                                         </thead>
                                         <tbody>
                                             <c:forEach var="office" items="${offices }">
@@ -221,27 +222,27 @@
 	      </div>
 		      
 		      <div class="modal-body">
-			      <form:form commandName = "officeForm" action="${pageContext.request.contextPath }/office/save" method="POST">
+			      <form commandName = "officeForm" action="${pageContext.request.contextPath }/office/save" method="POST">
 			      <div class="form-group">
-			      	<form:input type="text" path="name" class="form-control" placeholder="Name"/>
+			      	<input type="text" id="name" class="form-control" placeholder="Name"/>
 			      </div>
 			      
 			      <div class="form-group">
-			      	<form:input type="text" path="phone" class="form-control" placeholder="Phone"/>       	
+			      	<input type="text" id="phone" class="form-control" placeholder="Phone"/>       	
 			      </div>
 			       
 			      <div class="form-group"> 	
-			       	<form:input type="text" path="email" class="form-control" placeholder="Email"/>      	
+			       	<input type="text" id="email" class="form-control" placeholder="Email"/>      	
 			      </div>
 			      
 			      <div class="form-group">
-			       	<form:input type="text" path="address" class="form-control" placeholder="Address"/>
+			       	<input type="text" id="address" class="form-control" placeholder="Address"/>
 			      </div> 	
 			       	       	
 			      <div class="form-group"> 	
-			       	<form:input type="textarea" path="notes" class="form-control" placeholder="Description"/>
+			       	<input type="textarea" id="notes" class="form-control" placeholder="Description"/>
 			      </div>	
-		       	<form:button type="button" id="tambahRoom" class="btn btn-warning">+ROOM</form:button></br></br>
+		       	<button type="button" id="tambahRoom" class="btn btn-warning">+ROOM</button></br></br>
 		       
 		       	<div class="card-content table-responsive">
 	               <table id="table-user" class="table table-hover">
@@ -251,15 +252,18 @@
 	                       <th>CAPACITY</th>
 	                       <th> </th>
 	                   </thead>
+	                   <tbody>
+	                   
+	                   </tbody>
 	                 </table>
 	             </div>
 		      
 		      </div>
 		      <div class="modal-footer">
-		        <form:button type="submit" id="submit" class="btn btn-primary" >Save</form:button>
-		        <form:button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</form:button>
+		        <button type="submit" id="submit" class="btn btn-primary" >Save</button>
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel<button>
 		      </div>
-		      </form:form>
+		      </form>
 		    </div>
 		  </div>
 		</div>
@@ -278,32 +282,31 @@
 					<div class="modal-body">
 				      <form action="">
 				      <div class="form-group">
-				      	<input type="text" name="code" class="form-control" placeholder="Code"/>
+				      	<input type="text" id="code" class="form-control" placeholder="Code"/>
 				      </div>
 				      
 				      <div class="form-group">
-				      	<input type="text" name="name" class="form-control" placeholder="Name"/>       	
+				      	<input type="text" id="name-room" class="form-control" placeholder="Name"/>       	
 				      </div>
 				       
 				      <div class="form-group"> 	
-				       	<input type="text" name="capacity" class="form-control" placeholder="Capacity"/>      	
+				       	<input type="text" id="capacity" class="form-control" placeholder="Capacity"/>      	
 				      </div>
 				      
 				      <div class="form-group"> 	
 				     	Any Projector? &nbsp;
-				     	<input type="radio" name="active" value="1" >True   &nbsp;
-				       	<input type="radio" name="active" value="0" >False </br>
+				     	<input type="radio" id="selection" name="sama" value="active">True   &nbsp;
+				       	<input type="radio" id="selection" name="sama" value="deactive">False</br>
 				      </div>
 				      
 				      <div class="form-group"> 	
-				       	<input type="text" name="description" class="form-control" placeholder="Description"/>      	
+				       	<input type="text" id="description" class="form-control" placeholder="Description"/>      	
 				      </div>
 				      
 					</div>
 					<div class="modal-footer">
-						<button type="button" id="saveRoom" class="btn btn-primary">Add</button>
-						<button type="button" id="cancelRoom" class="btn btn-secondary"
-							data-dismiss="modal">Cancel</button>
+						<button type="submit" id="saveRoom" class="btn btn-primary">Add</button>
+						<button type="button" id="cancelRoom" class="btn btn-secondary"data-dismiss="modal">Cancel</button>
 
 					</div>
 				</div>
@@ -330,6 +333,46 @@
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script src="${pageContext.request.contextPath}/resources/assets/js/demo.js"></script>
 <script type="text/javascript">
+	jQuery(document).ready(function(){
+		$('#saveRoom').click(function(event){
+			event.preventDefault();
+		//event listener on click
+		var code = jQuery('#code').val();
+		var name = jQuery('#name-room').val();
+		var capacity = jQuery('#capacity').val();
+		var radio= $('input[name=sama]:checked').val();
+		var desc = jQuery('#description').val();
+		
+		var room = {
+				code : code,
+				name : name,
+				capacity : capacity,
+				radio : radio,
+				desc : desc
+				
+				
+			};
+		jQuery.ajax({
+			url: '${pageContext.request.contextPath}/office/save',
+			type : 'POST',
+			beforeSend : function () {
+				console.log(room);
+				console.log('mau contact server...');
+			},
+			contentType : 'application/json',
+			data : JSON.stringify(room),
+			success : function(data){
+				console.log('dapat data dari server...')
+				console.log(data);
+				window.location = '${pageContext.request.contextPath}/office'
+			}
+		})
+		
+		//console.log(room);
+		});
+	});
+	
+		
     $(document).ready(function() {
     	//setting up datepicker
     	$('#birthDate123').datepicker();
@@ -364,6 +407,7 @@
     		 return false;
     	 });
     	 
+    	 
     	//logout event button
     	 $('#logout').click(function(event){
     		 event.preventDefault();
@@ -386,6 +430,8 @@
     		$('#addRoom').modal('hide');
     		
     	});
+    	
+    	
     	
     });
 </script>

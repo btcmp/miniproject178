@@ -6,12 +6,15 @@ import javax.naming.Binding;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.miniproject.training.model.Office;
 import com.miniproject.training.service.OfficeService;
@@ -28,6 +31,7 @@ public class OfficeController {
 		return new Office();
 	}
 	
+	
 	@RequestMapping
 	public String index(Model model){
 		List<Office> offices = officeService.getAllOffices();
@@ -36,10 +40,8 @@ public class OfficeController {
 	}
 	
 	@RequestMapping(value="/save", method = RequestMethod.POST)
-	public String save(@Valid @ModelAttribute("officeForm") Office office, BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			return "office";
-		}
+	@ResponseStatus(HttpStatus.CREATED)
+	public String save(@RequestBody Office office) {
 		officeService.save(office);
 		return "redirect:/office";
 	}
