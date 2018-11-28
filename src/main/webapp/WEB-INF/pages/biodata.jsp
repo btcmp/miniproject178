@@ -67,6 +67,12 @@
 						<i class="material-icons">person</i>
 						<p>User Account</p>
 					</a></li>
+					<li>
+                        <a href="${pageContext.request.contextPath}/user">
+                            <i class="material-icons">person</i>
+                            <p>User</p>
+                        </a>
+                    </li>
 					<li class="active"><a href="${pageContext.request.contextPath }/biodata"> 
 						<i class="material-icons">person</i>
 						<p>Biodata</p>
