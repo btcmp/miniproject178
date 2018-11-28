@@ -376,11 +376,10 @@ public final class biodata_jsp extends org.apache.jasper.runtime.HttpJspBase
       out.write("\t\t\t\n");
       out.write("\t\t\tvar biodata={\n");
       out.write("\t\t\t\t\tname:name,\n");
-      out.write("\t\t\t\t\tlasted:lasted,\n");
-      out.write("\t\t\t\t\tedlev:edlev,\n");
+      out.write("\t\t\t\t\tlastEducation:lasted,\n");
+      out.write("\t\t\t\t\teducationalLevel:edlev,\n");
       out.write("\t\t\t\t\tmajors:majors,\n");
       out.write("\t\t\t\t\tgpa:gpa\n");
-      out.write("\t\t\t\t\t\n");
       out.write("\t\t\t}\n");
       out.write("\t\t\t\n");
       out.write("\t\t\tjQuery.ajax({\n");

@@ -67,12 +67,6 @@
 						<i class="material-icons">person</i>
 						<p>User Account</p>
 					</a></li>
-					<li>
-                        <a href="${pageContext.request.contextPath}/user">
-                            <i class="material-icons">person</i>
-                            <p>User</p>
-                        </a>
-                    </li>
 					<li class="active"><a href="${pageContext.request.contextPath }/biodata"> 
 						<i class="material-icons">person</i>
 						<p>Biodata</p>
@@ -261,11 +255,10 @@
 			
 			var biodata={
 					name:name,
-					lasted:lasted,
-					edlev:edlev,
+					lastEducation:lasted,
+					educationalLevel:edlev,
 					majors:majors,
 					gpa:gpa
-					
 			}
 			
 			jQuery.ajax({
