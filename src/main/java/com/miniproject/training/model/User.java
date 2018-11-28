@@ -30,7 +30,7 @@ public class User {
 	private Long mobileToken;
 	@Column(name="created_by",nullable=false)
 	private Long createdBy;
-	@Column(name="created_on",nullable=false)
+	@Column(name="created_on",nullable=true)
 	@Temporal(TemporalType.DATE)
 	private Date createdOn;
 	@Column(name="modified_by")
@@ -41,11 +41,20 @@ public class User {
 	@Column(name="active",nullable=false)
 	private boolean active;
 	
+	@Column(name="enabled")
+	private int enabled;
+	
 	@ManyToOne
 	@JoinColumn(name="role_id",nullable=false)
 	private Role roleId;
 	
 	
+	public int getEnabled() {
+		return enabled;
+	}
+	public void setEnabled(int enabled) {
+		this.enabled = enabled;
+	}
 	public Role getRoleId() {
 		return roleId;
 	}

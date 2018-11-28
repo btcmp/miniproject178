@@ -1,7 +1,5 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-
 <c:url value="/j_spring_security_logout" var="logoutUrl" />
 <!doctype html>
 <html lang="en">
@@ -23,7 +21,6 @@
     <link href="${pageContext.request.contextPath}/resources/assets/css/material-dashboard.css?v=1.2.0" rel="stylesheet" />
     <!--  CSS for Demo Purpose, don't include it in your project     -->
     <link href="${pageContext.request.contextPath}/resources/assets/css/demo.css" rel="stylesheet" />
-    <link href="${pageContext.request.contextPath}/resources/assets/datepicker/dist/datepicker.min.css" rel="stylesheet" />
     <!--     Fonts and icons     -->
     <link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
@@ -60,12 +57,12 @@
                         </a>
                     </li>
                      <li>
-                        <a href="${pageContext.request.contextPath }/department">
+                        <a href="${pageContext.request.contextPath}/department">
                             <i class="material-icons">library_books</i>
                             <p>Department</p>
                         </a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="${pageContext.request.contextPath}/employee">
                              <i class="material-icons">bubble_chart</i>
                             <p>Employee</p>
@@ -77,7 +74,7 @@
                             <p>User Account</p>
                         </a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="${pageContext.request.contextPath}/user">
                             <i class="material-icons">person</i>
                             <p>User</p>
@@ -101,7 +98,7 @@
 							<i class="material-icons">library_books</i>
 							<p>Technology</p>
 					</a></li>
-                     <li>
+                    <li>
                         <a href="#" id="logout">
                             <i class="material-icons">block</i>
                             <p>Logout</p>
@@ -125,7 +122,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#"> Employee Datatable </a>
+                        <a class="navbar-brand" href="#"> User Datatable</a>
                     </div>
                     <div class="collapse navbar-collapse">
                         
@@ -145,90 +142,43 @@
             <div class="content">
                 <div class="container-fluid">
                     <div class="row">
-	                    <div class="col-lg-12 col-md-12">
-			                    <c:if test="${not empty message}">
-									<div  class="alert alert-info" >
-										<c:out value="${message }"></c:out>
-									</div>	
-								</c:if>
-	                            <div class="card">
-	                                <div class="card-header" data-background-color="transparent">
-	                                    <h4 class="title">Form Add Employee</h4>
-	                                </div>
-	                             	<div class="card-content table-responsive">
-	                             		 
-	                             	<form:form action="${pageContext.request.contextPath }/employee/dosave" commandName="employeeForm" method="POST">
-									<%-- <form:errors path="*" cssClass="errorblock" element="div"/> --%>
-									<div class="form-group">
-										<label for="name">Name</label>
-										<form:input type="text" path="name" class="form-control" id="code" placeholder="Enter Your Name" />
-										 <form:errors style="color: red;" path="name"></form:errors>
-									</div>
-									<div class="form-group">
-										<label for="name">Email</label>
-										<form:input type="text" path="email" class="form-control" id="code" placeholder="Enter Your Email" />
-										 <form:errors style="color: red;" path="email"></form:errors>
-									</div>
-									<div class="form-group">
-										<label for="name">Salary</label>
-										<form:input type="text" path="salary" class="form-control" id="code" placeholder="Must be Number, ex: 2000" />
-										 <form:errors style="color: red;" path="salary"></form:errors>
-									</div>
-									<div class="form-group">
-										<label for="name">Birth Date</label>
-										<form:input id="birthDate123" type="text" path="birthDate" class="form-control"/>
-										 <form:errors style="color: red;" path="birthDate"></form:errors>
-									</div>
-									<div class="form-group">
-										<label for="name">Department</label>
-										<form:select  path="department.id">
-											<c:forEach var="department" items="${departments }">
-												<form:option value="${department.id }">
-													<c:out value="${department.departmentName }"></c:out>
-												</form:option>
-											</c:forEach>
-										</form:select>
-										 
-									</div>
-									<input type="submit" id="add-book" class="btn btn-sm btn-primary" value="Add" />		
-								</form:form>
-	                     			</div>
-	                 			</div>
-	                   	</div>
-                	</div>
-                    <div class="row">
                     <div class="col-lg-12 col-md-12">
                             <div class="card">
                                 <div class="card-header" data-background-color="orange">
-                                    <h4 class="title">List Employee</h4>
-                                    <p class="category">
+                                    <h4 class="title">List User</h4>
                                 </div>
                                 <div class="card-content table-responsive">
+                                <input type="search" name="search" placeholder="Search by User" />
+                                <button type="button" id="tambahUser" class="btn btn-sm btn-primary">+</button>
                                     <table id="table-user" class="table table-hover">
                                         <thead class="text-warning">
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Salary</th>
-                                            <th>Birth Date</th>
-                                            <th>Department</th>
-                                            <th>Action</th>
+                                            <th>Username</th>
+                                            <th>Role</th>
+                                            <th>Status</th>
                                         </thead>
                                         <tbody>
-                                            <c:forEach var="employee" items="${employees }">
+                                            <c:forEach var="user" items="${users }">
                                             	<tr>
-                                            		<td><c:out value="${employee.name }"></c:out></td>
-                                            		<td><c:out value="${employee.email }"></c:out></td>
-                                            		<td><c:out value="${employee.salary }"></c:out></td>
-                                            		<td><c:out value="${employee.birthDate }"></c:out></td>
-                                            		<td><c:out value="${employee.department.departmentName }"></c:out></td>
+                                            		<td><c:out value="${user.username }"></c:out></td>
+                                            		<td><c:out value="${user.email }"></c:out></td>
                                             		<td>
-                                            			<button id="${employee.id }" type="button" rel="tooltip" title="Edit ${employee.name }" class="btn btn-success btn-simple btn-xs btn-edit">
-										                    <i class="fa fa-edit"></i>
-										                </button>
-										                <button id="${employee.id }" type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs btn-delete">
-										                    <i class="fa fa-times"></i>
-										                </button>
-                                            		</td>
+                                            		<c:choose>
+                                            			<c:when test="${user.enabled == 1}">
+                                            				Active
+                                            			</c:when>
+                                            			<c:when test="${user.enabled == 0 }">
+                                            				Not Active
+                                            			</c:when>
+                                            		</c:choose>
+                                            	</td>
+                       							<td>
+                       								<c:forEach var="role" items="${user.roles }">
+                       									<div><a href="#"><c:out value="${role.roleName}"/></a></div>
+                       								</c:forEach>
+                       							</td>
+                       							<td>
+                       								<a id="${user.id }" class="btn btn-sm btn-primary view-detail" href="#">View Detail</a>
+                       							</td>
                                             	</tr>
                                             </c:forEach>
                                         </tbody>
@@ -236,7 +186,6 @@
                                 </div>
                             </div>
                         </div>
-    
                     </div>
                 </div>
             </div>
@@ -277,7 +226,9 @@
             </footer>
         </div>
     </div>
-    <%@include file="/WEB-INF/pages/modal/edit-employee.html" %>
+    <%@include file="/WEB-INF/pages/modal/update-account.html" %>
+    <%@include file="/WEB-INF/pages/modal/add-account.html" %>
+    <%@include file="/WEB-INF/pages/modal/add-role.html" %>
 </body>
 <!--   Core JS Files   -->
 <script src="${pageContext.request.contextPath}/resources/assets/js/jquery-3.2.1.min.js" type="text/javascript"></script>
@@ -289,7 +240,6 @@
 <script src="${pageContext.request.contextPath}/resources/assets/js/arrive.min.js"></script>
 <!--  PerfectScrollbar Library -->
 <script src="${pageContext.request.contextPath}/resources/assets/js/perfect-scrollbar.jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/assets/datepicker/dist/datepicker.js"></script>
 <!--  Notifications Plugin    -->
 <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-notify.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.0/parsley.min.js"></script>
@@ -301,8 +251,6 @@
 <script src="${pageContext.request.contextPath}/resources/assets/js/demo.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-    	//setting up datepicker
-    	$('#birthDate123').datepicker();
     	
     	 function ajaxSetUp(){
     		 var token = $("meta[name='_csrf']").attr("content");
@@ -313,76 +261,161 @@
     	 }
     	 
     	 $('#table-user').DataTable();
+    	 $('#role-table').DataTable();
+     
+    	 // Javascript method's body can be found in assets/js/demos.js
+    	 $('.view-detail').on('click', function(){
+    		 var id = $(this).attr('id');
+    		 $(this).removeAttr("checked");	 
+    		 $.ajax({
+    			 url: 'account/user/'+id,
+    			 type: 'GET',
+    			 beforeSend: function(){
+    				ajaxSetUp(); 
+    			 },
+    			 success: function(data){
+    				 console.log(data);
+    				 $("select[name='roles'] option:selected").prop("selected", false)
+    				 $('#idEdit').val(data.id);
+    				 $('input[name="user.username"]').val(data.username);
+    				 $('input[name="user.email"]').val(data.email);
+    				 
+    				 if(data.enabled == 1){
+    					$('#statusUser').attr("checked","");	 
+    				 } 
+    				 
+    				 $.each(data.roles, function(index, value){ 
+    					  $("select[name='roles'] option[value='" + value.id + "']").prop("selected", true);
+    				 });
+    			 }
+    		 });
+         	$('#modal-edit-account-view-detail').modal();
+         });
     	 
-    	 $('.btn-delete').on('click', function(){
-    		 var conf = confirm("Are you sure delete this data ?");
-    		 if(conf == true){
-    			 var id = $(this).attr("id");
-    			 
-    			 ajaxSetUp();
-    			 $.ajax({
-    				 url : '${pageContext.request.contextPath}/employee/delete/'+id,
-    				 type: 'DELETE',
-    				 success: function(data){
-    					 window.location = "${pageContext.request.contextPath}/employee";
-    				 }, error : function(){
-    					 alert('delete data failed..!!');
-    				 }
-    			 });
+    	 $("#statusUser").on("click", function(){
+    		 var attr = $(this).attr('checked');
+    		 if (typeof attr !== typeof undefined && attr !== false) {
+    			 $(this).removeAttr("checked");	    
+    		 } else {
+    			 $(this).attr("checked", "");
+    		 }
+    	 });
+    	 
+    	 $("#add-statusUser").on("click", function(){
+    		 var attr = $(this).attr('checked');
+    		 if (typeof attr !== typeof undefined && attr !== false) {
+    			 $(this).removeAttr("checked");	    
+    		 } else {
+    			 $(this).attr("checked", "");
+    		 }
+    	 });
+    	 
+    	 $('#btn-edit').on('click', function(){
+    		 var attr = $("#statusUser").attr('checked');
+    		 var enable = 0;
+    		 if (typeof attr !== typeof undefined && attr !== false) {
+    			 enable = 1;
+    		 }
+    		 var user = {
+    				id : $('#idEdit').val(),
+    				username : $('input[name="user.username"]').val(),
+    				email : $('input[name="user.email"]').val(),
+    				enabled : enable,
+    				roles : []
     		 }
     		 
-    		 return false;
+    		 $.each($('#listRoles').val(), function(index, val){
+    			 var role = {
+    				id : val
+    			 }
+    			 user.roles.push(role);
+    		 });
+    		
+			$.ajax({
+				 url : 'account/updaterole',
+				 type: 'PUT', 
+				 contentType: 'application/json',
+				 data : JSON.stringify(user),
+				 success: function(data){
+					 window.location = "account";
+				 }
+			 });
     	 });
     	 
-    	 $(".btn-edit").on('click', function(){
-    		 var id = $(this).attr('id');
-    		 $.ajax({
-    			 url : '${pageContext.request.contextPath}/employee/get/'+ id,
-    			 type: 'GET',
-    			 success : function(data){
-    				 $('#name-employee').val(data.name);
-    				 $('#edit-department').val(data.department.id);
-    				 $('#id-employee').val(data.id);
-    				 $('#birthDate').val(data.birthDate);
-    				 $('#email-employee').val(data.email);
-    				 $('#salary-employee').val(data.salary);
-    			 },
-    			 dataType: 'json'
-    		 })
+    	 $('#btn-add-account').on('click', function(){
+    		 $("#add-account-modal").modal();
+    	 });
+    	 //validation form
+    	 $('#btn-add-account-submit').click(function(){
+    		 var validate = $('#form-add-account').parsley();
     		 
-    		$('#edit-employee-modal').modal();
+        	 validate.validate();
+        	 if(validate.isValid()){
+        	 	//do next code..
+        	 	 var attr = $("#add-statusUser").attr('checked');
+	    		 var enable = 0;
+	    		 if (typeof attr !== typeof undefined && attr !== false) {
+	    			 enable = 1;
+	    		 }
+	    		 
+        		 var user = {
+         				username : $('input[name="add.user.username"]').val(),
+         				email : $('input[name="add.user.email"]').val(),
+         				password: $('input[name="add.user.password"]').val(),
+         				enabled : enable,
+         				roles : []
+         		 }
+         		 
+         		 $.each($('#add-listRoles').val(), function(index, val){
+         			 var role = {
+         				id : val
+         			 }
+         			 user.roles.push(role);
+         		 });
+	    		 
+        		 $.ajax({
+        			 url : "account/save/",
+        			 type: 'POST',
+        			 beforeSend: function(){
+        				 ajaxSetUp();
+        			 },
+        			 contentType: 'application/json',
+        			 data : JSON.stringify(user),
+        			 error: function(){
+        				 alert("create user failed!");
+        			 },
+        			 success: function(data){
+        				 window.location = "account";
+        			 }
+        		 });
+        	 } 
     	 });
     	 
-    	 $('#btn-update-employee-submit').on('click', function(){
-    		var validate = $('#form-edit-employee').parsley();
-    		if(validate.validate()){
-    			var employee = {
-    				name : $('#name-employee').val(),
-       				id :  $('#id-employee').val(),
-       				email : $('#email-employee').val(),
-       				salary : $('#salary-employee').val(),
-       				birthDate :  $('#birthDate').val(),
-       				department : {
-       					id : $('#edit-department').val()
-       				}
+    	 $('#btn-add-role').on('click', function(){
+    		 $('#add-role-modal').modal();
+    	 });
+    	 
+    	 $('#btn-add-role-submit').on('click', function(){
+    		 var validate = $('#form-add-role').parsley();
+    		 if(validate.validate()){
+    			var role = {
+    				roleName : $('#role-name').val(),
     			}
-    			
     			ajaxSetUp();
     			$.ajax({
-    				url : '${pageContext.request.contextPath}/employee/save',
+    				url: 'account/addrole',
     				type: 'POST',
-    				data: JSON.stringify(employee),
-    				contentType: "application/json",
-    				success : function(data){
-    					window.location = "${pageContext.request.contextPath}/employee";
-    				},error: function(){
-    					alert('update failed');
+    				data: JSON.stringify(role),
+    				contentType: 'application/json',
+    				success: function(data){
+    					console.log(data);
     				}
     			});
-    		}
+    		 }
+    		 
     	 });
     	 
-    	 //logout event button
+    	//logout event button
     	 $('#logout').click(function(event){
     		 event.preventDefault();
     		$('#logoutForm').submit();

@@ -17,7 +17,7 @@ import com.miniproject.training.model.Role1;
 import com.miniproject.training.model.User1;
 
 @Component
-public class InitDB {
+public class InitDB1 {
 
 	@Autowired
 	EmployeeService employeeService;

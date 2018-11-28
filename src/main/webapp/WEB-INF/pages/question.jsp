@@ -86,6 +86,12 @@ input.parsley-error {
 							<i class="material-icons">person</i>
 							<p>User Account</p>
 					</a></li>
+					<li>
+                        <a href="${pageContext.request.contextPath}/user">
+                            <i class="material-icons">person</i>
+                            <p>User</p>
+                        </a>
+                    </li>
 					<li><a href="${pageContext.request.contextPath }/biodata"> 
 						<i class="material-icons">person</i>
 						<p>Biodata</p>
@@ -275,12 +281,12 @@ input.parsley-error {
 												ajaxSetUp();
 												$
 														.ajax({
-															url : '${pageContext.request.contextPath}/department/delete/'
+															url : '${pageContext.request.contextPath}/question/delete/'
 																	+ id,
 															type : 'DELETE',
 															success : function(
 																	data) {
-																window.location = "${pageContext.request.contextPath}/department";
+																window.location = "${pageContext.request.contextPath}/question";
 															},
 															error : function() {
 																alert('delete data failed..!!');

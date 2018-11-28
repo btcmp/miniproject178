@@ -10,4 +10,6 @@ public interface QuestionDao {
 
 	public void save(Question question);
 
+	public void delete(Long id);
+
 }
