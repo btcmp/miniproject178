@@ -167,7 +167,9 @@ input.parsley-error {
 														<td><c:out value="${dept.createdBy }"></c:out></td>
 														<td><c:out value="${dept.active }"></c:out></td>
 														<td><a id="${dept.id }" href="#"
-															class="btn-hapus btn btn-danger btn-sm">Delete</a></td>
+															class="btn-hapus btn btn-danger btn-sm">Edit</a></td>
+														<td><a id="${dept.id }" href="#"
+															class="btn-hapus btn btn-danger btn-sm">Deactived</a></td>
 													</tr>
 												</c:forEach>
 											</tbody>
@@ -229,12 +231,11 @@ input.parsley-error {
 							</div>
 							<div class="form-group">
 								<label for="note-technology">Note</label>
-								<textarea rows="4" cols="50" id="notes"
-									class="form-control" placeholder="Enter note technology" ></textarea>
+								<textarea rows="4" cols="50" id="note" class="form-control" placeholder="Enter note technology" ></textarea>
 							</div>
 							<button type="button" id="tambahTrainer" class="btn btn-warning">+Trainer</button><br><br>
 							<div class="card-content table-responsive">
-				               <table id="table-user" class="table table-hover">
+				               <table id="table-trainer" class="table table-hover">
 				                   <thead class="text-warning">
 				                       <th>Name</th>
 				                       <th>Created By</th>
@@ -277,18 +278,17 @@ input.parsley-error {
 					</div>
 					<div class="modal-body">
 						<form
-							action="${pageContext.request.contextPath }/trainer/save"
+							action="${pageContext.request.contextPath }"
 						    method="POST">
 							<div class="form-group">
 								<label for="name-technology">Name</label>
-								<input data-parsley-required="true" type="text" id="name"
+								<input type="text" id="names"
 									class="form-control"
 									aria-describedby="nameHelp" placeholder="Enter Name Technology" />
 							</div>
 							<div class="form-group">
-								<label for="note-technology">Note</label>
-								<textarea rows="4" cols="50" id="notes"
-									class="form-control" placeholder="Enter note trainer" ></textarea>
+								<label>Note</label>
+								<textarea rows="4" cols="50" id="notes" class="form-control" placeholder="Enter note trainer" ></textarea>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" id="tambahCancel"
@@ -398,17 +398,42 @@ input.parsley-error {
 							$('#add-technology-modal').modal('show');
 							$('#add-trainer-modal').modal('hide');
 						});
+						var button = jQuery('#btn-save-trainer-submit').click(function(event){
+							event.preventDefault();
+							var name = jQuery('#names').val();
+						    var note = jQuery('#notes').val();
+							
+							var trainer = {
+									name:name,
+									note:note
+
+							}
+							var otable=$('#table-trainer');
+							var tbody=otable.find('tbody');
+							var tr ="<tr>";
+							tr += "<td>"+trainer.name+"</td>";
+							tr += "<td>"+trainer.createdBy+"</td>";
+							tr += "<td>"+trainer.active+"</td>";
+							tr += "<td>ddd</td>";
+							tr +="</tr>";
+							tbody.append(tr);
+							$('#add-technology-modal').modal('show');
+							$('#add-trainer-modal').modal('hide');
+						});
+						
+
 						
 						var button = jQuery('#btn-save-technology-submit').click(function(event){
 							event.preventDefault();
 							var name = jQuery('#name').val();
-							var createdBy =jQuery('#createdBy').val();
-							var active=jQuery('#active').val();
+					/* 		var createdBy =jQuery('#createdBy').val();
+							var active=jQuery('#active').val(); */
+						    var note = jQuery('#note').val();
 							
 							var technology = {
 									name:name,
-									createdBy:createdBy,
-									active:active
+									note:note
+
 							}
 							jQuery.ajax({
 								url : '${pageContext.request.contextPath}/technology/save',
@@ -427,8 +452,7 @@ input.parsley-error {
 							});
 							
 						});
-						
-					});				    	
+				});				    	
 						
 </script>
 

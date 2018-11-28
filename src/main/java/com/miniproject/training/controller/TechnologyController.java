@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.miniproject.training.model.Employee;
@@ -20,7 +21,7 @@ import com.miniproject.training.model.Technology;
 import com.miniproject.training.service.TechnologyService;
 
 @Controller
-@RequestMapping("/technology")
+@RequestMapping("technology")
 public class TechnologyController {
 	
 	@Autowired
@@ -47,6 +48,7 @@ public class TechnologyController {
 		return "redirect:/technology";
 	}*/
 	@RequestMapping(value="/save",method=RequestMethod.POST)
+	@ResponseBody
 	public Technology save(@RequestBody Technology technology) {
 		technologyService.save(technology);
 		return technology;
