@@ -217,7 +217,7 @@ input.parsley-error {
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title">Edit Employee</h5>
+						<h5 class="modal-title">Technology</h5>
 						<button type="button" class="close" data-dismiss="modal"
 							aria-label="Close">
 							<span aria-hidden="true">&times;</span>
@@ -238,6 +238,18 @@ input.parsley-error {
 								<form:textarea rows="4" cols="50" path="notes"
 									class="form-control" placeholder="Enter note technology" />
 							</div>
+							<form:button type="button" id="tambahTrainer" class="btn btn-warning">+Trainer</form:button><br><br>
+							<div class="card-content table-responsive">
+				               <table id="table-user" class="table table-hover">
+				                   <thead class="text-warning">
+				                       <th>Name</th>
+				                       <th>Created By</th>
+				                       <th>Status</th>
+				                       <th> </th>
+				                   </thead>
+				                 </table>
+				             </div>
+		      
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary"
 									data-dismiss="modal">Close</button>
@@ -250,6 +262,46 @@ input.parsley-error {
 				</div>
 			</div>
 		</div>
+		
+		<div class="modal fade" id="add-trainer-modal" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Trainer</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form:form
+							action="${pageContext.request.contextPath }/technology/save"
+							commandName="techForm" method="POST">
+							<div class="form-group">
+								<label for="name-technology">Name</label>
+								<form:input data-parsley-required="true" type="text" path="name"
+									class="form-control" id="name-technology"
+									aria-describedby="nameHelp" placeholder="Enter Name Technology" />
+							</div>
+							<div class="form-group">
+								<label for="note-technology">Note</label>
+								<form:textarea rows="4" cols="50" path="notes"
+									class="form-control" placeholder="Enter note trainer" />
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" id="tambahCancel"
+									data-dismiss="modal">Close</button>
+								<form:button type="submit" id="btn-save-trainer-submit"
+									class="btn btn-primary">Save</form:button>
+							</div>
+						</form:form>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		
 </body>
 <!--   Core JS Files   -->
 <script
@@ -330,15 +382,20 @@ input.parsley-error {
 							$('#logoutForm').submit();
 						});
 						
-						//modal tambah question
+						//modal tambah technology dan trainer
 						$('#tambahTechnology').click(function(event) {
 							event.preventDefault();
 							$('#add-technology-modal').modal();
-							$('#tambahTrainer').click(function(event) {
-								event.preventDefault();
-								$('#addTechnology').modal('hide');
-								$('#addTrainer').modal();
-							});
+						});
+						$('#tambahTrainer').click(function(event) {
+							event.preventDefault();
+							$('#add-technology-modal').modal('hide');
+							$('#add-trainer-modal').modal();
+						});
+						$('#tambahCancel').click(function(event) {
+							event.preventDefault();
+							$('#add-technology-modal').modal('show');
+							$('#add-trainer-modal').modal('hide');
 						});
 										    	
 						
