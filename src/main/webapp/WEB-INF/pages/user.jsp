@@ -1,6 +1,5 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <c:url value="/j_spring_security_logout" var="logoutUrl" />
 <!doctype html>
 <html lang="en">
@@ -22,7 +21,6 @@
     <link href="${pageContext.request.contextPath}/resources/assets/css/material-dashboard.css?v=1.2.0" rel="stylesheet" />
     <!--  CSS for Demo Purpose, don't include it in your project     -->
     <link href="${pageContext.request.contextPath}/resources/assets/css/demo.css" rel="stylesheet" />
-    <link href="${pageContext.request.contextPath}/resources/assets/datepicker/dist/datepicker.min.css" rel="stylesheet" />
     <!--     Fonts and icons     -->
     <link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css" rel="stylesheet">
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
@@ -45,10 +43,9 @@
 
         Tip 2: you can also add an image using data-image tag
     -->
-    <!-- logo samping -->
             <div class="logo">
                 <a href="http://www.creative-tim.com" class="simple-text">
-                    BATCH 178
+                    Batch 178
                 </a>
             </div>
             <div class="sidebar-wrapper">
@@ -59,10 +56,12 @@
                             <p>Dashboard</p>
                         </a>
                     </li>
-                    <li><a href="${pageContext.request.contextPath }/department">
-						<i class="material-icons">library_books</i>
-						<p>Department</p>
-					</a></li>
+                     <li>
+                        <a href="${pageContext.request.contextPath}/department">
+                            <i class="material-icons">library_books</i>
+                            <p>Department</p>
+                        </a>
+                    </li>
                     <li>
                         <a href="${pageContext.request.contextPath}/employee">
                              <i class="material-icons">bubble_chart</i>
@@ -75,7 +74,7 @@
                             <p>User Account</p>
                         </a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="${pageContext.request.contextPath}/user">
                             <i class="material-icons">person</i>
                             <p>User</p>
@@ -85,7 +84,7 @@
 						<i class="material-icons">person</i>
 						<p>Biodata</p>
 					</a></li>
-					<li class="active">
+					<li>
                         <a href="${pageContext.request.contextPath }/office">
                             <i class="material-icons">work</i>
                             <p>Office</p>
@@ -113,8 +112,6 @@
                 </ul>
             </div>
         </div>
-        
-        <!-- logo atas -->
         <div class="main-panel">
             <nav class="navbar navbar-primary navbar-absolute">
                 <div class="container-fluid">
@@ -125,49 +122,63 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#"> Office Datatable </a>
+                        <a class="navbar-brand" href="#"> User Datatable</a>
                     </div>
                     <div class="collapse navbar-collapse">
+                        
+                        <form class="navbar-form navbar-right" role="search">
+                            <div class="form-group  is-empty">
+                                <input type="text" class="form-control" placeholder="Search">
+                                <span class="material-input"></span>
+                            </div>
+                            <button type="submit" class="btn btn-white btn-round btn-just-icon">
+                                <i class="material-icons">search</i>
+                                <div class="ripple-container"></div>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </nav>
-            
-           <!--  ISI -->
             <div class="content">
                 <div class="container-fluid">
                     <div class="row">
-	                    <div class="col-lg-12 col-md-12">
-			                   <c:if test="${not empty message}">
-									<div  class="alert alert-info" >
-										<c:out value="${message }"></c:out>
-									</div>	
-								</c:if> 
-	                            <div class="card">
-	                                <div class="card-header" data-background-color="orange">
-	                                    <h4 class="title">Office</h4>
-	                                </div>
-	                             	<div class="card-content table-responsive">
-	                             	<form action="${pageContext.request.contextPath }/office">
-									<input type="search" name="name" placeholder="Search by Name"/>
-									<button type="button" id="tambahOffice" class="btn btn-sm btn-primary"> + </button>
-								</form>
-	            
+                    <div class="col-lg-12 col-md-12">
+                            <div class="card">
+                                <div class="card-header" data-background-color="orange">
+                                    <h4 class="title">List User</h4>
+                                </div>
                                 <div class="card-content table-responsive">
+                                <input type="search" name="search" placeholder="Search by User" />
+                                <button type="button" id="tambahUser" class="btn btn-sm btn-primary">+</button>
                                     <table id="table-user" class="table table-hover">
                                         <thead class="text-warning">
-                                            <th>NAME</th>
-                                            <th>CONTACT</th>
-                                            <th>STATUS</th>
+                                            <th>Username</th>
+                                            <th>Role</th>
+                                            <th>Status</th>
                                         </thead>
                                         <tbody>
-                                            <c:forEach var="office" items="${offices }">
+                                            <c:forEach var="user" items="${users }">
                                             	<tr>
-                                            		<td><c:out value="${office.name }"></c:out></td>
-                                            		<td><c:out value="${office.phone }"></c:out></td>
-                                            		<td><c:out value="${office.active }"></c:out></td>
+                                            		<td><c:out value="${user.username }"></c:out></td>
+                                            		<td><c:out value="${user.email }"></c:out></td>
                                             		<td>
-                                            			<a id="${dept.id }" href="#" class="btn-hapus btn btn-danger btn-sm">Delete</a>
-                                            		</td>
+                                            		<c:choose>
+                                            			<c:when test="${user.enabled == 1}">
+                                            				Active
+                                            			</c:when>
+                                            			<c:when test="${user.enabled == 0 }">
+                                            				Not Active
+                                            			</c:when>
+                                            		</c:choose>
+                                            	</td>
+                       							<td>
+                       								<c:forEach var="role" items="${user.roles }">
+                       									<div><a href="#"><c:out value="${role.roleName}"/></a></div>
+                       								</c:forEach>
+                       							</td>
+                       							<td>
+                       								<a id="${user.id }" class="btn btn-sm btn-primary view-detail" href="#">View Detail</a>
+                       							</td>
                                             	</tr>
                                             </c:forEach>
                                         </tbody>
@@ -175,7 +186,6 @@
                                 </div>
                             </div>
                         </div>
-    
                     </div>
                 </div>
             </div>
@@ -216,105 +226,10 @@
             </footer>
         </div>
     </div>
-    
-	<!-- Modal OFFICE  -->
-		<div class="modal fade" id="addOffice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-	  aria-hidden="true">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header text-center">
-	        <h3 class="modal-title w-100 font-weight-bold">ADD OFFICE</h3>
-	      </div>
-		      
-		      <div class="modal-body">
-			      <form:form commandName = "officeForm" action="${pageContext.request.contextPath }/office/save" method="POST">
-			      <div class="form-group">
-			      	<form:input type="text" path="name" class="form-control" placeholder="Name"/>
-			      </div>
-			      
-			      <div class="form-group">
-			      	<form:input type="text" path="phone" class="form-control" placeholder="Phone"/>       	
-			      </div>
-			       
-			      <div class="form-group"> 	
-			       	<form:input type="text" path="email" class="form-control" placeholder="Email"/>      	
-			      </div>
-			      
-			      <div class="form-group">
-			       	<form:input type="text" path="address" class="form-control" placeholder="Address"/>
-			      </div> 	
-			       	       	
-			      <div class="form-group"> 	
-			       	<form:input type="textarea" path="notes" class="form-control" placeholder="Description"/>
-			      </div>	
-		       	<form:button type="button" id="tambahRoom" class="btn btn-warning">+ROOM</form:button></br></br>
-		       
-		       	<div class="card-content table-responsive">
-	               <table id="table-user" class="table table-hover">
-	                   <thead class="text-warning">
-	                       <th>CODE</th>
-	                       <th>NAME</th>
-	                       <th>CAPACITY</th>
-	                       <th> </th>
-	                   </thead>
-	                 </table>
-	             </div>
-		      
-		      </div>
-		      <div class="modal-footer">
-		        <form:button type="submit" id="submit" class="btn btn-primary" >Save</form:button>
-		        <form:button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</form:button>
-		      </div>
-		      </form:form>
-		    </div>
-		  </div>
-		</div>
-		
-	
-	<!-- Modal ROOM -->
-		<div class="modal fade" id="addRoom" tabindex="-1" role="dialog"
-			aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header text-center">
-						<h3 class="modal-title w-100 font-weight-bold">ADD ROOM</h3>
-					</div>
-					<div class="modal-body">
-					
-					<div class="modal-body">
-				      <form action="">
-				      <div class="form-group">
-				      	<input type="text" name="code" class="form-control" placeholder="Code"/>
-				      </div>
-				      
-				      <div class="form-group">
-				      	<input type="text" name="name" class="form-control" placeholder="Name"/>       	
-				      </div>
-				       
-				      <div class="form-group"> 	
-				       	<input type="text" name="capacity" class="form-control" placeholder="Capacity"/>      	
-				      </div>
-				      
-				      <div class="form-group"> 	
-				     	Any Projector? &nbsp;
-				     	<input type="radio" name="active" value="1" >True   &nbsp;
-				       	<input type="radio" name="active" value="0" >False </br>
-				      </div>
-				      
-				      <div class="form-group"> 	
-				       	<input type="text" name="description" class="form-control" placeholder="Description"/>      	
-				      </div>
-				      
-					</div>
-					<div class="modal-footer">
-						<button type="button" id="saveRoom" class="btn btn-primary">Add</button>
-						<button type="button" id="cancelRoom" class="btn btn-secondary"
-							data-dismiss="modal">Cancel</button>
-
-					</div>
-				</div>
-			</div>
-		</div></body>
+    <%@include file="/WEB-INF/pages/modal/update-account.html" %>
+    <%@include file="/WEB-INF/pages/modal/add-account.html" %>
+    <%@include file="/WEB-INF/pages/modal/add-role.html" %>
+</body>
 <!--   Core JS Files   -->
 <script src="${pageContext.request.contextPath}/resources/assets/js/jquery-3.2.1.min.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap.min.js" type="text/javascript"></script>
@@ -325,7 +240,6 @@
 <script src="${pageContext.request.contextPath}/resources/assets/js/arrive.min.js"></script>
 <!--  PerfectScrollbar Library -->
 <script src="${pageContext.request.contextPath}/resources/assets/js/perfect-scrollbar.jquery.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/assets/datepicker/dist/datepicker.js"></script>
 <!--  Notifications Plugin    -->
 <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-notify.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.8.0/parsley.min.js"></script>
@@ -337,8 +251,6 @@
 <script src="${pageContext.request.contextPath}/resources/assets/js/demo.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-    	//setting up datepicker
-    	$('#birthDate123').datepicker();
     	
     	 function ajaxSetUp(){
     		 var token = $("meta[name='_csrf']").attr("content");
@@ -349,25 +261,158 @@
     	 }
     	 
     	 $('#table-user').DataTable();
+    	 $('#role-table').DataTable();
+     
+    	 // Javascript method's body can be found in assets/js/demos.js
+    	 $('.view-detail').on('click', function(){
+    		 var id = $(this).attr('id');
+    		 $(this).removeAttr("checked");	 
+    		 $.ajax({
+    			 url: 'account/user/'+id,
+    			 type: 'GET',
+    			 beforeSend: function(){
+    				ajaxSetUp(); 
+    			 },
+    			 success: function(data){
+    				 console.log(data);
+    				 $("select[name='roles'] option:selected").prop("selected", false)
+    				 $('#idEdit').val(data.id);
+    				 $('input[name="user.username"]').val(data.username);
+    				 $('input[name="user.email"]').val(data.email);
+    				 
+    				 if(data.enabled == 1){
+    					$('#statusUser').attr("checked","");	 
+    				 } 
+    				 
+    				 $.each(data.roles, function(index, value){ 
+    					  $("select[name='roles'] option[value='" + value.id + "']").prop("selected", true);
+    				 });
+    			 }
+    		 });
+         	$('#modal-edit-account-view-detail').modal();
+         });
     	 
-    	 $('.btn-hapus').on('click', function(){
-    		 var conf = confirm("Are you sure delete this data ?");
-    		 if(conf == true){
-    			 var id = $(this).attr("id");
-    			 
-    			 ajaxSetUp();
-    			 $.ajax({
-    				 url : '${pageContext.request.contextPath}/department/delete/'+id,
-    				 type: 'DELETE',
-    				 success: function(data){
-    					 window.location = "${pageContext.request.contextPath}/department";
-    				 }, error : function(){
-    					 alert('delete data failed..!!');
-    				 }
-    			 });
+    	 $("#statusUser").on("click", function(){
+    		 var attr = $(this).attr('checked');
+    		 if (typeof attr !== typeof undefined && attr !== false) {
+    			 $(this).removeAttr("checked");	    
+    		 } else {
+    			 $(this).attr("checked", "");
+    		 }
+    	 });
+    	 
+    	 $("#add-statusUser").on("click", function(){
+    		 var attr = $(this).attr('checked');
+    		 if (typeof attr !== typeof undefined && attr !== false) {
+    			 $(this).removeAttr("checked");	    
+    		 } else {
+    			 $(this).attr("checked", "");
+    		 }
+    	 });
+    	 
+    	 $('#btn-edit').on('click', function(){
+    		 var attr = $("#statusUser").attr('checked');
+    		 var enable = 0;
+    		 if (typeof attr !== typeof undefined && attr !== false) {
+    			 enable = 1;
+    		 }
+    		 var user = {
+    				id : $('#idEdit').val(),
+    				username : $('input[name="user.username"]').val(),
+    				email : $('input[name="user.email"]').val(),
+    				enabled : enable,
+    				roles : []
     		 }
     		 
-    		 return false;
+    		 $.each($('#listRoles').val(), function(index, val){
+    			 var role = {
+    				id : val
+    			 }
+    			 user.roles.push(role);
+    		 });
+    		
+			$.ajax({
+				 url : 'account/updaterole',
+				 type: 'PUT', 
+				 contentType: 'application/json',
+				 data : JSON.stringify(user),
+				 success: function(data){
+					 window.location = "account";
+				 }
+			 });
+    	 });
+    	 
+    	 $('#btn-add-account').on('click', function(){
+    		 $("#add-account-modal").modal();
+    	 });
+    	 //validation form
+    	 $('#btn-add-account-submit').click(function(){
+    		 var validate = $('#form-add-account').parsley();
+    		 
+        	 validate.validate();
+        	 if(validate.isValid()){
+        	 	//do next code..
+        	 	 var attr = $("#add-statusUser").attr('checked');
+	    		 var enable = 0;
+	    		 if (typeof attr !== typeof undefined && attr !== false) {
+	    			 enable = 1;
+	    		 }
+	    		 
+        		 var user = {
+         				username : $('input[name="add.user.username"]').val(),
+         				email : $('input[name="add.user.email"]').val(),
+         				password: $('input[name="add.user.password"]').val(),
+         				enabled : enable,
+         				roles : []
+         		 }
+         		 
+         		 $.each($('#add-listRoles').val(), function(index, val){
+         			 var role = {
+         				id : val
+         			 }
+         			 user.roles.push(role);
+         		 });
+	    		 
+        		 $.ajax({
+        			 url : "account/save/",
+        			 type: 'POST',
+        			 beforeSend: function(){
+        				 ajaxSetUp();
+        			 },
+        			 contentType: 'application/json',
+        			 data : JSON.stringify(user),
+        			 error: function(){
+        				 alert("create user failed!");
+        			 },
+        			 success: function(data){
+        				 window.location = "account";
+        			 }
+        		 });
+        	 } 
+    	 });
+    	 
+    	 $('#btn-add-role').on('click', function(){
+    		 $('#add-role-modal').modal();
+    	 });
+    	 
+    	 $('#btn-add-role-submit').on('click', function(){
+    		 var validate = $('#form-add-role').parsley();
+    		 if(validate.validate()){
+    			var role = {
+    				roleName : $('#role-name').val(),
+    			}
+    			ajaxSetUp();
+    			$.ajax({
+    				url: 'account/addrole',
+    				type: 'POST',
+    				data: JSON.stringify(role),
+    				contentType: 'application/json',
+    				success: function(data){
+    					console.log(data);
+    				}
+    			});
+    		 }
+    		 
     	 });
     	 
     	//logout event button
@@ -375,24 +420,6 @@
     		 event.preventDefault();
     		$('#logoutForm').submit();
     	 });
-    	
-    	$('#tambahOffice').click(function(event){
-    		event.preventDefault();
-    		$('#addOffice').modal();
-    	});
-    	
-    	$('#tambahRoom').click(function(event){
-    		event.preventDefault();
-    		$('#addOffice').modal('hide');
-    		$('#addRoom').modal();
-    	});
-    	$('#cancelRoom').click(function(event){
-    		event.preventDefault();
-    		$('#addOffice').modal('show');
-    		$('#addRoom').modal('hide');
-    		
-    	});
-    	
     });
 </script>
 

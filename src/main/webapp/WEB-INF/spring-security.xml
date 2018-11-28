@@ -11,6 +11,7 @@
 		<intercept-url pattern="/department**" access="hasRole('ROLE_USER')" />
 		<intercept-url pattern="/employee**" access="hasRole('ROLE_STAFF')"/>
 		<intercept-url pattern="/account**" access="hasRole('ROLE_STAFF')"/>
+		<intercept-url pattern="/user**" access="hasRole('ROLE_STAFF')"/>
 		<intercept-url pattern="/biodata**" access="hasRole('ROLE_STAFF')"/>
 		<intercept-url pattern="/office**" access="hasRole('ROLE_STAFF')"/>
 		<intercept-url pattern="/technology**" access="hasRole('ROLE_STAFF')"/>
@@ -24,7 +25,6 @@
 		<logout logout-success-url="/login?logout" />
 		<!-- access denied page -->
 		<access-denied-handler error-page="/403" />
-		<csrf/>
 	</http>
 	<authentication-manager>
 		<authentication-provider>
@@ -43,7 +43,7 @@
 				authorities-by-username-query=
 					"select 
 					  au.username, 
-					  r.name FROM t_role ur
+					  ur.name FROM t_role ur
 					inner join t_user au
 					on ur.id = au.role_id
 					where au.username = ? " />
