@@ -34,9 +34,8 @@ public class BiodataController {
 	
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	@ResponseStatus(code=HttpStatus.CREATED)
-	public String save(@RequestBody Biodata biodata) {
+	public void save(@RequestBody Biodata biodata) {
 		biodataService.save(biodata);
-		return "redirect:/biodata";
 	}
 	
 }
