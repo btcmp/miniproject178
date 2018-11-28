@@ -161,14 +161,16 @@
                                             <th></th>
                                         </thead>
                                         <tbody>
-                                            <c:forEach var="office" items="${offices }">
+                                            <c:forEach items = "${offices }" var="office">
                                             	<tr>
                                             		<td><c:out value="${office.name }"></c:out></td>
                                             		<td><c:out value="${office.phone }"></c:out></td>
                                             		<td><c:out value="${office.active }"></c:out></td>
-                                            		<td>
-                                            			<a id="${dept.id }" href="#" class="btn-hapus btn btn-danger btn-sm">Delete</a>
-                                            		</td>
+	                                            	<td>
+	                                            		<a class="btn btn-warning update btn-sm" href="#">Edit</a>
+														<a class="btn btn-danger btn-sm" href="#">Deactive</a>
+														
+													</td>
                                             	</tr>
                                             </c:forEach>
                                         </tbody>
@@ -228,7 +230,7 @@
 	      </div>
 		      
 		      <div class="modal-body">
-			      <form commandName = "officeForm" action="${pageContext.request.contextPath }/office/save" method="POST">
+			      <form  action="#" method="POST">
 			      <div class="form-group">
 			      	<input type="text" id="name" class="form-control" placeholder="Name"/>
 			      </div>
@@ -251,7 +253,7 @@
 		       	<button type="button" id="tambahRoom" class="btn btn-warning">+ROOM</button></br></br>
 		       
 		       	<div class="card-content table-responsive">
-	               <table id="table-user" class="table table-hover">
+	               <table id="table-room" class="table table-hover">
 	                   <thead class="text-warning">
 	                       <th>CODE</th>
 	                       <th>NAME</th>
@@ -259,15 +261,15 @@
 	                       <th> </th>
 	                   </thead>
 	                   <tbody>
-	                   
+	                   	
 	                   </tbody>
 	                 </table>
 	             </div>
 		      
 		      </div>
 		      <div class="modal-footer">
-		        <button type="submit" id="submit" class="btn btn-primary" >Save</button>
-		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel<button>
+		        <button type="submit" id="submitOffice" class="btn btn-primary" data-dismiss="modal">Save</button>
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 		      </div>
 		      </form>
 		    </div>
@@ -301,8 +303,8 @@
 				      
 				      <div class="form-group"> 	
 				     	Any Projector? &nbsp;
-				     	<input type="radio" id="selection" name="sama" value="active">True   &nbsp;
-				       	<input type="radio" id="selection" name="sama" value="deactive">False</br>
+				     	<input type="radio" id="selection" name="sama" value="Yes">True   &nbsp;
+				       	<input type="radio" id="selection" name="sama" value="No">False</br>
 				      </div>
 				      
 				      <div class="form-group"> 	
@@ -311,8 +313,8 @@
 				      
 					</div>
 					<div class="modal-footer">
-						<button type="submit" id="saveRoom" class="btn btn-primary">Add</button>
-						<button type="button" id="cancelRoom" class="btn btn-secondary"data-dismiss="modal">Cancel</button>
+						<button type="submit" id="saveRoom" class="btn btn-primary" >Add</button>
+						<button type="button" id="cancelRoom" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 
 					</div>
 				</div>
@@ -347,36 +349,69 @@
 		var name = jQuery('#name-room').val();
 		var capacity = jQuery('#capacity').val();
 		var radio= $('input[name=sama]:checked').val();
-		var desc = jQuery('#description').val();
+		var description = jQuery('#description').val();
 		
 		var room = {
 				code : code,
 				name : name,
 				capacity : capacity,
 				radio : radio,
-				desc : desc
-				
-				
+				description : description
+
 			};
+		
+		var oTable = $('#table-room');
+		var tbody = oTable.find('tbody');
+		var tr = "<tr>";
+			tr += "<td>"+room.code+"</td>";
+			tr += "<td>"+room.name+"</td>";
+			tr += "<td>"+room.capacity+"</td>";
+			tr += "<td>yeye</td>";
+			tr += "</tr>";
+        tbody.append(tr);
+        $('#addOffice').modal('show');
+		$('#addRoom').modal('hide');
+		});
+			
+	    });
+	
+	jQuery(document).ready(function(){
+		$('#submitOffice').click(function(event){
+			event.preventDefault();
+		//event listener on click
+		var name = jQuery('#name').val();
+		var phone = jQuery('#phone').val();
+		var email = jQuery('#email').val();
+		var address = jQuery('#address').val();
+		var desc = jQuery('#notes').val();
+		
+		var office = {
+				name : name,
+				phone : phone,
+				email : email,
+				address : address,
+				notes : desc
+
+			};
+		//console.log(office);
 		jQuery.ajax({
 			url: '${pageContext.request.contextPath}/office/save',
 			type : 'POST',
 			beforeSend : function () {
-				console.log(room);
+				console.log(office);
 				console.log('mau contact server...');
 			},
 			contentType : 'application/json',
-			data : JSON.stringify(room),
+			data : JSON.stringify(office),
 			success : function(data){
 				console.log('dapat data dari server...')
 				console.log(data);
 				window.location = '${pageContext.request.contextPath}/office'
 			}
 		})
-		
-		//console.log(room);
 		});
-	});
+		
+    });
 	
 		
     $(document).ready(function() {
