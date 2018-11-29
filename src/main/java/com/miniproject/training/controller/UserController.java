@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.miniproject.training.model.Role;
 import com.miniproject.training.model.User;
+import com.miniproject.training.service.RoleService;
 import com.miniproject.training.service.UserService;
 
 @Controller
@@ -22,6 +24,9 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
+	@Autowired
+	RoleService roleService;
+	
 	@ModelAttribute("userForm")
 	public User getUserForm() {
 		return new User();
@@ -30,7 +35,9 @@ public class UserController {
 	@RequestMapping
 	public String view(Model model) {
 		List<User> users = userService.getAllUser();
+		List<Role> roles = roleService.getAllRole();
 		model.addAttribute("users",users);
+		model.addAttribute("roles",roles);
 		return "user";
 	}
 	

@@ -81,6 +81,12 @@
                             <p>User</p>
                         </a>
                     </li>
+                    <li>
+                        <a href="${pageContext.request.contextPath}/role">
+                            <i class="material-icons">person</i>
+                            <p>Role</p>
+                        </a>
+                    </li>
                     <li><a href="${pageContext.request.contextPath }/biodata"> 
 						<i class="material-icons">person</i>
 						<p>Biodata</p>
@@ -162,10 +168,17 @@
                                             <c:forEach var="user" items="${users }">
                                             	<tr>
                                             		<td><c:out value="${user.username }"></c:out></td>
-                                            		<td>
-                                            			Staff
+                                            		<td><c:out value="${user.roleId.name }"></c:out></td>
+                       								<td>
+                       									<c:choose>
+                       										<c:when test="${user.active == true }">
+                       											Active
+                       										</c:when>
+                       										<c:when test="${user.active == false }">
+                       											Not Active
+                       										</c:when>
+                       									</c:choose>
                        								</td>
-                       								<td>Active</td>
                        								<td>
                                             			<a id="${user.id }" href="#" class="btn-hapus btn btn-danger btn-sm">Deactived</a>
                                             			<a id="${user.id }" href="#" class="btn btn-primary btn-sm">Edit</a>
@@ -227,11 +240,11 @@
 				<form action="${pageContext.request.contextPath }/user/save" method="POST">
 					<div class="modal-body">
 						<div class="form-group">
-							<select name="role" class="form-control">
+							<select id="roles.id" class="form-control">
 							  <option>--Select Role--</option>
-							  <option value="">Role User</option>
-							  <option value="">Role Staff</option>
-							  <option value="">Role Admin</option>
+							  <c:forEach items="${roles}" var="rol">
+							  			<option value="${rol.id}">${rol.name}</option>
+							  </c:forEach>
 							</select>
 						</div>
 						<div class="form-group">
@@ -411,7 +424,7 @@
    								var user = {
    										username:username,
    										password:password,
-   										active:active,
+   										active:active
    								}
    								jQuery.ajax({
    									url : '${pageContext.request.contextPath}/user/save',

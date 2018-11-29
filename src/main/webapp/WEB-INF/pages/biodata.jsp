@@ -73,6 +73,12 @@
                             <p>User</p>
                         </a>
                     </li>
+                    <li>
+                        <a href="${pageContext.request.contextPath}/role">
+                            <i class="material-icons">person</i>
+                            <p>Role</p>
+                        </a>
+                    </li>
 					<li class="active"><a href="${pageContext.request.contextPath }/biodata"> 
 						<i class="material-icons">person</i>
 						<p>Biodata</p>
