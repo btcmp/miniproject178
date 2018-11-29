@@ -1,5 +1,6 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <c:url value="/j_spring_security_logout" var="logoutUrl" />
 <!doctype html>
 <html lang="en">
@@ -80,6 +81,12 @@
                             <p>User</p>
                         </a>
                     </li>
+                    <li>
+                        <a href="${pageContext.request.contextPath}/role">
+                            <i class="material-icons">person</i>
+                            <p>Role</p>
+                        </a>
+                    </li>
                     <li><a href="${pageContext.request.contextPath }/biodata"> 
 						<i class="material-icons">person</i>
 						<p>Biodata</p>
@@ -155,30 +162,27 @@
                                             <th>Username</th>
                                             <th>Role</th>
                                             <th>Status</th>
+                                            <th>Action</th>
                                         </thead>
                                         <tbody>
                                             <c:forEach var="user" items="${users }">
                                             	<tr>
                                             		<td><c:out value="${user.username }"></c:out></td>
-                                            		<td><c:out value="${user.email }"></c:out></td>
-                                            		<td>
-                                            		<c:choose>
-                                            			<c:when test="${user.enabled == 1}">
-                                            				Active
-                                            			</c:when>
-                                            			<c:when test="${user.enabled == 0 }">
-                                            				Not Active
-                                            			</c:when>
-                                            		</c:choose>
-                                            	</td>
-                       							<td>
-                       								<c:forEach var="role" items="${user.roles }">
-                       									<div><a href="#"><c:out value="${role.roleName}"/></a></div>
-                       								</c:forEach>
-                       							</td>
-                       							<td>
-                       								<a id="${user.id }" class="btn btn-sm btn-primary view-detail" href="#">View Detail</a>
-                       							</td>
+                                            		<td><c:out value="${user.roleId.name }"></c:out></td>
+                       								<td>
+                       									<c:choose>
+                       										<c:when test="${user.active == true }">
+                       											Active
+                       										</c:when>
+                       										<c:when test="${user.active == false }">
+                       											Not Active
+                       										</c:when>
+                       									</c:choose>
+                       								</td>
+                       								<td>
+                                            			<a id="${user.id }" href="#" class="btn-hapus btn btn-danger btn-sm">Deactived</a>
+                                            			<a id="${user.id }" href="#" class="btn btn-primary btn-sm">Edit</a>
+                       								</td>
                                             	</tr>
                                             </c:forEach>
                                         </tbody>
@@ -225,10 +229,43 @@
                 </div>
             </footer>
         </div>
+        <!-- modal -->
+        <div class="modal fade" id="addUser" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">User</h5>
+				</div>
+				<form action="${pageContext.request.contextPath }/user/save" method="POST">
+					<div class="modal-body">
+						<div class="form-group">
+							<select id="roles.id" class="form-control">
+							  <option>--Select Role--</option>
+							  <c:forEach items="${roles}" var="rol">
+							  			<option value="${rol.id}">${rol.name}</option>
+							  </c:forEach>
+							</select>
+						</div>
+						<div class="form-group">
+							<input type="text" id="username" class="form-control" placeholder="Username"/>
+						</div>
+						<div class="form-group">
+							<input type="password" id="password" class="form-control" placeholder="Password"/>
+						</div>
+						<div class="form-group">
+							<input type="password" class="form-control" placeholder="Retype Password"/>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" id="add-user" class="btn btn-primary">Add</button>
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Cancel</button>
+					</div>
+				</form>
+			</div>
+		</div>
     </div>
-    <%@include file="/WEB-INF/pages/modal/update-account.html" %>
-    <%@include file="/WEB-INF/pages/modal/add-account.html" %>
-    <%@include file="/WEB-INF/pages/modal/add-role.html" %>
 </body>
 <!--   Core JS Files   -->
 <script src="${pageContext.request.contextPath}/resources/assets/js/jquery-3.2.1.min.js" type="text/javascript"></script>
@@ -261,7 +298,6 @@
     	 }
     	 
     	 $('#table-user').DataTable();
-    	 $('#role-table').DataTable();
      
     	 // Javascript method's body can be found in assets/js/demos.js
     	 $('.view-detail').on('click', function(){
@@ -342,54 +378,7 @@
 			 });
     	 });
     	 
-    	 $('#btn-add-account').on('click', function(){
-    		 $("#add-account-modal").modal();
-    	 });
-    	 //validation form
-    	 $('#btn-add-account-submit').click(function(){
-    		 var validate = $('#form-add-account').parsley();
-    		 
-        	 validate.validate();
-        	 if(validate.isValid()){
-        	 	//do next code..
-        	 	 var attr = $("#add-statusUser").attr('checked');
-	    		 var enable = 0;
-	    		 if (typeof attr !== typeof undefined && attr !== false) {
-	    			 enable = 1;
-	    		 }
-	    		 
-        		 var user = {
-         				username : $('input[name="add.user.username"]').val(),
-         				email : $('input[name="add.user.email"]').val(),
-         				password: $('input[name="add.user.password"]').val(),
-         				enabled : enable,
-         				roles : []
-         		 }
-         		 
-         		 $.each($('#add-listRoles').val(), function(index, val){
-         			 var role = {
-         				id : val
-         			 }
-         			 user.roles.push(role);
-         		 });
-	    		 
-        		 $.ajax({
-        			 url : "account/save/",
-        			 type: 'POST',
-        			 beforeSend: function(){
-        				 ajaxSetUp();
-        			 },
-        			 contentType: 'application/json',
-        			 data : JSON.stringify(user),
-        			 error: function(){
-        				 alert("create user failed!");
-        			 },
-        			 success: function(data){
-        				 window.location = "account";
-        			 }
-        		 });
-        	 } 
-    	 });
+    	 
     	 
     	 $('#btn-add-role').on('click', function(){
     		 $('#add-role-modal').modal();
@@ -411,8 +400,7 @@
     					console.log(data);
     				}
     			});
-    		 }
-    		 
+    		 }	 
     	 });
     	 
     	//logout event button
@@ -420,7 +408,43 @@
     		 event.preventDefault();
     		$('#logoutForm').submit();
     	 });
+    	
+    	//modal tambah user
+ 	    $('#tambahUser').click(function(event) {
+ 			event.preventDefault();
+ 			$('#addUser').modal();
+ 		});
+    	
+ 		//tambah user
+   	    var button = jQuery('#add-user').click(function(event){
+   								event.preventDefault();
+   								var username = jQuery('#username').val();
+   								var password = jQuery('#password').val();
+   								var active = 1;
+   								var user = {
+   										username:username,
+   										password:password,
+   										active:active
+   								}
+   								jQuery.ajax({
+   									url : '${pageContext.request.contextPath}/user/save',
+   									type:'POST',
+   										beforeSend:function(){
+   											console.log(user);
+   											console.log('mau contact server');
+   										},
+   									contentType: 'application/json',
+   									data: JSON.stringify(user),
+   									success : function(data){
+   										console.log('data dari server');
+   										console.log(data);
+   										window.location='${pageContext.request.contextPath}/user'
+   									}
+   								});
+   								
+   			});
     });
+    
 </script>
 
 </html>

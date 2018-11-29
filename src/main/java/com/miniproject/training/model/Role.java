@@ -20,13 +20,13 @@ public class Role {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
-	@Column(name="code",nullable=false,length=50)
+	@Column(name="code",nullable=true,length=50)
 	private String code;
 	@Column(name="name",nullable=false,length=50)
 	private String name;
 	@Column(name="description",nullable=false)
 	private String description;
-	@Column(name="created_by",nullable=false)
+	@Column(name="created_by",nullable=true)
 	private Long createdBy;
 	@Column(name="created_on",nullable=true)
 	@Temporal(TemporalType.DATE)
@@ -36,7 +36,7 @@ public class Role {
 	@Column(name="modified_on")
 	@Temporal(TemporalType.DATE)
 	private Date modifiedOn;
-	@Column(name="active",nullable=false)
+	@Column(name="active",nullable=true)
 	private boolean active;
 	
 	@OneToMany(mappedBy="roleId")
