@@ -21,7 +21,7 @@ public class Trainer {
 	private long id;
 	@Column(nullable=true)
 	private String name;
-	private String notes;
+	private String note;
 	@Column(name="created_by",nullable=true)
 	private long createdBy;
 	@Column(name="created_on",nullable=true)
@@ -36,6 +36,12 @@ public class Trainer {
 	private List<TechnologyTrainer> TechTran;
 	
 	
+	public String getNote() {
+		return note;
+	}
+	public void setNote(String note) {
+		this.note = note;
+	}
 	public List<TechnologyTrainer> getTechTran() {
 		return TechTran;
 	}
@@ -53,12 +59,6 @@ public class Trainer {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public String getNotes() {
-		return notes;
-	}
-	public void setNotes(String notes) {
-		this.notes = notes;
 	}
 	public long getCreatedBy() {
 		return createdBy;

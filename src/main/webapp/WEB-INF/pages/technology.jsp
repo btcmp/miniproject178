@@ -131,6 +131,7 @@ input.parsley-error {
 					</div>
 				</div>
 			</nav>
+			
 			<div class="content">
 				<div class="container-fluid">
 					<div class="row">
@@ -165,11 +166,21 @@ input.parsley-error {
 													<tr>
 														<td><c:out value="${dept.name}"></c:out></td>
 														<td><c:out value="${dept.createdBy }"></c:out></td>
-														<td><c:out value="${dept.active }"></c:out></td>
+														<td>
+															<c:choose>
+																<c:when test="${dept.active==true}">
+																	Active
+																</c:when>
+																<c:otherwise>
+   																	 Not Active
+  																</c:otherwise>
+															</c:choose>
+														</td>
 														<td><a id="${dept.id }" href="#"
-															class="btn-hapus btn btn-danger btn-sm">Edit</a></td>
-														<td><a id="${dept.id }" href="#"
-															class="btn-hapus btn btn-danger btn-sm">Deactived</a></td>
+															class="btn-hapus btn btn-danger btn-sm">Edit</a>
+														<a id="${dept.id }" href="#"
+															class="btn-hapus btn btn-danger btn-sm">Deactived</a>
+														</td>
 													</tr>
 												</c:forEach>
 											</tbody>
@@ -234,27 +245,39 @@ input.parsley-error {
 								<textarea rows="4" cols="50" id="note" class="form-control" placeholder="Enter note technology" ></textarea>
 							</div>
 							<button type="button" id="tambahTrainer" class="btn btn-warning">+Trainer</button><br><br>
-							<div class="card-content table-responsive">
-				               <table id="table-trainer" class="table table-hover">
-				                   <thead class="text-warning">
-				                       <th>Name</th>
-				                       <th>Created By</th>
-				                       <th>Status</th>
-				                       <th>Action</th>
-				                   </thead>
-				                   <tbody>
-										<c:forEach var="dept" items="${trainer}">
-											<tr>
-												<td><c:out value="${dept.name}"></c:out></td>
-												<td><c:out value="${dept.createdBy }"></c:out></td>
-												<td><c:out value="${dept.active }"></c:out></td>
-												<td><a id="${dept.id }" href="#"
-															class="btn-hapus btn btn-danger btn-sm">Delete</a></td>
-											</tr>
-										</c:forEach>
-											
-				                 </table>
-				             </div>
+									<div class="table-responsive">
+										<table id="table-user" class="table">
+											<thead class="text-warning">
+												<th>Trainer</th>
+												<th>Created By</th>
+												<th>Status</th>
+												<th>Action</th>
+											</thead>
+											<tbody>
+												<c:forEach var="dept" items="${training}">
+													<tr>
+														<td><c:out value="${dept.name}"></c:out></td>
+														<td><c:out value="${dept.createdBy }"></c:out></td>
+														<td>
+															<c:choose>
+																<c:when test="${dept.active==true}">
+																	Active
+																</c:when>
+																<c:otherwise>
+   																	 Not Active
+  																</c:otherwise>
+															</c:choose>
+														</td>
+														<td><a id="${dept.id }" href="#"
+															class="btn-hapus btn btn-danger btn-sm">Edit</a>
+														<a id="${dept.id }" href="#"
+															class="btn-hapus btn btn-danger btn-sm">Deactived</a>
+														</td>
+													</tr>
+												</c:forEach>
+											</tbody>
+										</table>
+									</div>
 		      
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary"
@@ -278,13 +301,12 @@ input.parsley-error {
 					</div>
 					<div class="modal-body">
 						<form
-							action="${pageContext.request.contextPath }"
-						    method="POST">
+							action="${pageContext.request.contextPath }/technology/savetrain" method="POST">
 							<div class="form-group">
 								<label for="name-technology">Name</label>
 								<input type="text" id="names"
 									class="form-control"
-									aria-describedby="nameHelp" placeholder="Enter Name Technology" />
+									aria-describedby="nameHelp" placeholder="Enter Name Trainer" />
 							</div>
 							<div class="form-group">
 								<label>Note</label>
@@ -402,13 +424,13 @@ input.parsley-error {
 							event.preventDefault();
 							var name = jQuery('#names').val();
 						    var note = jQuery('#notes').val();
-							
+							var active=1;
 							var trainer = {
 									name:name,
-									note:note
-
+									note:note,
+									active:active
 							}
-							var otable=$('#table-trainer');
+						 /*    var otable=$('#table-trainer');
 							var tbody=otable.find('tbody');
 							var tr ="<tr>";
 							tr += "<td>"+trainer.name+"</td>";
@@ -416,9 +438,26 @@ input.parsley-error {
 							tr += "<td>"+trainer.active+"</td>";
 							tr += "<td>ddd</td>";
 							tr +="</tr>";
-							tbody.append(tr);
+							tbody.append(tr); */
 							$('#add-technology-modal').modal('show');
-							$('#add-trainer-modal').modal('hide');
+							$('#add-trainer-modal').modal('hide'); 
+							
+							jQuery.ajax({
+								url : '${pageContext.request.contextPath}/technology/savetrain',
+								type:'POST',
+									beforeSend:function(){
+										console.log(trainer);
+										console.log('mau contact server');
+									},
+								contentType: 'application/json',
+								data: JSON.stringify(trainer),
+								success : function(data){
+									console.log('data dari server');
+									console.log(data);
+
+								}
+							});
+							
 						});
 						
 
@@ -429,10 +468,12 @@ input.parsley-error {
 					/* 		var createdBy =jQuery('#createdBy').val();
 							var active=jQuery('#active').val(); */
 						    var note = jQuery('#note').val();
+							var active=1;
 							
 							var technology = {
 									name:name,
-									note:note
+									note:note,
+									active:active
 
 							}
 							jQuery.ajax({

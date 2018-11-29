@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.miniproject.training.model.Employee;
 import com.miniproject.training.model.Technology;
+import com.miniproject.training.model.Trainer;
 import com.miniproject.training.service.TechnologyService;
+import com.miniproject.training.service.TrainerService;
 
 @Controller
 @RequestMapping("technology")
@@ -26,6 +28,9 @@ public class TechnologyController {
 	
 	@Autowired
 	TechnologyService technologyService;
+	
+	@Autowired
+	TrainerService trainerService;
 	
 /*	@ModelAttribute("techForm")
 	public Technology techForm() {
@@ -35,7 +40,9 @@ public class TechnologyController {
 	@RequestMapping
 	public String index(Model model) {
 		List<Technology> technology=technologyService.getAllTechnology();
+		List<Trainer>trainer=trainerService.getAllTrainer();
 		model.addAttribute("technology", technology);
+		model.addAttribute("training",trainer);
 		return "technology";
 	}
 /*	@RequestMapping(value="/save",method=RequestMethod.POST)
@@ -53,5 +60,12 @@ public class TechnologyController {
 		technologyService.save(technology);
 		return technology;
 	}
+	@RequestMapping(value="/savetrain",method=RequestMethod.POST)
+	@ResponseBody
+	public Trainer save(@RequestBody Trainer trainer) {
+		trainerService.saving(trainer);
+		return trainer;
+	}
+	
 	
 }
