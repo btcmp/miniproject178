@@ -2,11 +2,15 @@ package com.miniproject.training.controller;
 
 import java.util.List;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.miniproject.training.model.User;
 import com.miniproject.training.service.UserService;
@@ -28,5 +32,13 @@ public class UserController {
 		List<User> users = userService.getAllUser();
 		model.addAttribute("users",users);
 		return "user";
+	}
+	
+	@RequestMapping(value="/save", method=RequestMethod.POST)
+	@ResponseBody
+	public User saving(@RequestBody User user)
+	{
+		userService.saving(user);
+		return user;
 	}
 }

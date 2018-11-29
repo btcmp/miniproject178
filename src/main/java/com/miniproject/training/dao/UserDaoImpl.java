@@ -1,6 +1,7 @@
 package com.miniproject.training.dao;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Query;
@@ -28,5 +29,11 @@ public class UserDaoImpl implements UserDao{
 			return users;
 		}
 		return new ArrayList<User>();
+	}
+
+	public void save(User user) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		session.save(user);
 	}
 }
