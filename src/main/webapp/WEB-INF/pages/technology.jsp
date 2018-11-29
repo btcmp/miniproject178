@@ -173,7 +173,9 @@ input.parsley-error {
 														<td><c:out value="${dept.createdBy }"></c:out></td>
 														<td><c:out value="${dept.active }"></c:out></td>
 														<td><a id="${dept.id }" href="#"
-															class="btn-hapus btn btn-danger btn-sm">Delete</a></td>
+															class="btn-hapus btn btn-danger btn-sm">Edit</a></td>
+														<td><a id="${dept.id }" href="#"
+															class="btn-hapus btn btn-danger btn-sm">Deactived</a></td>
 													</tr>
 												</c:forEach>
 											</tbody>
@@ -224,45 +226,49 @@ input.parsley-error {
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title">Technology</h5>
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
 					</div>
 					<div class="modal-body">
-						<form:form
-							action="${pageContext.request.contextPath }/technology/save"
-							commandName="techForm" method="POST">
+						<form action="${pageContext.request.contextPath }/technology/save" method="POST">
 							<div class="form-group">
 								<label for="name-technology">Name</label>
-								<form:input data-parsley-required="true" type="text" path="name"
-									class="form-control" id="name-technology"
+								<input data-parsley-required="true" type="text" id="name"
+									class="form-control"
 									aria-describedby="nameHelp" placeholder="Enter Name Technology" />
 							</div>
 							<div class="form-group">
 								<label for="note-technology">Note</label>
-								<form:textarea rows="4" cols="50" path="notes"
-									class="form-control" placeholder="Enter note technology" />
+								<textarea rows="4" cols="50" id="note" class="form-control" placeholder="Enter note technology" ></textarea>
 							</div>
-							<form:button type="button" id="tambahTrainer" class="btn btn-warning">+Trainer</form:button><br><br>
+							<button type="button" id="tambahTrainer" class="btn btn-warning">+Trainer</button><br><br>
 							<div class="card-content table-responsive">
-				               <table id="table-user" class="table table-hover">
+				               <table id="table-trainer" class="table table-hover">
 				                   <thead class="text-warning">
 				                       <th>Name</th>
 				                       <th>Created By</th>
 				                       <th>Status</th>
-				                       <th> </th>
+				                       <th>Action</th>
 				                   </thead>
+				                   <tbody>
+										<c:forEach var="dept" items="${trainer}">
+											<tr>
+												<td><c:out value="${dept.name}"></c:out></td>
+												<td><c:out value="${dept.createdBy }"></c:out></td>
+												<td><c:out value="${dept.active }"></c:out></td>
+												<td><a id="${dept.id }" href="#"
+															class="btn-hapus btn btn-danger btn-sm">Delete</a></td>
+											</tr>
+										</c:forEach>
+											
 				                 </table>
 				             </div>
 		      
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary"
 									data-dismiss="modal">Close</button>
-								<form:button type="submit" id="btn-save-technology-submit"
-									class="btn btn-primary">Save</form:button>
+								<button type="submit" id="btn-save-technology-submit"
+									class="btn btn-primary">Save</button>
 							</div>
-						</form:form>
+						</form>
 					</div>
 
 				</div>
@@ -275,33 +281,28 @@ input.parsley-error {
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title">Trainer</h5>
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
 					</div>
 					<div class="modal-body">
-						<form:form
-							action="${pageContext.request.contextPath }/technology/save"
-							commandName="techForm" method="POST">
+						<form
+							action="${pageContext.request.contextPath }"
+						    method="POST">
 							<div class="form-group">
 								<label for="name-technology">Name</label>
-								<form:input data-parsley-required="true" type="text" path="name"
-									class="form-control" id="name-technology"
+								<input type="text" id="names"
+									class="form-control"
 									aria-describedby="nameHelp" placeholder="Enter Name Technology" />
 							</div>
 							<div class="form-group">
-								<label for="note-technology">Note</label>
-								<form:textarea rows="4" cols="50" path="notes"
-									class="form-control" placeholder="Enter note trainer" />
+								<label>Note</label>
+								<textarea rows="4" cols="50" id="notes" class="form-control" placeholder="Enter note trainer" ></textarea>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" id="tambahCancel"
 									data-dismiss="modal">Close</button>
-								<form:button type="submit" id="btn-save-trainer-submit"
-									class="btn btn-primary">Save</form:button>
+								<button type="submit" id="btn-save-trainer-submit"
+									class="btn btn-primary">Save</button>
 							</div>
-						</form:form>
+						</form>
 					</div>
 
 				</div>
@@ -403,9 +404,62 @@ input.parsley-error {
 							$('#add-technology-modal').modal('show');
 							$('#add-trainer-modal').modal('hide');
 						});
-										    	
+						var button = jQuery('#btn-save-trainer-submit').click(function(event){
+							event.preventDefault();
+							var name = jQuery('#names').val();
+						    var note = jQuery('#notes').val();
+							
+							var trainer = {
+									name:name,
+									note:note
+
+							}
+							var otable=$('#table-trainer');
+							var tbody=otable.find('tbody');
+							var tr ="<tr>";
+							tr += "<td>"+trainer.name+"</td>";
+							tr += "<td>"+trainer.createdBy+"</td>";
+							tr += "<td>"+trainer.active+"</td>";
+							tr += "<td>ddd</td>";
+							tr +="</tr>";
+							tbody.append(tr);
+							$('#add-technology-modal').modal('show');
+							$('#add-trainer-modal').modal('hide');
+						});
 						
-					});
+
+						
+						var button = jQuery('#btn-save-technology-submit').click(function(event){
+							event.preventDefault();
+							var name = jQuery('#name').val();
+					/* 		var createdBy =jQuery('#createdBy').val();
+							var active=jQuery('#active').val(); */
+						    var note = jQuery('#note').val();
+							
+							var technology = {
+									name:name,
+									note:note
+
+							}
+							jQuery.ajax({
+								url : '${pageContext.request.contextPath}/technology/save',
+								type:'POST',
+									beforeSend:function(){
+										console.log(technology);
+										console.log('mau contact server');
+									},
+								contentType: 'application/json',
+								data: JSON.stringify(technology),
+								success : function(data){
+									console.log('data dari server');
+									console.log(data);
+									window.location='${pageContext.request.contextPath}/technology'
+								}
+							});
+							
+						});
+				});				    	
+						
 </script>
 
 </html>

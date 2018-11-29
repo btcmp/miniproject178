@@ -134,7 +134,7 @@
 					
 	                           	<div class="card-content table-responsive">
 	                           		<form action="${pageContext.request.contextPath }/biodata">
-	                           			<input type="search" path="search" placeholder="Search by Name"/>
+	                           			<input type="search" id="search" placeholder="Search by Name"/>
 	                           			<button type="button" id="tambahBiodata" class="btn btn-sm btn-primary"> + </button>
                        				</form>
 	                     		</div>
@@ -198,30 +198,30 @@
 		     	
 		     	<div class="modal-body">
 		     		
-		     		<form:form action="${pageContext.request.contextPath }/biodata/save" commandName="biodataForm" method="POST">
+		     		<form action="${pageContext.request.contextPath }/biodata/save" method="POST">
 				      	<div class="form-group">
-							<form:input type="text" path="name" class="form-control" placeholder="Name" />
+							<input type="text" id="name" class="form-control" placeholder="Name" />
 						</div>
 						<div class="form-group">
-							<form:input type="text" path="lastEducation" class="form-control" placeholder="Last Education" />
+							<input type="text" id="lastEducation" class="form-control" placeholder="Last Education" />
 						</div>
 						<div class="form-group">
-							<form:input type="text" path="educationalLevel" class="form-control" placeholder="Educational Level" />
+							<input type="text" id="educationalLevel" class="form-control" placeholder="Educational Level" />
 						</div>
 						<div class="form-group">
-							<form:input type="text" path="majors" class="form-control" placeholder="Majors" />
+							<input type="text" id="majors" class="form-control" placeholder="Majors" />
 						</div>
 						<div class="form-group">
-							<form:input type="text" path="gpa" class="form-control" placeholder="GPA" />
+							<input type="text" id="gpa" class="form-control" placeholder="GPA" />
 						</div>	
-					
+						
+						<div class="modal-footer">
+							<button type="submit" id="saving" class="btn btn-primary">Save</button>
+							<button type="submit" id="canceling" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+						</div>
+						
+					</form>
 		     	 </div>
-		     	 
-		     	 <div class="modal-footer">
-			        <form:button type="submit" class="btn btn-primary">Save</form:button>
-			        <form:button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</form:button>
-			     </div>
-			     </form:form>
 		    </div>
 		</div>
 	</div>
@@ -256,6 +256,39 @@
 <script type="text/javascript">
 
 	$(document).ready(function(){
+		var button=jQuery('#saving').click(function(event){
+			event.preventDefault();
+			
+			var name=jQuery('#name').val();
+			var lasted=jQuery('#lastEducation').val();
+			var edlev=jQuery('#educationalLevel').val();
+			var majors=jQuery('#majors').val();
+			var gpa=jQuery('#gpa').val();
+			
+			var biodata={
+					name:name,
+					lastEducation:lasted,
+					educationalLevel:edlev,
+					majors:majors,
+					gpa:gpa
+			}
+			
+			jQuery.ajax({
+				url:'${pageContext.request.contextPath}/biodata/save',
+				type:'POST',
+				beforeSend: function(){
+					console.log(biodata);
+					console.log('contact server');
+				},
+				contentType:'application/json',
+				data:JSON.stringify(biodata),
+				success: function(data){
+					console.log(data);
+					window.location='${pageContext.request.contextPath}/biodata'
+				}
+			})
+		});
+		
 		//setting up datepicker
 		$('#birthDate123').datepicker();
 		function ajaxSetUp() {
