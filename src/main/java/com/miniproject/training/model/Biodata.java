@@ -82,7 +82,7 @@ public class Biodata {
 	private Date modifiedOn; //21. dateTime, AllowNull
 	
 	@Column(nullable=true)
-	private Boolean active; //22. boolean, NotNull, active=true notactive=false
+	private Boolean active= true; //22. boolean, NotNull, active=true notactive=false
 
 	@OneToMany(mappedBy="testId")
 	private List<Monitoring> monitorings;
