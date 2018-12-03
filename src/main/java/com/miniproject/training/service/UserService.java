@@ -25,4 +25,15 @@ public class UserService {
 		// TODO Auto-generated method stub
 		userDao.save(user);
 	}
+
+	public void deactivate(User user) {
+		// TODO Auto-generated method stub
+		userDao.deactivate(user);
+	}
+
+	public User getAllUserById(long id) {
+		// TODO Auto-generated method stub
+		User user=userDao.getAllUserById(id);
+		return user;
+	}
 }

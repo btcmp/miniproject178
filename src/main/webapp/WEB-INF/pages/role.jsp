@@ -1,10 +1,22 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@page import="java.util.Random" %>
 <c:url value="/j_spring_security_logout" var="logoutUrl" />
 <!doctype html>
 <html lang="en">
-
+<%
+Random rng = new Random();
+String characters = "0123456789";
+char[] pattern = new char[6];
+pattern[0] = 'R';
+pattern[1] = 'O';
+for(int i=2;i<pattern.length;i++)
+{
+	pattern[i] = characters.charAt(rng.nextInt(characters.length()));
+}
+String RndmCode = new String(pattern);
+%>
 <head>
     <meta charset="utf-8" />
     <link rel="apple-touch-icon" sizes="76x76" href="${pageContext.request.contextPath}/resources/assets/img/apple-icon.png" />
@@ -240,7 +252,7 @@
 				<form action="${pageContext.request.contextPath }/role/save" method="POST">
 					<div class="modal-body">
 						<div class="form-group">
-							<input type="text" id="code" class="form-control" placeholder="Code"/>
+							<input type="text" id="code" value="<%out.print(RndmCode);%>" class="form-control" placeholder="<%out.print(RndmCode);%>" style="background-color: #bcbcbc" readonly/>
 						</div>
 						<div class="form-group">
 							<input type="text" id="name" class="form-control" placeholder="Name"/>

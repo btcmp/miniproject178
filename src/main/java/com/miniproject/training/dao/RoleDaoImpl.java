@@ -37,5 +37,26 @@ public class RoleDaoImpl implements RoleDao{
 		Session session = sessionFactory.getCurrentSession();
 		session.save(role);
 	}
+
+	public Role searchById(String roleId) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String query = "select r.id= :id from Role r where r.id='"+roleId+"'";
+		Role role =  new Role();
+		role = (Role) session.createQuery(query).setParameter("id", roleId);
+		return role;
+	}
+
+	public Role getAllRoleById(long id) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from Role rol where rol.id= :data";
+		List<Role> role = session.createQuery(hql).setParameter("data", id).list();
+		if(role.isEmpty())
+		{
+			return null;
+		}
+		return role.get(0);
+	}
 	
 }

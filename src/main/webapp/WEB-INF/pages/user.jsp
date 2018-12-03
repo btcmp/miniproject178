@@ -180,7 +180,7 @@
                        									</c:choose>
                        								</td>
                        								<td>
-                                            			<a id="${user.id }" href="#" class="btn-hapus btn btn-danger btn-sm">Deactived</a>
+                                            			<a id="${user.id }" class="btn-deactivate btn btn-danger btn-sm">Deactived</a>
                                             			<a id="${user.id }" href="#" class="btn btn-primary btn-sm">Edit</a>
                        								</td>
                                             	</tr>
@@ -229,7 +229,7 @@
                 </div>
             </footer>
         </div>
-        <!-- modal -->
+        <!-- modal add user -->
         <div class="modal fade" id="addUser" tabindex="-1" role="dialog"
 		aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
@@ -240,7 +240,7 @@
 				<form action="${pageContext.request.contextPath }/user/save" method="POST">
 					<div class="modal-body">
 						<div class="form-group">
-							<select id="roles.id" class="form-control">
+							<select id="roles" name="roles" class="form-control">
 							  <option>--Select Role--</option>
 							  <c:forEach items="${roles}" var="rol">
 							  			<option value="${rol.id}">${rol.name}</option>
@@ -259,6 +259,34 @@
 					</div>
 					<div class="modal-footer">
 						<button type="submit" id="add-user" class="btn btn-primary">Add</button>
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Cancel</button>
+					</div>
+				</form>
+			</div>
+			</div>
+		</div>	
+		<!-- modal deactivate user -->
+        <div class="modal fade" id="deactivate-user" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+				<center>
+					<h3 class="modal-title">Are You Sure to Deactivate this User?</h3>
+				</center>
+				</div>
+				<form action="${pageContext.request.contextPath }/user/deactivate" method="POST">
+					<div class="modal-body">
+						<div class="form-group">
+							<input type="hidden" id="id-user"/>
+							<input type="hidden" id="password-user"/>
+							<input type="hidden" id="createdOn-user"/>
+							<input type="text" id="name-user" class="form-control" readonly/>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" id="deactivate-btn" class="btn btn-danger">Deactivate</button>
 						<button type="button" class="btn btn-secondary"
 							data-dismiss="modal">Cancel</button>
 					</div>
@@ -415,6 +443,12 @@
  			$('#addUser').modal();
  		});
     	
+ 	 	//modal deactivate user
+ 	    $('#deactivateUser').click(function(event) {
+ 			event.preventDefault();
+ 			$('#deactivate-user').modal();
+ 		});
+    	
  		//tambah user
    	    var button = jQuery('#add-user').click(function(event){
    								event.preventDefault();
@@ -426,6 +460,7 @@
    										password:password,
    										active:active
    								}
+   	
    								jQuery.ajax({
    									url : '${pageContext.request.contextPath}/user/save',
    									type:'POST',
@@ -439,6 +474,58 @@
    										console.log('data dari server');
    										console.log(data);
    										window.location='${pageContext.request.contextPath}/user'
+   									}
+   								});
+   								
+   			});
+ 		//deactivate-confirm
+ 		$(".btn-deactivate").on('click', function(){
+    		 var id = $(this).attr('id');
+    		 $.ajax({
+    			 url : '${pageContext.request.contextPath}/user/get/'+ id,
+    			 type: 'GET',
+    			 success : function(data){
+    				 $('#id-user').val(data.id);
+    				 $('#name-user').val(data.username);
+    				 $('#password-user').val(data.password);
+    				 $('#createdOn-user').val(data.createdOn);
+    			 },
+    			 dataType: 'json'
+    		 })
+    		 
+    		$('#deactivate-user').modal();
+    	 });
+ 		
+   		//deactivate user
+   	    var button = jQuery('#deactivate-btn').click(function(event){
+   								event.preventDefault();
+   								var active = 0;
+   								var id = jQuery('#id-user').val();
+   								var username = jQuery('#name-user').val();
+   								var password = jQuery('#password-user').val();
+   								var createdOn = jQuery('#createdOn-user').val();
+   								var user = {
+   										id:id,
+   										username:username,
+   										password:password,
+   										createdOn:createdOn,
+   										active:active
+   								}
+   	
+   								jQuery.ajax({
+   									url : '${pageContext.request.contextPath}/user/deactivate',
+   									type:'POST',
+   										beforeSend:function(){
+   											console.log(user);
+   											console.log('mau contact server');
+   										},
+   									contentType: 'application/json',
+   									data: JSON.stringify(user),
+   									success : function(data){
+   										console.log('data dari server');
+   										console.log(data);
+   										window.location='${pageContext.request.contextPath}/user'
+   										alert("User berhasil deactivate")
    									}
    								});
    								

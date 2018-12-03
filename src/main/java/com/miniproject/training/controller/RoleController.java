@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -40,6 +41,15 @@ public class RoleController {
 	public Role saving(@RequestBody Role role)
 	{
 		roleService.saving(role);
+		return role;
+	}
+	
+	//get data role
+	@RequestMapping(value="/get/{id}",method=RequestMethod.GET)
+	@ResponseBody
+	public Role getRoleById(@PathVariable long id)
+	{
+		Role role = roleService.getAllRoleById(id);
 		return role;
 	}
 }

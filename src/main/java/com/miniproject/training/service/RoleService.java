@@ -23,5 +23,14 @@ public class RoleService {
 		// TODO Auto-generated method stub
 		roleDao.save(role);
 	}
+	public Role searchById(String roleId) {
+		// TODO Auto-generated method stub
+		return roleDao.searchById(roleId);
+	}
+	public Role getAllRoleById(long id) {
+		// TODO Auto-generated method stub
+		Role role=roleDao.getAllRoleById(id);
+		return role;
+	}
 
 }

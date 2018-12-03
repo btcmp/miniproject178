@@ -10,4 +10,8 @@ public interface UserDao {
 
 	public void save(User user);
 
+	public void deactivate(User user);
+
+	public User getAllUserById(long id);
+
 }
