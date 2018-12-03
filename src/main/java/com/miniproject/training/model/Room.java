@@ -15,6 +15,8 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name="t_room")
 public class Room {
@@ -29,25 +31,26 @@ public class Room {
 	private String name;
 	@Column(nullable=false)
 	private int capacity;
-	@Column(nullable=false)
+	@Column(nullable=true)
 	private Boolean any_projector;
 	@Column(length=500)
 	private String notes;
-	@Column(name="created_by", nullable=false)
+	@Column(name="created_by", nullable=true)
 	private Long createdBy;
 	@Temporal(TemporalType.DATE)
-	@Column(name="created_on", nullable=false)
+	@Column(name="created_on", nullable=true)
 	private Date createdOn;
 	@Column(name="modified_by")
 	private Long modifiedBy;
 	@Temporal(TemporalType.DATE)
 	@Column(name="modified_on")
 	private Date modifiedOn;
-	@Column(nullable=false)
+	@Column(nullable=true)
 	private Boolean active;
 	
 	@ManyToOne
 	@JoinColumn(name="office_id", nullable=false)
+	@JsonBackReference
 	private Office office;
 	
 	public Office getOffice() {
