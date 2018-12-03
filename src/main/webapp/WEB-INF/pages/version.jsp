@@ -161,7 +161,7 @@ input.parsley-error {
                                         <tbody>
                                             <c:forEach var="ver" items="${versions }">
                                             	<tr>
-                                            		<td><c:out value="${ver.id }"></c:out></td>
+                                            		<td><c:out value="${ver.version }"></c:out></td>
                                             		<td>
                                             			<a id="${ver.id }" href="#" class="btn-hapus btn btn-danger btn-xs">Delete</a>
                                             		</td>
@@ -222,7 +222,7 @@ input.parsley-error {
 	                   			<tbody>
 	                   				<c:forEach items="${versions }" var="ver">
 									<tr>
-										<td>${ver.id }</td>
+										<td>${ver.question.question }</td>
 									</tr>
 									</c:forEach>
 	                   			</tbody>
@@ -307,25 +307,25 @@ input.parsley-error {
 	src="${pageContext.request.contextPath}/resources/assets/js/demo.js"></script>
 <script type="text/javascript">
 	jQuery(document).ready(function() {
-		$('#saveQuestion').click(function(event) {
+		$('#saveVersion').click(function(event) {
 			event.preventDefault();
-			var question = jQuery('#question').val();
+			var version = jQuery('#version').val();
 			
-			var question = {
-					id: question
+			var versions = {
+					version: version
 			};
-			console.log(question);
+			console.log(versions);
 			
 			jQuery.ajax({
 				url: '${pageContext.request.contextPath}/version/save',
 				type: 'post',
 				beforeSend: function(){
-					console.log(question);
+					console.log(versions);
 					console.log('mau contact server..');
 				},
 				contentType: 'application/json',
 				dataType: "json",
-				data: JSON.stringify(question),
+				data: JSON.stringify(versions),
 				success: function(data) {
 					console.log('dapat data dari server');
 					console.log(data);

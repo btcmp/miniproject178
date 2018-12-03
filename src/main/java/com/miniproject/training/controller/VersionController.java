@@ -41,9 +41,8 @@ public class VersionController {
 	
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	@ResponseBody
-	public Version saving(@RequestBody Version version, RedirectAttributes redirectAttributes) {
+	public Version saving(@RequestBody Version version) {
 		versionService.saving(version);
-		redirectAttributes.addFlashAttribute("message", "Version berhasil ditambahkan");
 		return version;
 	}
 	
