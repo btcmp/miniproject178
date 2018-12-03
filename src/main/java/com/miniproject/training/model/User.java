@@ -24,11 +24,11 @@ public class User {
 	private String username;
 	@Column(name="password",nullable=false,length=50)
 	private String password;
-	@Column(name="mobile_flag",nullable=false)
+	@Column(name="mobile_flag",nullable=true)
 	private boolean mobileFlag;
 	@Column(name="mobile_token")
 	private Long mobileToken;
-	@Column(name="created_by",nullable=false)
+	@Column(name="created_by",nullable=true)
 	private Long createdBy;
 	@Column(name="created_on",nullable=true)
 	@Temporal(TemporalType.DATE)
@@ -38,14 +38,14 @@ public class User {
 	@Column(name="modified_on")
 	@Temporal(TemporalType.DATE)
 	private Date modifiedOn;
-	@Column(name="active",nullable=false)
+	@Column(name="active",nullable=true)
 	private boolean active;
 	
 	@Column(name="enabled")
 	private int enabled;
 	
 	@ManyToOne
-	@JoinColumn(name="role_id",nullable=false)
+	@JoinColumn(name="role_id",nullable=true)
 	private Role roleId;
 	
 	

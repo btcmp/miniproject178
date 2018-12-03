@@ -21,23 +21,23 @@ public class Biodata {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id; //1. Long, 11, PK, NotNull
 	
-	@Column(nullable=false)
+	@Column(nullable=true)
 	private String name; //2. Varchar, 255, NotNull
 	private String gender; //3. Varchar, 255, AllowNull
 	
-	@Column(name="last_education", length=100, nullable=false)
+	@Column(name="last_education", length=100, nullable=true)
 	private String lastEducation; //4. Varchar, 100, NotNull
 	
 	@Column(name="graduation_year", length=5, nullable=true)
 	private String graduationYear; //5. Varchar, 5, NotNull
 	
-	@Column(name="educational_level", length=5, nullable=false)
+	@Column(name="educational_level", length=5, nullable=true)
 	private String educationalLevel; //6. Varchar, 5, NotNull
 	
-	@Column(length=100, nullable=false)
+	@Column(length=100, nullable=true)
 	private String majors; //7. Varchar, 100, NotNull
 	
-	@Column(length=5, nullable=false)
+	@Column(length=5, nullable=true)
 	private String gpa; //8. Varchar, 5, NotNull
 	
 	@Column(name="boothcamp_test_type")

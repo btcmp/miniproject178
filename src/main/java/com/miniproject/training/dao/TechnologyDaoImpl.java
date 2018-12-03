@@ -1,5 +1,6 @@
 package com.miniproject.training.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -22,6 +23,7 @@ public class TechnologyDaoImpl implements TechnologyDao{
 	}
 	public void save(Technology technology) {
 		// TODO Auto-generated method stub
+		technology.setCreatedOn(new Date());
 		Session session=sessionFactory.getCurrentSession();
 		session.save(technology);
 		
