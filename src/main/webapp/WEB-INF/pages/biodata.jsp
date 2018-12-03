@@ -561,7 +561,7 @@
 				data:JSON.stringify(bio), 
 				headers: { 
 			        'Accept': 'application/json',
-			        'Content-Type': 'application/json' 
+			        'Content-Type': 'application/json'  
 			    },
 				success: function(data){
 					console.log(data);
