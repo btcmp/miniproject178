@@ -558,7 +558,7 @@
 					console.log(bio);
 					console.log('contact server');
 				},
-				data:JSON.stringify(bio),
+				data:JSON.stringify(bio), 
 				headers: { 
 			        'Accept': 'application/json',
 			        'Content-Type': 'application/json' 
