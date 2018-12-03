@@ -67,12 +67,6 @@
 						<i class="material-icons">person</i>
 						<p>User Account</p>
 					</a></li>
-					<li>
-                        <a href="${pageContext.request.contextPath}/user">
-                            <i class="material-icons">person</i>
-                            <p>User</p>
-                        </a>
-                    </li>
 					<li class="active"><a href="${pageContext.request.contextPath }/biodata"> 
 						<i class="material-icons">person</i>
 						<p>Biodata</p>
@@ -128,7 +122,7 @@
 					
 	                           	<div class="card-content table-responsive">
 	                           		<form action="${pageContext.request.contextPath }/biodata">
-	                           			<input type="search" path="search" placeholder="Search by Name"/>
+	                           			<input type="search" id="search" placeholder="Search by Name"/>
 	                           			<button type="button" id="tambahBiodata" class="btn btn-sm btn-primary"> + </button>
                        				</form>
 	                     		</div>
@@ -147,7 +141,14 @@
 													<td><c:out value="${biodata.name }"></c:out></td>
 													<td><c:out value="${biodata.majors }"></c:out></td>
 													<td><c:out value="${biodata.gpa }"></c:out></td>
-													<td><a id="${dept.id }" href="#" class="btn-hapus btn btn-danger btn-sm">Delete</a></td>
+													<td>
+														<button id="${biodata.id }" type="button" rel="tooltip" title="Edit ${biodata.name }" class="btn btn-success btn-simple btn-xs btn-edit">
+										                    <i class="fa fa-edit"></i>
+										                </button>
+										                <button id="${biodata.id }" type="button" rel="tooltip" title="Deactive ${biodata.name }" class="btn btn-danger btn-simple btn-xs btn-delete">
+										                    <i class="fa fa-times"></i>
+										             	</button>
+										            </td>
 												</tr>
 											</c:forEach>
 										</tbody>
@@ -182,7 +183,7 @@
 		</div>
 	</div>
 	
-	<!-- Modal -->
+<!-- Modal -->
 	<div class="modal fade" id="addBiodata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -192,33 +193,149 @@
 		     	
 		     	<div class="modal-body">
 		     		
-		     		<form:form action="${pageContext.request.contextPath }/biodata/save" commandName="biodataForm" method="POST">
+		     		<form action="${pageContext.request.contextPath }/biodata/save" method="POST">
 				      	<div class="form-group">
-							<form:input type="text" path="name" class="form-control" placeholder="Name" />
+							<input type="text" id="name" class="form-control" placeholder="Name" />
 						</div>
 						<div class="form-group">
-							<form:input type="text" path="lastEducation" class="form-control" placeholder="Last Education" />
+							<input type="text" id="lastEducation" class="form-control" placeholder="Last Education" />
 						</div>
 						<div class="form-group">
-							<form:input type="text" path="educationalLevel" class="form-control" placeholder="Educational Level" />
+							<input type="text" id="educationalLevel" class="form-control" placeholder="Educational Level" />
 						</div>
 						<div class="form-group">
-							<form:input type="text" path="majors" class="form-control" placeholder="Majors" />
+							<input type="text" id="majors" class="form-control" placeholder="Majors" />
 						</div>
 						<div class="form-group">
-							<form:input type="text" path="gpa" class="form-control" placeholder="GPA" />
+							<input type="text" id="gpa" class="form-control" placeholder="GPA" />
 						</div>	
-					
+						
+						<div class="modal-footer">
+							<button type="submit" id="saving" class="btn btn-primary">Save</button>
+							<button type="submit" id="canceling" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+						</div>
+						
+					</form>
 		     	 </div>
-		     	 
-		     	 <div class="modal-footer">
-			        <form:button type="submit" class="btn btn-primary">Save</form:button>
-			        <form:button type="button" class="btn btn-warning" data-dismiss="modal">Cancel</form:button>
-			     </div>
-			     </form:form>
 		    </div>
 		</div>
 	</div>
+	
+<!-- Modal2 -->
+	<div class="modal fade" id="edit-biodata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header text-center">
+					<h3 class="modal-title w-100 font-weight-bold">Edit Biodata</h3>
+				</div>
+		     	
+		     	<div class="modal-body">
+		     		
+		     		<form action="${pageContext.request.contextPath }/biodata/editbiodata" method="POST">
+		     			<input type="hidden" id="id-biodata" name="id-biodata"/>
+		     			<input type="hidden" id="createdOn" name="createdOn"/>
+		     			<input type="hidden" id="active" name="active"/>
+				      	<div class="row">
+				      		<div class="form-group col-md-6">
+								<input type="text" id="name-biodata" name="name-biodata" class="form-control" placeholder="Name" />
+							</div>
+							<div class="form-group col-md-6">
+								<input type="radio" id="gender" name="gender" value="Male" /> Male
+								<input type="radio" id="gender" name="gender" value="Female" /> Female
+							</div>
+				      	</div>
+				      	
+				      	<div class="row">
+				      		<div class="form-group col-md-6">
+								<input type="text" id="lasted-biodata" name="lasted-biodata" class="form-control" placeholder="Last Education" />
+							</div>
+							<div class="form-group col-md-6">
+								<input type="text" id="bootcampTestTypeId" class="form-control" placeholder="Bootcamp Test Type" />
+							</div>
+				      	</div>
+				      	
+				      	<div class="row">
+				      		<div class="form-group col-md-6">
+								<input type="text" id="edlev-biodata" name="edlev-biodata" class="form-control" placeholder="Educational Level" />
+							</div>
+							<div class="form-group col-md-1">
+								<input type="text" id="iq" class="form-control" placeholder="IQ" />
+							</div>
+							<div class="form-group col-md-1">
+								<input type="text" id="du" class="form-control" placeholder="DU" />
+							</div>
+							<div class="form-group col-md-1">
+								<input type="text" id="nestedLogic" class="form-control" placeholder="NL" />
+							</div>
+							<div class="form-group col-md-1">
+								<input type="text" id="joinTable" class="form-control" placeholder="JT" />
+							</div>
+				      	</div>
+						
+						<div class="row">
+				      		<div class="form-group col-md-6">
+								<input type="text" id="graduationYear" class="form-control" placeholder="Graduation Year" />
+							</div>
+							<div class="form-group col-md-6">
+								<input type="text" id="arithmetic" class="form-control" placeholder="Arithmetic" />
+							</div>
+				      	</div>
+						
+						<div class="row">
+				      		<div class="form-group col-md-6">
+								<input type="text" id="majors-biodata" name="majors-biodata" class="form-control" placeholder="Majors" />
+							</div>
+							<div class="form-group col-md-6">
+								<input type="text" id="tro" class="form-control" placeholder="TRO" />
+							</div>
+				      	</div>
+						
+						<div class="row">
+				      		<div class="form-group col-md-6">
+								<input type="text" id="gpa-biodata" name="gpa-biodata" class="form-control" placeholder="GPA" />
+							</div>
+							<div class="form-group col-md-6">
+								<input type="text" id="interviewer" class="form-control" placeholder="Interviewer" />
+							</div>
+				      	</div>
+
+						<div class="form-group">
+							<input type="text" id="notes" class="form-control" placeholder="Notes" />
+						</div>
+						
+						<div class="modal-footer">
+							<button type="submit" id="edit" class="btn btn-primary">Edit</button>
+							<button type="submit" id="canceledit" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+						</div>
+						
+					</form>
+		     	 </div>
+		    </div>
+		</div>
+	</div>
+
+<!-- Modal3 -->
+	<div class="modal fade" id="deactive-biodata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header text-center">
+					<h3 class="modal-title w-100 font-weight-bold">Deactive Biodata???</h3>
+				</div>
+		     	
+		     	<div class="modal-body">
+		     		
+		     		<form action="${pageContext.request.contextPath }/biodata/editbiodata" method="POST">
+						<div class="modal-footer text-center">
+							<button type="submit" id="deactive-edit" class="btn btn-primary">Yes</button>
+							<button type="submit" id="canceled-deactive" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+						</div>
+						
+					</form>
+		     	 </div>
+		    </div>
+		</div>
+	</div>
+	
 </body>
 
 <!--   Core JS Files   -->
@@ -250,6 +367,210 @@
 <script type="text/javascript">
 
 	$(document).ready(function(){
+		//saving
+		var button=jQuery('#saving').click(function(event){
+			event.preventDefault();
+			
+			var name=jQuery('#name').val();
+			var lasted=jQuery('#lastEducation').val();
+			var edlev=jQuery('#educationalLevel').val();
+			var majors=jQuery('#majors').val();
+			var gpa=jQuery('#gpa').val();
+			var date=new Date();
+			
+			var biodata={
+					name:name,
+					lastEducation:lasted,
+					educationalLevel:edlev,
+					majors:majors,
+					gpa:gpa,
+					createdOn:date
+			}
+			
+			jQuery.ajax({
+				url:'${pageContext.request.contextPath}/biodata/save',
+				type:'POST',
+				beforeSend: function(){
+					console.log(biodata);
+					console.log('contact server');
+				},
+				contentType:'application/json',
+				data:JSON.stringify(biodata),
+				success: function(data){
+					console.log(data);
+					alert('Biodata berhasil ditambahkan');
+					window.location='${pageContext.request.contextPath}/biodata'
+				}
+			})
+		});
+		
+
+		//modal tampilan edit
+		var button2=jQuery('.btn-edit').click(function(event){
+			event.preventDefault();
+			var id=$(this).attr('id');
+			$.ajax({
+				url : '${pageContext.request.contextPath}/biodata/editui/'+ id,
+				type :'GET',
+				success : function(data){
+					$('#id-biodata').val(data.id);
+					$('#name-biodata').val(data.name);
+					$('#lasted-biodata').val(data.lastEducation);
+					$('#edlev-biodata').val(data.educationalLevel);
+					$('#majors-biodata').val(data.majors);
+					$('#gpa-biodata').val(data.gpa);
+					$('#bootcampTestTypeId').val(data.bootcampTestTypeId);
+					$('#iq').val(data.iq);
+					$('#du').val(data.du);
+					$('#nestedLogic').val(data.nestedLogic);
+					$('#joinTable').val(data.joinTable);
+					$('#graduationYear').val(data.graduationYear);
+					$('#arithmetic').val(data.arithmetic);
+					$('#tro').val(data.tro);
+					$('#interviewer').val(data.interviewer);
+					$('#notes').val(data.notes);
+					$('#createdOn').val(data.createdOn);
+				},
+				dataType:'json'
+			})
+			
+			$('#edit-biodata').modal();
+		})
+		
+		
+		
+		//radionbutton
+		var radiobtn;
+		$("input[type='radio']"). click(function(){
+			radiobtn=$("[name=gender]:checked").val();
+			
+		})
+		
+		//edit
+		var button3=jQuery('#edit').click(function(event){
+			event.preventDefault();
+			
+			var datemodif=new Date();
+			
+			var bio={
+					id :  $('#id-biodata').val(),
+					name : $('#name-biodata').val(),
+					gender:radiobtn,
+					lastEducation : $('#lasted-biodata').val(),
+					bootcampTestTypeId:$('#bootcampTestTypeId').val(),
+					educationalLevel : $('#edlev-biodata').val(),
+					iq:$('#iq').val(),
+					du:$('#du').val(),
+					nestedLogic:$('#nestedLogic').val(),
+					joinTable:$('#joinTable').val(),
+					graduationYear:$('#graduationYear').val(),
+					arithmetic:$('#arithmetic').val(),
+					majors : $('#majors-biodata').val(),
+					tro:$('#tro').val(),
+					gpa : $('#gpa-biodata').val(),
+					interviewer:$('#interviewer').val(),
+					notes:$('#notes').val(),
+					createdOn:$('#createdOn').val(),
+					modifiedOn:datemodif,
+			}
+			jQuery.ajax({
+				url:'${pageContext.request.contextPath}/biodata/editbiodata',
+				type:'POST',
+				beforeSend: function(){
+					console.log(bio);
+					console.log('contact server');
+				},
+				data:JSON.stringify(bio),
+				headers: { 
+			        'Accept': 'application/json',
+			        'Content-Type': 'application/json' 
+			    },
+				success: function(data){
+					console.log(data);
+					alert('Biodata berhasil diedit');
+					window.location='${pageContext.request.contextPath}/biodata'
+				}
+			})
+		})
+		
+		//nonactive
+		var button3=jQuery('.btn-delete').click(function(event){
+			event.preventDefault();
+			var id=$(this).attr('id');
+			$.ajax({
+				url : '${pageContext.request.contextPath}/biodata/editui/'+ id,
+				type :'GET',
+				success : function(data){
+					$('#id-biodata').val(data.id);
+					$('#name-biodata').val(data.name);
+					$('#lasted-biodata').val(data.lastEducation);
+					$('#edlev-biodata').val(data.educationalLevel);
+					$('#majors-biodata').val(data.majors);
+					$('#gpa-biodata').val(data.gpa);
+					$('#bootcampTestTypeId').val(data.bootcampTestTypeId);
+					$('#iq').val(data.iq);
+					$('#du').val(data.du);
+					$('#nestedLogic').val(data.nestedLogic);
+					$('#joinTable').val(data.joinTable);
+					$('#graduationYear').val(data.graduationYear);
+					$('#arithmetic').val(data.arithmetic);
+					$('#tro').val(data.tro);
+					$('#interviewer').val(data.interviewer);
+					$('#notes').val(data.notes);
+					$('#createdOn').val(data.createdOn);
+					$('#active').val(data.active=false);
+				},
+				dataType:'json'
+			})
+			
+			$('#deactive-biodata').modal();
+		})
+		//continue deactive
+		var button3=jQuery('#deactive-edit').click(function(event){
+			event.preventDefault();
+			var datemodif=new Date();
+			var bio={
+					id :  $('#id-biodata').val(),
+					name : $('#name-biodata').val(),
+					gender:radiobtn,
+					lastEducation : $('#lasted-biodata').val(),
+					bootcampTestTypeId:$('#bootcampTestTypeId').val(),
+					educationalLevel : $('#edlev-biodata').val(),
+					iq:$('#iq').val(),
+					du:$('#du').val(),
+					nestedLogic:$('#nestedLogic').val(),
+					joinTable:$('#joinTable').val(),
+					graduationYear:$('#graduationYear').val(),
+					arithmetic:$('#arithmetic').val(),
+					majors : $('#majors-biodata').val(),
+					tro:$('#tro').val(),
+					gpa : $('#gpa-biodata').val(),
+					interviewer:$('#interviewer').val(),
+					notes:$('#notes').val(),
+					createdOn:$('#createdOn').val(),
+					modifiedOn:datemodif,
+					active:$('#active').val()
+			}
+			jQuery.ajax({
+				url:'${pageContext.request.contextPath}/biodata/editbiodata',
+				type:'POST',
+				beforeSend: function(){
+					console.log(bio);
+					console.log('contact server');
+				},
+				data:JSON.stringify(bio),
+				headers: { 
+			        'Accept': 'application/json',
+			        'Content-Type': 'application/json' 
+			    },
+				success: function(data){
+					console.log(data);
+					alert('Biodata berhasil dideactivekan');
+					window.location='${pageContext.request.contextPath}/biodata'
+				}
+			})
+		})
+		
 		//setting up datepicker
 		$('#birthDate123').datepicker();
 		function ajaxSetUp() {
@@ -262,22 +583,6 @@
 
 		$('#table-user').DataTable();
 
-		$('.btn-hapus').on('click',	function() {
-			var conf = confirm("Are you sure delete this data ?");
-			if (conf == true) {
-				var id = $(this).attr("id");
-				ajaxSetUp();
-				$.ajax({
-					url : '${pageContext.request.contextPath}/department/delete/'+ id,
-					type : 'DELETE',
-					success : function(data) {window.location = "${pageContext.request.contextPath}/department";},
-					error : function() {alert('delete data failed..!!');
-				}
-			});
-		}
-		return false;
-	});
-
 	//logout event button
 	$('#logout').click(function(event) {
 		event.preventDefault();
@@ -289,6 +594,7 @@
 		event.preventDefault();
 		$('#addBiodata').modal();
 	});
+	
 });
 </script>
 </html>

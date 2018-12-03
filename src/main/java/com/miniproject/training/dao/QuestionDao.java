@@ -12,4 +12,6 @@ public interface QuestionDao {
 
 	public void delete(Long id);
 
+	public Question getQuestionById(Long id);
+
 }

@@ -20,4 +20,9 @@ public class UserService {
 		// TODO Auto-generated method stub
 		return userDao.getAllUser();
 	}
+
+	public void saving(User user) {
+		// TODO Auto-generated method stub
+		userDao.save(user);
+	}
 }

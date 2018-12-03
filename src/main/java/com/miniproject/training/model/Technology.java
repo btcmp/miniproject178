@@ -22,7 +22,7 @@ public class Technology {
 	private int id;
 	@Column(nullable=true)
 	private String name;
-	private String notes;
+	private String note;
 	@Column(name="created_by",nullable=true,length=11)
 	private String createdBy;
 	@Column(name="created_on",nullable=true)
@@ -57,11 +57,12 @@ public class Technology {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getNotes() {
-		return notes;
+
+	public String getNote() {
+		return note;
 	}
-	public void setNotes(String notes) {
-		this.notes = notes;
+	public void setNote(String note) {
+		this.note = note;
 	}
 	public String getCreatedBy() {
 		return createdBy;

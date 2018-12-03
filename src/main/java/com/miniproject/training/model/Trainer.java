@@ -17,25 +17,31 @@ public class Trainer {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(nullable=false)
+	@Column(nullable=true)
 	private long id;
-	@Column(nullable=false)
+	@Column(nullable=true)
 	private String name;
-	private String notes;
-	@Column(name="created_by",nullable=false)
+	private String note;
+	@Column(name="created_by",nullable=true)
 	private long createdBy;
-	@Column(name="created_on",nullable=false)
+	@Column(name="created_on",nullable=true)
 	private Date createdOn;
 	@Column(name="modified_by")
 	private long modifiedBy;
 	@Column(name="modifeid_on")
 	private Date modifiedOn;
-	@Column(nullable=false)
+	@Column(nullable=true)
 	private boolean active;
 	@OneToMany(mappedBy="trainer")
 	private List<TechnologyTrainer> TechTran;
 	
 	
+	public String getNote() {
+		return note;
+	}
+	public void setNote(String note) {
+		this.note = note;
+	}
 	public List<TechnologyTrainer> getTechTran() {
 		return TechTran;
 	}
@@ -53,12 +59,6 @@ public class Trainer {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	public String getNotes() {
-		return notes;
-	}
-	public void setNotes(String notes) {
-		this.notes = notes;
 	}
 	public long getCreatedBy() {
 		return createdBy;

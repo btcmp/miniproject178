@@ -31,4 +31,10 @@ public class QuestionService {
 		questionDao.delete(id);
 	}
 
+	public Question getQuestionById(Long id) {
+		// TODO Auto-generated method stub
+		Question question = questionDao.getQuestionById(id);
+		return question;
+	}
+
 }

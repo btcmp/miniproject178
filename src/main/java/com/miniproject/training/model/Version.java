@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name = "T_VERSION")
 public class Version {
@@ -22,23 +24,24 @@ public class Version {
 	private Long id;
 	@Column(name = "VERSION", nullable = false)
 	private int version;
-	@Column(name = "CREATED_BY", nullable = false)
+	@Column(name = "CREATED_BY", nullable = true)
 	private Long createdBy;
-	@Column(name = "CREATED_ON", nullable = false)
+	@Column(name = "CREATED_ON", nullable = true)
 	@Temporal(TemporalType.DATE)
 	private Date createdOn;
-	@Column(name = "MODIFIED_BY")
+	@Column(name = "MODIFIED_BY", nullable = true)
 	private Long modifiedBy;
-	@Column(name = "MODIFIED_ON")
+	@Column(name = "MODIFIED_ON", nullable = true)
 	@Temporal(TemporalType.DATE)
 	private Date modifiedOn;
-	@Column(name = "DELETED_BY")
+	@Column(name = "DELETED_BY", nullable = true)
 	private Long deletedBy;
 	@Temporal(TemporalType.DATE)
-	@Column(name = "DELETED_ON")
+	@Column(name = "DELETED_ON", nullable = true)
 	private Date deletedOn;
 	@Column(name = "IS_DELETE", nullable = false)
-	private Boolean isDelete;
+	@JsonProperty
+	private boolean isDelete = false;
 	@OneToMany(mappedBy = "version")
 	private List<VersionDetail> versionDetail;
 	
@@ -91,10 +94,10 @@ public class Version {
 	public void setDeletedOn(Date deletedOn) {
 		this.deletedOn = deletedOn;
 	}
-	public Boolean getIsDelete() {
+	public boolean getIsDelete() {
 		return isDelete;
 	}
-	public void setIsDelete(Boolean isDelete) {
+	public void setIsDelete(boolean isDelete) {
 		this.isDelete = isDelete;
 	}
 	public List<VersionDetail> getVersionDetail() {
