@@ -10,4 +10,5 @@ public interface BiodataDao {
 
 	void save(Biodata biodata);
 
+	Biodata getBiodataById(Long id);
 }

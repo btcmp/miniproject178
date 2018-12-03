@@ -26,4 +26,8 @@ public class BiodataService {
 		biodataDao.save(biodata);
 	}
 
+	public Biodata getBiodataById(Long id) {
+		// TODO Auto-generated method stub
+		return biodataDao.getBiodataById(id);
+	}
 }
