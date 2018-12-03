@@ -16,6 +16,8 @@ import javax.persistence.TemporalType;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name="t_office")
 public class Office {
@@ -44,7 +46,7 @@ public class Office {
 	private Date modifiedOn;
 	@Column(nullable=true)
 	private Boolean active;
-	
+	@JsonManagedReference
 	@OneToMany(mappedBy="office")
 	private List<Room> rooms; 
 	

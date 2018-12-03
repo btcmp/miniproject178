@@ -10,4 +10,6 @@ public interface OfficeDao {
 
 	void save(Office office);
 
+	Office getOfficeById(int id);
+
 }

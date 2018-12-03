@@ -167,8 +167,12 @@
                                             		<td><c:out value="${office.phone }"></c:out></td>
                                             		<td><c:out value="${office.active }"></c:out></td>
 	                                            	<td>
-	                                            		<a class="btn btn-warning update btn-sm" href="#">Edit</a>
-														<a class="btn btn-danger btn-sm" href="#">Deactive</a>
+	                                            		<button id="${office.id }" type="button" rel="tooltip" title="Edit ${office.name }" class="btn btn-success btn-simple btn-xs btn-edit">
+										                    <i class="fa fa-edit"></i>
+										                </button>
+										                <button id="${office.id }" type="button" rel="tooltip" title="Deactive" class="btn btn-danger btn-simple btn-xs btn-delete">
+										                    <i class="fa fa-times"></i>
+										                </button>
 														
 													</td>
                                             	</tr>
@@ -319,7 +323,10 @@
 					</div>
 				</div>
 			</div>
-		</div></body>
+		</div>
+		
+		
+		</body>
 <!--   Core JS Files   -->
 <script src="${pageContext.request.contextPath}/resources/assets/js/jquery-3.2.1.min.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap.min.js" type="text/javascript"></script>
@@ -341,78 +348,135 @@
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script src="${pageContext.request.contextPath}/resources/assets/js/demo.js"></script>
 <script type="text/javascript">
-	jQuery(document).ready(function(){
-		$('#saveRoom').click(function(event){
-			event.preventDefault();
-		//event listener on click
-		var code = jQuery('#code').val();
-		var name = jQuery('#name-room').val();
-		var capacity = jQuery('#capacity').val();
-		var radio= $('input[name=sama]:checked').val();
-		var description = jQuery('#description').val();
+		jQuery(document).ready(function(){
+			$('#saveRoom').click(function(event){
+				event.preventDefault();
+			//event listener on click
+			var code = jQuery('#code').val();
+			var name = jQuery('#name-room').val();
+			var capacity = jQuery('#capacity').val();
+			var radio= $('input[name=sama]:checked').val();
+			var description = jQuery('#description').val();
+			
+			var room = {
+					code : code,
+					name : name,
+					capacity : capacity,
+					radio : radio,
+					description : description
+	
+				};
+			
+			var oTable = $('#table-room');
+			var tbody = oTable.find('tbody');
+			var tr = "<tr>";
+				tr += "<td>"+room.code+"</td>";
+				tr += "<td>"+room.name+"</td>";
+				tr += "<td>"+room.capacity+"</td>";
+				tr += "<td><a class='btn btn-simple btn-danger btn-sm' href='#'>Edit </a> <a class='btn btn-simple btn-danger btn-sm' href=''>Deactive </a></td>";
+				tr += "</tr>";
+	        tbody.append(tr);
+	        $('#addOffice').modal('show');
+			$('#addRoom').modal('hide');
+			});
 		
-		var room = {
-				code : code,
-				name : name,
-				capacity : capacity,
-				radio : radio,
-				description : description
-
+		//add office
+		jQuery(document).ready(function(){
+			$('#submitOffice').click(function(event){
+				event.preventDefault();
+			//event listener on click
+			var name = jQuery('#name').val();
+			var phone = jQuery('#phone').val();
+			var email = jQuery('#email').val();
+			var address = jQuery('#address').val();
+			var desc = jQuery('#notes').val();
+			
+			var office = {
+					name : name,
+					phone : phone,
+					email : email,
+					address : address,
+					notes : desc,
+					rooms :[]
+				};
+			
+			var oTable = $('#table-room');
+			var tbody = oTable.find('tbody');
+			var listRoom = [];
+			$.each(tbody.find('tr'), function(index, value){
+					var code = $(this).find('td').eq(0).text();
+					var nameRoom = $(this).find('td').eq(1).text();
+					var capacity = $(this).find('td').eq(2).text();
+					var rms = {
+							code : code,
+							name : nameRoom,
+							capacity : capacity
 			};
-		
-		var oTable = $('#table-room');
-		var tbody = oTable.find('tbody');
-		var tr = "<tr>";
-			tr += "<td>"+room.code+"</td>";
-			tr += "<td>"+room.name+"</td>";
-			tr += "<td>"+room.capacity+"</td>";
-			tr += "<td>yeye</td>";
-			tr += "</tr>";
-        tbody.append(tr);
-        $('#addOffice').modal('show');
-		$('#addRoom').modal('hide');
-		});
+					office.rooms.push(rms);
+			});
+			
+			console.log(office);
+			
+			jQuery.ajax({
+				url: '${pageContext.request.contextPath}/office/save',
+				type : 'POST',
+				contentType : 'application/json',
+				data : JSON.stringify(office),
+				success : function(data){
+					window.location = '${pageContext.request.contextPath}/office'
+				},error: function(){
+					alert('update failed');
+				}
+			})
+			});
+			
 			
 	    });
+	    });
 	
-	jQuery(document).ready(function(){
-		$('#submitOffice').click(function(event){
-			event.preventDefault();
-		//event listener on click
-		var name = jQuery('#name').val();
-		var phone = jQuery('#phone').val();
-		var email = jQuery('#email').val();
-		var address = jQuery('#address').val();
-		var desc = jQuery('#notes').val();
+		/* //edit office
+		$(".btn-edit").on('click', function(){
+			 var id = $(this).attr('id');
+			 $.ajax({
+				 url : '${pageContext.request.contextPath}/office/get/'+ id,
+				 type: 'GET',
+				 success : function(data){
+					 $('#name').val(data.name);
+					 $('#phone').val(data.phone);
+					 $('#email').val(data.email);
+					 $('#address').val(data.address);
+					 $('#notes').val(data.notes);
+				 },
+				 dataType: 'json'
+			 })
+			 
+			$('#addOffice').modal();
+		 }); 
 		
-		var office = {
-				name : name,
-				phone : phone,
-				email : email,
-				address : address,
-				notes : desc
-
-			};
-		//console.log(office);
-		jQuery.ajax({
-			url: '${pageContext.request.contextPath}/office/save',
-			type : 'POST',
-			beforeSend : function () {
-				console.log(office);
-				console.log('mau contact server...');
-			},
-			contentType : 'application/json',
-			data : JSON.stringify(office),
-			success : function(data){
-				console.log('dapat data dari server...')
-				console.log(data);
-				window.location = '${pageContext.request.contextPath}/office'
-			}
-		})
-		});
-		
-    });
-	
+		 $('#btn-edit-office').on('click', function(){
+				var office = {
+					name : $('#name').val(),
+	   				phone :  $('#phone').val(),
+	   				email : $('#email').val(),
+	   				address : $('#address').val(),
+	   				notes :  $('#notes').val(),
+				}
+				
+				ajaxSetUp();
+				$.ajax({
+					url : '${pageContext.request.contextPath}/office/update',
+					type: 'POST',
+					data: JSON.stringify(office),
+					contentType: "application/json",
+					success : function(data){
+						window.location = "${pageContext.request.contextPath}/office";
+					},error: function(){
+						alert('update failed');
+					}
+				});
+			
+		 }); */
+		 
 		
     $(document).ready(function() {
     	//setting up datepicker
@@ -425,7 +489,7 @@
     		    xhr.setRequestHeader(header, token);
     		  });
     	 }
-    	 
+    	   
     	 $('#table-user').DataTable();
     	 
     	 $('.btn-hapus').on('click', function(){
