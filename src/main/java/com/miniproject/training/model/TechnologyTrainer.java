@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,11 +30,11 @@ public class TechnologyTrainer {
 	private Date createdOn;
 	
 	@ManyToOne
-	@JoinColumn(name="technology_id",nullable=false)
+	@JoinColumn(name="technology_id",referencedColumnName="technology_id")
 	private Technology technology;
 	
 	@ManyToOne
-	@JoinColumn(name="trainer_id",nullable=false)
+	@JoinColumn(name="trainer_id")
 	private Trainer trainer;
 	
 	public Technology getTechnology() {

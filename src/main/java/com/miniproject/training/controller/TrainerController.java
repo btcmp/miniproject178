@@ -28,8 +28,8 @@ public class TrainerController {
 	@RequestMapping
 	public String index(Model model) {
 		List<Trainer> trainer=trainerService.getAllTrainer();
-		model.addAttribute("trainer", trainer);
-		return "technology";
+		model.addAttribute("training", trainer);
+		return "trainer";
 	}
 	@RequestMapping(value="/save",method=RequestMethod.POST)
 	@ResponseBody

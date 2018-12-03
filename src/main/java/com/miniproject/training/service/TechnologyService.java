@@ -27,4 +27,20 @@ public class TechnologyService {
 		technologyDao.save(technology);
 	}
 
+	public Technology getAllTechnologyById(long id) {
+		// TODO Auto-generated method stub
+		Technology technology=technologyDao.getAllTechnologyById(id);
+		return technology;
+	}
+
+	public List<Technology> searchTechnology(String search) {
+		// TODO Auto-generated method stub
+		return technologyDao.searchTechnology(search);
+	}
+
+	public void update(Technology technology) {
+		// TODO Auto-generated method stub
+		technologyDao.update(technology);
+	}
+
 }
