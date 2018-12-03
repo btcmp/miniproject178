@@ -2,6 +2,7 @@ package com.miniproject.training.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +10,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.miniproject.training.model.Question;
 import com.miniproject.training.service.QuestionService;
@@ -25,10 +29,8 @@ public class QuestionController {
 	@Autowired
 	QuestionService questionService;
 	
-	@ModelAttribute("questionForm")
-	public Question getQuestionForm() {
-		return new Question();
-	}
+	@Autowired
+	private HttpSession httpSession;
 	
 	@RequestMapping
 	public String view(Model model) {
@@ -38,12 +40,17 @@ public class QuestionController {
 	}
 	
 	@RequestMapping(value="/save", method=RequestMethod.POST)
-	public String saving(@Valid @ModelAttribute("questionForm") Question question, BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			return "question";
-		}
+	@ResponseBody
+	public Question saving(@RequestBody Question question) {		
 		questionService.saving(question);
-		return "redirect:/question";
+		return question;
+	}
+	
+	@RequestMapping(value="/update", method=RequestMethod.POST)
+	@ResponseBody
+	public Question update(@RequestBody Question question) {
+		questionService.saving(question);
+		return question;
 	}
 	
 	//delete hapus
@@ -51,6 +58,20 @@ public class QuestionController {
 	@ResponseStatus(HttpStatus.OK)
 	public void delete(@PathVariable Long id){
 		questionService.delete(id);
+	}
+	
+	@RequestMapping(value="/get/{id}", method=RequestMethod.GET)
+	@ResponseBody
+	public Question getQuestionById(@PathVariable Long id) {
+		Question question = questionService.getQuestionById(id);
+		return question;
+	}
+	
+	@RequestMapping(value="/example", method=RequestMethod.GET)
+	@ResponseBody
+	public String getExample(@RequestParam("data") String data) {
+		System.out.println(""+ data);
+		return "value: "+data;
 	}
 
 }

@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name = "T_QUESTION")
 public class Question {
@@ -35,10 +37,11 @@ public class Question {
 	@Column(name = "DELETED_BY", nullable = true)
 	private Long deletedBy;
 	@Column(name = "DELETED_ON", nullable = true)
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date deletedOn;
-	@Column(name = "IS_DELETE", nullable = true)
-	private Boolean isDelete;
+	@Column(name = "IS_DELETE")
+	@JsonProperty
+	private boolean isDelete = false;
 	@OneToMany(mappedBy = "question")
 	private List<VersionDetail> versionDetail;
 	
@@ -91,10 +94,10 @@ public class Question {
 	public void setDeletedOn(Date deletedOn) {
 		this.deletedOn = deletedOn;
 	}
-	public Boolean getIsDelete() {
+	public boolean getIsDelete() {
 		return isDelete;
 	}
-	public void setIsDelete(Boolean isDelete) {
+	public void setIsDelete(boolean isDelete) {
 		this.isDelete = isDelete;
 	}
 	public List<VersionDetail> getVersionDetail() {
