@@ -1,10 +1,7 @@
 package com.miniproject.training.dao;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,33 +17,16 @@ public class BiodataDaoImpl implements BiodataDao{
 	
 	public List<Biodata> getAllBiodatas() {
 		// TODO Auto-generated method stub
-		String hql="from Biodata b where b.active= '1'";
 		Session session=sessionFactory.getCurrentSession();
-		Query query=session.createQuery(hql);
-		List<Biodata> biodatas=query.list();
-		if (!biodatas.isEmpty()) {
-			return biodatas;
-		}
-		return new ArrayList();
+		List<Biodata> biodatas=session.createCriteria(Biodata.class).list();
+		return biodatas;
 	}
 
 	public void save(Biodata biodata) {
 		// TODO Auto-generated method stub
 		Session session=sessionFactory.getCurrentSession();
-		session.saveOrUpdate(biodata);
-	}
-
-	public Biodata getBiodataById(Long id) {
-		// TODO Auto-generated method stub
-		String hql="from Biodata b where b.id= :id";
-		Session session=sessionFactory.getCurrentSession();
-		Query query=session.createQuery(hql);
-		query.setParameter("id", id);
-		List<Biodata> biodatas=query.list();
-		if (!biodatas.isEmpty()) {
-			return biodatas.get(0);
-		}
-		return new Biodata();
+		session.save(biodata);
+		
 	}
 
 }
