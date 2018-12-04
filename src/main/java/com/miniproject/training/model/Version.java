@@ -31,6 +31,9 @@ public class Version {
 	private Date createdOn;
 	@Column(name = "MODIFIED_BY", nullable = true)
 	private Long modifiedBy;
+	public void setDelete(boolean isDelete) {
+		this.isDelete = isDelete;
+	}
 	@Column(name = "MODIFIED_ON", nullable = true)
 	@Temporal(TemporalType.DATE)
 	private Date modifiedOn;
