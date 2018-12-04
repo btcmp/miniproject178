@@ -49,7 +49,7 @@ public class OfficeController {
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Office update(@RequestBody Office office) {
-		officeService.save(office);
+		officeService.saveOffice(office);
 		return office;
 	}
 	
