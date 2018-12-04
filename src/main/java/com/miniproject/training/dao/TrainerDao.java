@@ -10,4 +10,6 @@ public interface TrainerDao {
 
 	public void save(Trainer trainer);
 
+	public Trainer getAllTrainerById(long id);
+
 }
