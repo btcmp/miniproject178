@@ -27,8 +27,7 @@
 
 	<!--  CSS for Demo Purpose, don't include it in your project     -->
 	<link href="${pageContext.request.contextPath}/resources/assets/css/demo.css" rel="stylesheet" />
-	<link href="${pageContext.request.contextPath}/resources/assets/datepicker/dist/datepicker.min.css" rel="stylesheet" />
-
+	<link href="${pageContext.request.contextPath}/resources/assets/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
 	<!--     Fonts and icons     -->
 	<link href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css" rel="stylesheet">
 	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
@@ -67,16 +66,14 @@
 						<i class="material-icons">person</i>
 						<p>User Account</p>
 					</a></li>
-					<li class="active"><a href="${pageContext.request.contextPath }/biodata"> 
+					<li><a href="${pageContext.request.contextPath }/biodata"> 
 						<i class="material-icons">person</i>
 						<p>Biodata</p>
 					</a></li>
-					<li><a href="${pageContext.request.contextPath }/monitoring"> 
+					<li class="active"><a href="${pageContext.request.contextPath }/monitoring"> 
 						<i class="material-icons">work</i>
 						<p>Monitoring</p>
 					</a></li>
-					<li>
-					<li>
 					<li>
                         <a href="${pageContext.request.contextPath }/office">
                             <i class="material-icons">work</i>
@@ -111,7 +108,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="#"> BIODATA TABLE </a>
+						<a class="navbar-brand" href="#"> MONITORING TABLE </a>
 					</div>
 				</div>
 			</nav>
@@ -122,14 +119,14 @@
 						<div class="col-lg-12 col-md-12">
 							<div class="card">
 								<div class="card-header" data-background-color="orange">
-									<h4 class="title">List Biodata</h4>
+									<h4 class="title">Idle Monitoring</h4>
 									<p class="category">
 								</div>
 					
 	                           	<div class="card-content table-responsive">
-	                           		<form action="${pageContext.request.contextPath }/biodata">
+	                           		<form action="${pageContext.request.contextPath }/monitoring">
 	                           			<input type="search" id="search" placeholder="Search by Name"/>
-	                           			<button type="button" id="tambahBiodata" class="btn btn-sm btn-primary"> + </button>
+	                           			<button type="button" id="tambahMonitoring" class="btn btn-sm btn-primary"> + </button>
                        				</form>
 	                     		</div>
 								
@@ -137,21 +134,24 @@
 									<table id="table-user" class="table table-hover">
 										<thead class="text-warning">
 											<th>NAME</th>
-											<th>MAJORS</th>
-											<th>GPA</th>
+											<th>IDLE DATE</th>
+											<th>PLACEMENT DATE</th>
 											<th>ACTION</th>
 										</thead>
 										<tbody>
-											<c:forEach var="biodata" items="${biodatas }">
+											<c:forEach var="monitoring" items="${monitorings }">
 												<tr>
-													<td><c:out value="${biodata.name }"></c:out></td>
-													<td><c:out value="${biodata.majors }"></c:out></td>
-													<td><c:out value="${biodata.gpa }"></c:out></td>
+													<td><c:out value="${monitoring.testId.name }"></c:out></td>
+													<td><c:out value="${monitoring.idleDate }"></c:out></td>
+													<td><c:out value="${monitoring.placementDate }"></c:out></td>
 													<td>
-														<button id="${biodata.id }" type="button" rel="tooltip" title="Edit ${biodata.name }" class="btn btn-success btn-simple btn-xs btn-edit">
+														<button id="${monitoring.id }" type="button" rel="tooltip" title="Edit ${monitoring.testId.name }" class="btn btn-success btn-simple btn-xs btn-edit">
 										                    <i class="fa fa-edit"></i>
 										                </button>
-										                <button id="${biodata.id }" type="button" rel="tooltip" title="Deactive ${biodata.name }" class="btn btn-danger btn-simple btn-xs btn-delete">
+										                <button id="${monitoring.id }" type="button" rel="tooltip" title="Placement ${monitoring.testId.name }" class="btn btn-warning btn-simple btn-xs btn-placement">
+										                    <i class="fa fa-edit"></i>
+										                </button>
+										                <button id="${monitoring.id }" type="button" rel="tooltip" title="Deactive ${monitoring.testId.name }" class="btn btn-danger btn-simple btn-xs btn-delete">
 										                    <i class="fa fa-times"></i>
 										             	</button>
 										            </td>
@@ -190,32 +190,34 @@
 	</div>
 	
 <!-- Modal -->
-	<div class="modal fade" id="addBiodata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="addMonitoring" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header text-center">
-					<h3 class="modal-title w-100 font-weight-bold">Add Biodata</h3>
+					<h3 class="modal-title w-100 font-weight-bold">Input Idle</h3>
 				</div>
 		     	
 		     	<div class="modal-body">
 		     		
-		     		<form action="${pageContext.request.contextPath }/biodata/save" method="POST">
+		     		<form action="${pageContext.request.contextPath }/monitoring/save" method="POST">
 				      	<div class="form-group">
-							<input type="text" id="name" class="form-control" placeholder="Name" />
+							<select class="form-control" id="biodata-id" name="testId">
+								<c:forEach items="${biodatas }" var="biodata">
+									<option value="${biodata.id }">${biodata.name }</option>
+								</c:forEach>
+							</select>
 						</div>
 						<div class="form-group">
-							<input type="text" id="lastEducation" class="form-control" placeholder="Last Education" />
+							<input type="text" id="idleDate" class="form-control" placeholder="Idle Date">
 						</div>
-						<div class="form-group">
-							<input type="text" id="educationalLevel" class="form-control" placeholder="Educational Level" />
-						</div>
-						<div class="form-group">
-							<input type="text" id="majors" class="form-control" placeholder="Majors" />
-						</div>
-						<div class="form-group">
-							<input type="text" id="gpa" class="form-control" placeholder="GPA" />
-						</div>	
 						
+						<div class="form-group">
+							<input type="text" id="lastProject" class="form-control" placeholder="Last Project At" />
+						</div>
+						<div class="form-group">
+							<input type="text" id="idleReason" class="form-control" placeholder="Idle Reason" />
+						</div>	
+
 						<div class="modal-footer">
 							<button type="submit" id="saving" class="btn btn-primary">Save</button>
 							<button type="submit" id="canceling" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -227,112 +229,51 @@
 		</div>
 	</div>
 	
-<!-- Modal2 -->
-	<div class="modal fade" id="edit-biodata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<%-- <!-- Modal2 Placement -->
+	<div class="modal fade" id="addPlacement" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header text-center">
-					<h3 class="modal-title w-100 font-weight-bold">Edit Biodata</h3>
+					<h3 class="modal-title w-100 font-weight-bold">Input Placement</h3>
 				</div>
 		     	
 		     	<div class="modal-body">
 		     		
-		     		<form action="${pageContext.request.contextPath }/biodata/editbiodata" method="POST">
-		     			<input type="hidden" id="id-biodata" name="id-biodata"/>
-		     			<input type="hidden" id="createdOn" name="createdOn"/>
-		     			<input type="hidden" id="active" name="active"/>
-				      	<div class="row">
-				      		<div class="form-group col-md-6">
-								<input type="text" id="name-biodata" name="name-biodata" class="form-control" placeholder="Name" />
-							</div>
-							<div class="form-group col-md-6">
-								<input type="radio" id="gender" name="gender" value="Male" /> Male
-								<input type="radio" id="gender" name="gender" value="Female" /> Female
-							</div>
-				      	</div>
-				      	
-				      	<div class="row">
-				      		<div class="form-group col-md-6">
-								<input type="text" id="lasted-biodata" name="lasted-biodata" class="form-control" placeholder="Last Education" />
-							</div>
-							<div class="form-group col-md-6">
-								<input type="text" id="bootcampTestTypeId" class="form-control" placeholder="Bootcamp Test Type" />
-							</div>
-				      	</div>
-				      	
-				      	<div class="row">
-				      		<div class="form-group col-md-6">
-								<input type="text" id="edlev-biodata" name="edlev-biodata" class="form-control" placeholder="Educational Level" />
-							</div>
-							<div class="form-group col-md-1">
-								<input type="text" id="iq" class="form-control" placeholder="IQ" />
-							</div>
-							<div class="form-group col-md-1">
-								<input type="text" id="du" class="form-control" placeholder="DU" />
-							</div>
-							<div class="form-group col-md-1">
-								<input type="text" id="nestedLogic" class="form-control" placeholder="NL" />
-							</div>
-							<div class="form-group col-md-1">
-								<input type="text" id="joinTable" class="form-control" placeholder="JT" />
-							</div>
-				      	</div>
-						
-						<div class="row">
-				      		<div class="form-group col-md-6">
-								<input type="text" id="graduationYear" class="form-control" placeholder="Graduation Year" />
-							</div>
-							<div class="form-group col-md-6">
-								<input type="text" id="arithmetic" class="form-control" placeholder="Arithmetic" />
-							</div>
-				      	</div>
-						
-						<div class="row">
-				      		<div class="form-group col-md-6">
-								<input type="text" id="majors-biodata" name="majors-biodata" class="form-control" placeholder="Majors" />
-							</div>
-							<div class="form-group col-md-6">
-								<input type="text" id="tro" class="form-control" placeholder="TRO" />
-							</div>
-				      	</div>
-						
-						<div class="row">
-				      		<div class="form-group col-md-6">
-								<input type="text" id="gpa-biodata" name="gpa-biodata" class="form-control" placeholder="GPA" />
-							</div>
-							<div class="form-group col-md-6">
-								<input type="text" id="interviewer" class="form-control" placeholder="Interviewer" />
-							</div>
-				      	</div>
-
+		     		<form action="${pageContext.request.contextPath }/monitoring" method="POST">
+						<div class="form-group">
+							<input type="text" name="placementDate" class="form-control" placeholder="Placement Date"/>
+						</div>
+						<div class="form-group">
+							<input type="text" id="placementAt" class="form-control" placeholder="Placement At" />
+						</div>
 						<div class="form-group">
 							<input type="text" id="notes" class="form-control" placeholder="Notes" />
-						</div>
+						</div>	
 						
 						<div class="modal-footer">
-							<button type="submit" id="edit" class="btn btn-primary">Edit</button>
-							<button type="submit" id="canceledit" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+							<button type="submit" id="saving-a" class="btn btn-primary">Save</button>
+							<button type="submit" id="canceling" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 						</div>
 						
 					</form>
 		     	 </div>
 		    </div>
 		</div>
-	</div>
+	</div> --%>
 
-<!-- Modal3 -->
+<!-- Modal3 Deactive-->
 	<div class="modal fade" id="deactive-biodata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header text-center">
-					<h3 class="modal-title w-100 font-weight-bold">Deactive Biodata???</h3>
+					<h3 class="modal-title w-100 font-weight-bold">Sure to delete this???</h3>
 				</div>
 		     	
 		     	<div class="modal-body">
 		     		
 		     		<form action="${pageContext.request.contextPath }/biodata/editbiodata" method="POST">
 						<div class="modal-footer text-center">
-							<button type="submit" id="deactive-edit" class="btn btn-primary">Yes</button>
+							<button type="submit" id="deactive" class="btn btn-primary">Yes</button>
 							<button type="submit" id="canceled-deactive" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 						</div>
 						
@@ -345,7 +286,7 @@
 </body>
 
 <!--   Core JS Files   -->
-<script src="${pageContext.request.contextPath}/resources/assets/js/jquery-3.2.1.min.js" type="text/javascript"></script>
+<script src="${pageContext.request.contextPath}/resources/assets/js/jquery.js" type="text/javascript"></script>
 <script	src="${pageContext.request.contextPath}/resources/assets/js/bootstrap.min.js" type="text/javascript"></script>
 <script	src="${pageContext.request.contextPath}/resources/assets/js/material.min.js" type="text/javascript"></script>
 
@@ -356,8 +297,9 @@
 <script	src="${pageContext.request.contextPath}/resources/assets/js/arrive.min.js"></script>
 
 <!--  PerfectScrollbar Library -->
+
 <script	src="${pageContext.request.contextPath}/resources/assets/js/perfect-scrollbar.jquery.min.js"></script>
-<script	src="${pageContext.request.contextPath}/resources/assets/datepicker/dist/datepicker.js"></script>
+<script	src="${pageContext.request.contextPath}/resources/assets/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
 
 <!--  Notifications Plugin    -->
 <script	src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-notify.js"></script>
@@ -372,42 +314,54 @@
 <script	src="${pageContext.request.contextPath}/resources/assets/js/demo.js"></script>
 <script type="text/javascript">
 
+
 	$(document).ready(function(){
+		//modal1
+		$('#tambahMonitoring').click(function(event) {
+			event.preventDefault();
+			$('#addMonitoring').modal();
+		});
+		
+		//setting up datepicker
+		$('#idleDate').datepicker({
+	   		format: 'yyyy-mm-dd',
+	    	autoclose: true
+		});
+		
 		//saving
 		var button=jQuery('#saving').click(function(event){
 			event.preventDefault();
-			
-			var name=jQuery('#name').val();
-			var lasted=jQuery('#lastEducation').val();
-			var edlev=jQuery('#educationalLevel').val();
-			var majors=jQuery('#majors').val();
-			var gpa=jQuery('#gpa').val();
+ 			var testId= $('#biodata-id option:selected').val();
+			var idleDate=jQuery('#idleDate').val();
+			var lastProject=jQuery('#lastProject').val();
+			var idleReason=jQuery('#idleReason').val();
 			var date=new Date();
 			
-			var biodata={
-					name:name,
-					lastEducation:lasted,
-					educationalLevel:edlev,
-					majors:majors,
-					gpa:gpa,
+			var idle={
+ 					testId:{
+ 						id:testId,
+ 					},
+					idleDate:idleDate,
+					lastProject:lastProject,
+					idleReason:idleReason,
 					createdOn:date
-			}
+			};
 			
 			jQuery.ajax({
-				url:'${pageContext.request.contextPath}/biodata/save',
+				url:'${pageContext.request.contextPath}/monitoring/save',
 				type:'POST',
 				beforeSend: function(){
-					console.log(biodata);
+					console.log(idle);
 					console.log('contact server');
 				},
 				contentType:'application/json',
-				data:JSON.stringify(biodata),
+				data:JSON.stringify(idle),
 				success: function(data){
 					console.log(data);
 					alert('Biodata berhasil ditambahkan');
-					window.location='${pageContext.request.contextPath}/biodata'
+					window.location='${pageContext.request.contextPath}/monitoring'
 				}
-			})
+			});
 		});
 		
 
@@ -576,16 +530,6 @@
 				}
 			})
 		})
-		
-		//setting up datepicker
-		$('#birthDate123').datepicker();
-		function ajaxSetUp() {
-			var token = $("meta[name='_csrf']").attr("content");
-			var header = $("meta[name='_csrf_header']").attr("content");
-			$(document).ajaxSend(function(e, xhr, options) {
-				xhr.setRequestHeader(header, token);
-			});
-		}
 
 		$('#table-user').DataTable();
 
@@ -593,12 +537,6 @@
 	$('#logout').click(function(event) {
 		event.preventDefault();
 		$('#logoutForm').submit();
-	});
-	
-	//modal
-	$('#tambahBiodata').click(function(event) {
-		event.preventDefault();
-		$('#addBiodata').modal();
 	});
 	
 });
