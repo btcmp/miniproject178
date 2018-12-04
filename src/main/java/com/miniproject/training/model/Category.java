@@ -1,17 +1,18 @@
 package com.miniproject.training.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import oracle.net.aso.f;
 
 @Entity
 @Table(name="t_category")
@@ -39,6 +40,16 @@ public class Category {
 	@Column(nullable=false)
 	private Boolean active;
 	
+	@OneToMany(mappedBy="category")
+	private List<IdleNews> idleNewss;
+	
+	
+	public List<IdleNews> getIdleNewss() {
+		return idleNewss;
+	}
+	public void setIdleNewss(List<IdleNews> idleNewss) {
+		this.idleNewss = idleNewss;
+	}
 	public Long getId() {
 		return id;
 	}

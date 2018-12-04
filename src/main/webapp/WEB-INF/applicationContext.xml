@@ -42,11 +42,11 @@
 				<value>com.miniproject.training.model.Office</value>
 				<value>com.miniproject.training.model.Room</value>
 				<value>com.miniproject.training.model.Category</value>
-				<value>com.miniproject.training.model.BootcampTestType</value>
+				<value>com.miniproject.training.model.Bootcamp</value>
 				<value>com.miniproject.training.model.Technology</value>
 				<value>com.miniproject.training.model.TechnologyTrainer</value>
- 				<value>com.miniproject.training.model.Trainer</value>
-				<value>com.miniproject.training.model.Testimony</value>
+				<value>com.miniproject.training.model.Trainer</value>
+				<value>com.miniproject.training.model.IdleNews</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

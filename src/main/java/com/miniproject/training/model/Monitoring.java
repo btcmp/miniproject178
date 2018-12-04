@@ -22,11 +22,11 @@ public class Monitoring {
 	private Long id; //1. Long, 11,PK, No
 	
 	@ManyToOne
-	@JoinColumn(name="biodata_id", nullable=false)
+	@JoinColumn(name="biodata_id", nullable=true)
 	private Biodata testId; //2. Long, 11, No
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name="idle_date", nullable=false)
+	@Column(name="idle_date", nullable=true)
 	private Date idleDate; //3. dateTime, No
 	
 	@Column(name="last_project", length=50)
@@ -36,7 +36,7 @@ public class Monitoring {
 	private String idleReason; //5. Varchar, 255, Allow
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name="placement_date", nullable=false)
+	@Column(name="placement_date", nullable=true)
 	private Date placementDate; //6. dateTime, No
 	
 	@Column(name="placement_at", length=50)
@@ -44,11 +44,11 @@ public class Monitoring {
 	
 	private String notes; //8. VarChar, 255, Allow
 	
-	@Column(name="created_by", nullable=false)
+	@Column(name="created_by", nullable=true)
 	private Long createdBy; //9. Long, 11, No
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name="created_on", nullable=false)
+	@Column(name="created_on", nullable=true)
 	private Date createdOn; //10. dateTime, No
 	
 	@Column(name="modified_by")
@@ -65,7 +65,7 @@ public class Monitoring {
 	@Column(name="delete_on")
 	private Date deleteOn; //14. dateTime, Allow
 	
-	@Column(name="is_delete", nullable=false)
+	@Column(name="is_delete", nullable=true)
 	private Boolean isDelete; //15. boolean, No
 
 	public Long getId() {

@@ -46,17 +46,17 @@ public class OfficeController {
 	}
 	
 	//office update
-	@RequestMapping(value="/update", method = RequestMethod.POST)
+	@RequestMapping(value="/editoffice", method = RequestMethod.POST)
 	@ResponseBody
 	public Office update(@RequestBody Office office) {
-		officeService.saveOffice(office);
+		officeService.update(office);
 		return office;
 	}
 	
 	//get data office
-	@RequestMapping(value="/get/{id}", method = RequestMethod.GET)
+	@RequestMapping(value="/editui/{id}", method = RequestMethod.GET)
 	@ResponseBody
-	public Office getOfficeById(@PathVariable int id) {
+	public Office getOfficeById(@PathVariable("id") Long id) {
 		Office office = officeService.getOfficeById(id);
 		return office;
 		}

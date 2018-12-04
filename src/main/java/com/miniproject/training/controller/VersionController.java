@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.miniproject.training.model.Question;
 import com.miniproject.training.model.Version;
+import com.miniproject.training.model.VersionDetail;
 import com.miniproject.training.service.QuestionService;
 import com.miniproject.training.service.VersionService;
 
@@ -45,24 +46,6 @@ public class VersionController {
 	public Version saving(@RequestBody Version version) {
 		versionService.saving(version);
 		return version;
-	}
-	
-	@RequestMapping(value="/addVersion")
-	public String addVer(Model model) {
-		List<Question> questions = new ArrayList<Question>();
-		questions = this.questionService.getAllQuestions();
-		model.addAttribute("questions", questions);
-		String jsp = "/addVersion";
-		return jsp;
-	}
-	
-	@RequestMapping(value="/addSelection")
-	public String addSelection(Model model) {
-		List<Question> questions = new ArrayList<Question>();
-		questions = this.questionService.getAllQuestions();
-		model.addAttribute("questions", questions);
-		String jsp = "/addSelection";
-		return jsp;
 	}
 	
 	@RequestMapping(value="/get/{id}", method=RequestMethod.GET)
