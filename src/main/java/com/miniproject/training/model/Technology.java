@@ -3,11 +3,14 @@ package com.miniproject.training.model;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -18,8 +21,8 @@ import javax.persistence.TemporalType;
 public class Technology {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(nullable=true,length=11)
-	private int id;
+	@Column(name="technology_id",nullable=false,length=11)
+	private long id;
 	@Column(nullable=true)
 	private String name;
 	private String note;
@@ -36,21 +39,25 @@ public class Technology {
 	@Column(nullable=true)
 	private boolean active;
 	
+
 	@OneToMany(mappedBy="technology")
 	private List<TechnologyTrainer> TechTran;
 	
 	public List<TechnologyTrainer> getTechTran() {
 		return TechTran;
 	}
+
 	public void setTechTran(List<TechnologyTrainer> techTran) {
 		TechTran = techTran;
 	}
-	public int getId() {
+	
+	public long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
+
 	public String getName() {
 		return name;
 	}

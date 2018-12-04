@@ -53,7 +53,7 @@ public class QuestionController {
 		return question;
 	}
 	
-	//delete hapus
+	//delete
 	@RequestMapping(value="/delete/{id}", method=RequestMethod.DELETE)
 	@ResponseStatus(HttpStatus.OK)
 	public void delete(@PathVariable Long id){
