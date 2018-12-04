@@ -31,7 +31,7 @@ public class Bootcamp {
 	@Temporal(TemporalType.DATE)
 	@Column(name="modified_on")
 	private Date modifiedOn;
-	@Column(nullable=true)
+	@Column(nullable=false)
 	private Boolean active;
 	public Long getId() {
 		return id;
