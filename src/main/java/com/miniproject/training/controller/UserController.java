@@ -1,5 +1,6 @@
 package com.miniproject.training.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,8 +47,9 @@ public class UserController {
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	@ResponseBody
 	public User saving(@RequestBody User user)
-	{
-		userService.saving(user);
+	{	
+		user.setCreatedOn(new Date());
+		userService.saving(user);	
 		return user;
 	}
 	
@@ -65,6 +67,14 @@ public class UserController {
 	public User getUserById(@PathVariable long id)
 	{
 		User user = userService.getAllUserById(id);
+		return user;
+	}
+	
+	@RequestMapping(value="/update",method=RequestMethod.POST)
+	@ResponseBody
+	public User update(@RequestBody User user)
+	{
+		userService.update(user);
 		return user;
 	}
 }

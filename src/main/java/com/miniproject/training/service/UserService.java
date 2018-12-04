@@ -36,4 +36,9 @@ public class UserService {
 		User user=userDao.getAllUserById(id);
 		return user;
 	}
+
+	public void update(User user) {
+		// TODO Auto-generated method stub
+		userDao.update(user);
+	}
 }

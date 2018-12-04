@@ -1,6 +1,9 @@
 package com.miniproject.training.controller;
 
+import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,6 +43,7 @@ public class RoleController {
 	@ResponseBody
 	public Role saving(@RequestBody Role role)
 	{
+		role.setCreatedOn(new Date());
 		roleService.saving(role);
 		return role;
 	}
@@ -50,6 +54,22 @@ public class RoleController {
 	public Role getRoleById(@PathVariable long id)
 	{
 		Role role = roleService.getAllRoleById(id);
+		return role;
+	}
+	
+	@RequestMapping(value="/deactivate",method=RequestMethod.POST)
+	@ResponseBody
+	public Role deactivate(@RequestBody Role role)
+	{
+		roleService.deactivate(role);
+		return role;
+	}
+	
+	@RequestMapping(value="/update",method=RequestMethod.POST)
+	@ResponseBody
+	public Role update(@RequestBody Role role)
+	{
+		roleService.update(role);
 		return role;
 	}
 }

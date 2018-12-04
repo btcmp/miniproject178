@@ -39,10 +39,10 @@ public class Role {
 	@Column(name="active",nullable=true)
 	private boolean active;
 	
-	@OneToMany(mappedBy="roleId")
+	@OneToMany(mappedBy="role")
 	private List<User> users;
 	
-	@OneToMany(mappedBy="roleId")
+	@OneToMany(mappedBy="role")
 	private List<Menu_Access> menu_access;
 	
 	

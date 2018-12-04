@@ -168,7 +168,7 @@
                                             <c:forEach var="user" items="${users }">
                                             	<tr>
                                             		<td><c:out value="${user.username }"></c:out></td>
-                                            		<td><c:out value="${user.roleId.name }"></c:out></td>
+                                            		<td><c:out value="${user.role.name }"></c:out></td>
                        								<td>
                        									<c:choose>
                        										<c:when test="${user.active == true }">
@@ -181,7 +181,7 @@
                        								</td>
                        								<td>
                                             			<a id="${user.id }" class="btn-deactivate btn btn-danger btn-sm">Deactived</a>
-                                            			<a id="${user.id }" href="#" class="btn btn-primary btn-sm">Edit</a>
+                                            			<a id="${user.id }" class="btn-update btn btn-primary btn-sm">Edit</a>
                        								</td>
                                             	</tr>
                                             </c:forEach>
@@ -248,13 +248,14 @@
 							</select>
 						</div>
 						<div class="form-group">
-							<input type="text" id="username" class="form-control" placeholder="Username"/>
+							<input type="text" id="username" class="form-control" placeholder="Username" />
 						</div>
 						<div class="form-group">
 							<input type="password" id="password" class="form-control" placeholder="Password"/>
 						</div>
 						<div class="form-group">
-							<input type="password" class="form-control" placeholder="Retype Password"/>
+							<input type="password" id="confirm_password" class="form-control" placeholder="Retype Password"/>
+							<span id='message'></span>
 						</div>
 					</div>
 					<div class="modal-footer">
@@ -282,11 +283,47 @@
 							<input type="hidden" id="id-user"/>
 							<input type="hidden" id="password-user"/>
 							<input type="hidden" id="createdOn-user"/>
-							<input type="text" id="name-user" class="form-control" readonly/>
+							<input type="hidden" id="role-user"/>
+							<input type="hidden" id="name-user"/>
 						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="submit" id="deactivate-btn" class="btn btn-danger">Deactivate</button>
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Cancel</button>
+					</div>
+				</form>
+			</div>
+			</div>
+		</div>
+		<!-- modal edit user -->
+        <div class="modal fade" id="update-user" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+				<center>
+					<h3 class="modal-title">User Edit</h3>
+				</center>
+				</div>
+				<form action="${pageContext.request.contextPath }/user/update" method="POST">
+					<div class="modal-body">
+						<div class="form-group">
+							<input type="text" id="name-user2" class="form-control" />
+						</div>	
+						<div class="form-group">
+							<input type="password" id="new-password" class="form-control" placeholder="Input new password"/>
+						</div>	
+						<div class="form-group">
+							<input type="password" id="new-confirm_password" class="form-control" placeholder="Retype new password"/>
+							<span id='new-message'></span>
+						</div>	
+							<input type="hidden" id="id-user2"/>
+							<input type="hidden" id="role-user2"/>
+							<input type="hidden" id="createdOn-user2"/>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" id="update-btn" class="btn btn-primary">Update</button>
 						<button type="button" class="btn btn-secondary"
 							data-dismiss="modal">Cancel</button>
 					</div>
@@ -449,15 +486,35 @@
  			$('#deactivate-user').modal();
  		});
     	
+ 	 	//Script buat confirm password
+ 	 	$('#password, #confirm_password').on('keyup', function () {
+  			if ($('#password').val() == $('#confirm_password').val()) {
+    				$('#message').html('Matching').css('color', 'green');
+  			} else 
+    			$('#message').html('Not Matching').css('color', 'red');
+		});
+ 	 	
+ 	 	//Script buat confirm password update
+ 	 	$('#new-password, #new-confirm_password').on('keyup', function () {
+  			if ($('#new-password').val() == $('#new-confirm_password').val()) {
+    				$('#new-message').html('Matching').css('color', 'green');
+  			} else 
+    			$('#new-message').html('Not Matching').css('color', 'red');
+		});
+ 	 	
  		//tambah user
    	    var button = jQuery('#add-user').click(function(event){
    								event.preventDefault();
    								var username = jQuery('#username').val();
    								var password = jQuery('#password').val();
+   								var role = jQuery('#roles').val();
    								var active = 1;
    								var user = {
    										username:username,
    										password:password,
+   										role:{
+   											id:role
+   										}, 
    										active:active
    								}
    	
@@ -474,6 +531,7 @@
    										console.log('data dari server');
    										console.log(data);
    										window.location='${pageContext.request.contextPath}/user'
+   										alert("Data User berhasil ditambahkan")
    									}
    								});
    								
@@ -489,6 +547,7 @@
     				 $('#name-user').val(data.username);
     				 $('#password-user').val(data.password);
     				 $('#createdOn-user').val(data.createdOn);
+    				 $('#role-user').val(data.role.id);
     			 },
     			 dataType: 'json'
     		 })
@@ -500,15 +559,21 @@
    	    var button = jQuery('#deactivate-btn').click(function(event){
    								event.preventDefault();
    								var active = 0;
+   								var modifiedOn = new Date();
    								var id = jQuery('#id-user').val();
    								var username = jQuery('#name-user').val();
    								var password = jQuery('#password-user').val();
    								var createdOn = jQuery('#createdOn-user').val();
+   								var role = jQuery('#role-user').val();
    								var user = {
    										id:id,
+   										role:{
+   											id:role
+   										},
    										username:username,
    										password:password,
    										createdOn:createdOn,
+   										modifiedOn:modifiedOn,
    										active:active
    								}
    	
@@ -526,6 +591,65 @@
    										console.log(data);
    										window.location='${pageContext.request.contextPath}/user'
    										alert("User berhasil deactivate")
+   									}
+   								});
+   								
+   			});
+   		//update-confirm
+ 		$(".btn-update").on('click', function(){
+    		 var id = $(this).attr('id');
+    		 $.ajax({
+    			 url : '${pageContext.request.contextPath}/user/get/'+ id,
+    			 type: 'GET',
+    			 success : function(data){
+    				 $('#id-user2').val(data.id);
+    				 $('#name-user2').val(data.username);
+    				 $('#password-user2').val(data.password);
+    				 $('#createdOn-user2').val(data.createdOn);
+    				 $('#role-user2').val(data.role.id);
+    			 },
+    			 dataType: 'json'
+    		 })
+    		 
+    		$('#update-user').modal();
+    	 });
+ 		
+   		//update user
+   	    var button = jQuery('#update-btn').click(function(event){
+   								event.preventDefault();
+   								var active = 1;
+   								var modifiedOn = new Date();
+   								var id = jQuery('#id-user2').val();
+   								var username = jQuery('#name-user2').val();
+   								var password = jQuery('#new-password').val();
+   								var createdOn = jQuery('#createdOn-user2').val();
+   								var role = jQuery('#role-user2').val();
+   								var user = {
+   										id:id,
+   										role:{
+   											id:role
+   										},
+   										username:username,
+   										password:password,
+   										createdOn:createdOn,
+   										modifiedOn:modifiedOn,
+   										active:active
+   								}
+   	
+   								jQuery.ajax({
+   									url : '${pageContext.request.contextPath}/user/update',
+   									type:'POST',
+   										beforeSend:function(){
+   											console.log(user);
+   											console.log('mau contact server');
+   										},
+   									contentType: 'application/json',
+   									data: JSON.stringify(user),
+   									success : function(data){
+   										console.log('data dari server');
+   										console.log(data);
+   										window.location='${pageContext.request.contextPath}/user'
+   										alert("User berhasil update")
    									}
    								});
    								

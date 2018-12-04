@@ -14,4 +14,6 @@ public interface UserDao {
 
 	public User getAllUserById(long id);
 
+	public void update(User user);
+
 }

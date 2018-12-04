@@ -36,7 +36,6 @@ public class UserDaoImpl implements UserDao{
 
 	public void save(User user) {
 		// TODO Auto-generated method stub
-		user.setCreatedOn(new Date());
 		Session session = sessionFactory.getCurrentSession();
 		session.save(user);
 	}
@@ -57,5 +56,11 @@ public class UserDaoImpl implements UserDao{
 			return null;
 		}
 		return user.get(0);
+	}
+
+	public void update(User user) {
+		// TODO Auto-generated method stub
+		Session session=sessionFactory.getCurrentSession();
+		session.update(user);
 	}
 }
