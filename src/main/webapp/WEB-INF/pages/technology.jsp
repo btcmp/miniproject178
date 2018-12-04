@@ -156,7 +156,7 @@ input.parsley-error {
 										<input type="search" name="search"
 											placeholder="Search by Technology" />
 										<button type="button" id="tambahTechnology"
-											class="btn btn-sm btn-primary">+</button>
+											class="btn btn-sm btn-primary">+Technology</button>
 									</form>
 
 									<div class="table-responsive">
@@ -183,7 +183,7 @@ input.parsley-error {
 															</c:choose>
 														</td>
 														<td><a id="${dept.id }" href="#"
-															class="btn-hapus btn btn-danger btn-sm">Edit</a>
+															class="btn-edit btn btn-primary btn-sm">Edit</a>
 														<a id="${dept.id }" href="#"
 															class="btn-hapus btn btn-danger btn-sm">Deactived</a>
 														</td>
@@ -248,11 +248,13 @@ input.parsley-error {
 							</div>
 							<div class="form-group">
 								<label for="note-technology">Note</label>
-								<textarea rows="4" cols="50" id="note" class="form-control" placeholder="Enter note technology" ></textarea>
+								<textarea data-parsley-required="true" 
+								rows="4" cols="50" id="note" aria-describedby="nameHelp"
+								class="form-control" placeholder="Enter note technology" ></textarea>
 							</div>
-							<button type="button" id="tambahTrainer" class="btn btn-warning">+Trainer</button><br><br>
+							<button type="button" id="tambahTrainer" class="btn btn-primary bts-sm">+Trainer</button><br><br>
 									<div class="table-responsive">
-										<table id="table-user" class="table">
+										<table id="table-trainer" class="table">
 											<thead class="text-warning">
 												<th>Trainer</th>
 												<th>Created By</th>
@@ -260,7 +262,14 @@ input.parsley-error {
 												<th>Action</th>
 											</thead>
 											<tbody>
-												<c:forEach var="dept" items="${training}">
+												<!--  <tr>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td></td>
+												</tr> --> 
+												 <%-- <c:forEach var="dept" items="${training}">
 													<tr>
 														<td><c:out value="${dept.name}"></c:out></td>
 														<td><c:out value="${dept.createdBy }"></c:out></td>
@@ -274,14 +283,13 @@ input.parsley-error {
   																</c:otherwise>
 															</c:choose>
 														</td>
-														<td><a id="${dept.id }" href="#"
-															class="btn-hapus btn btn-danger btn-sm">Edit</a>
+														<td><a id="${dept.id }" href="#"class="btn-hapus btn btn-danger btn-sm">Edit</a>
 														<a id="${dept.id }" href="#"
 															class="btn-hapus btn btn-danger btn-sm">Deactived</a>
 														</td>
 													</tr>
 												</c:forEach>
-											</tbody>
+ 				 --%>						 	</tbody>
 										</table>
 									</div>
 		      
@@ -297,7 +305,6 @@ input.parsley-error {
 				</div>
 			</div>
 		</div>
-		
 		<div class="modal fade" id="add-trainer-modal" tabindex="-1"
 			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
@@ -309,14 +316,12 @@ input.parsley-error {
 						<form
 							action="${pageContext.request.contextPath }/technology/savetrain" method="POST">
 							<div class="form-group">
-								<label for="name-technology">Name</label>
-								<input type="text" id="names"
-									class="form-control"
-									aria-describedby="nameHelp" placeholder="Enter Name Trainer" />
-							</div>
-							<div class="form-group">
-								<label>Note</label>
-								<textarea rows="4" cols="50" id="notes" class="form-control" placeholder="Enter note trainer" ></textarea>
+								<select id="trainerId" name="training" class="form-control">
+									<option>--Trainer--</option>
+									<c:forEach items="${training}" var="train">
+										<option value="${train.id}">${train.name}</option>
+									</c:forEach>
+								</select>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary" id="tambahCancel"
@@ -330,7 +335,72 @@ input.parsley-error {
 				</div>
 			</div>
 		</div>
-		
+		<div class="modal fade" id="add-update-technology" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Technology</h5>
+					</div>
+					<div class="modal-body">
+						<form
+							action="${pageContext.request.contextPath }/technology/update" method="POST">
+							<div class="form-group">
+								<label for="name-technology">Name</label>
+								<input type="hidden" id="id-technology" />
+								<input type="text" id="name1"
+									class="form-control"
+									aria-describedby="nameHelp" placeholder="Enter Name Technology" />
+							</div>
+							<div class="form-group">
+								<label>Note</label>
+								<textarea rows="4" cols="50" id="note1" class="form-control" placeholder="Enter note technology" ></textarea>
+							</div>
+							<div class="table-responsive">
+										<table id="table-trainer" class="table">
+											<thead class="text-warning">
+												<th>Trainer</th>
+												<th>Created By</th>
+												<th>Status</th>
+												<th>Action</th>
+											</thead>
+											<tbody>
+												  <c:forEach var="dept" items="${training}">
+													<tr>
+														<td><c:out value="${dept.name}"></c:out></td>
+														<td><c:out value="${dept.createdBy }"></c:out></td>
+														<td>
+															<c:choose>
+																<c:when test="${dept.active==true}">
+																	Active
+																</c:when>
+																<c:otherwise>
+   																	 Not Active
+  																</c:otherwise>
+															</c:choose>
+														</td>
+														<td><a id="${dept.id }" href="#"class="btn-hapus btn btn-danger btn-sm">Edit</a>
+														<a id="${dept.id }" href="#"
+															class="btn-hapus btn btn-danger btn-sm">Deactived</a>
+														</td>
+													</tr>
+												</c:forEach>
+ 				 						 	</tbody>
+										</table>
+									</div>
+		      
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									data-dismiss="modal">Close</button>
+								<button type="submit" id="btn-update-technology"
+									class="btn btn-primary">Update</button>
+							</div>
+						</form>
+					</div>
+
+				</div>
+			</div>
+		</div>
 </body>
 <!--   Core JS Files   -->
 <script
@@ -382,7 +452,9 @@ input.parsley-error {
 							});
 						}
 
-						$('#table-user').DataTable();
+						 $('#table-trainer').DataTable({
+							 searching:false
+						 });
 
 						$('.btn-hapus').on('click',function() {var conf = confirm("Are you sure delete this data ?");
 											if (conf == true) {
@@ -410,12 +482,69 @@ input.parsley-error {
 							event.preventDefault();
 							$('#logoutForm').submit();
 						});
+						//edit technology
+						 $('.btn-edit').on('click', function(){
+				    		 var id = $(this).attr('id');
+				    		 $.ajax({
+				    			 url : '${pageContext.request.contextPath}/technology/get/'+ id,
+				    			 type: 'GET',
+				    			 success : function(data){
+				    				 $('#id-technology').val(data.id);
+				    				 $('#name1').val(data.name);
+				    				 $('#note1').val(data.note);
+				    				 console.log(data)
+				    				 /* $('#edit-department').val(data.department.id); */
+				    			 },
+				    			 dataType: 'json'
+				    		 })
+				    		 
+				    		$('#add-update-technology').modal();
+				    		 
+				    	 });
+						 //update technology
+						 var button = jQuery('#btn-update-technology').click(function(event){
+								event.preventDefault();
+								var name = jQuery('#name1').val();
+						/* 		var createdBy =jQuery('#createdBy').val();
+								var active=jQuery('#active').val(); */
+							    var note = jQuery('#note1').val();
+								var id = jQuery('#id-technology').val();
+								var active=1;
+								
+								var technology = {
+										name:name,
+										note:note,
+										id:id,
+										active:active
+
+								}
+								jQuery.ajax({
+									url : '${pageContext.request.contextPath}/technology/update',
+									type:'POST',
+										beforeSend:function(){
+											console.log(technology);
+											console.log('mau contact server');
+										},
+									contentType: 'application/json',
+									data: JSON.stringify(technology),
+									success : function(data){
+										
+										console.log('data dari server');
+										console.log(data);
+										window.location='${pageContext.request.contextPath}/technology'
+									}
+								});
+								
+							});
+						 
+
 						
-						//modal tambah technology dan trainer
+						//modal tambah technology
 						$('#tambahTechnology').click(function(event) {
 							event.preventDefault();
 							$('#add-technology-modal').modal();
 						});
+						//modal tambah trainer
 						$('#tambahTrainer').click(function(event) {
 							event.preventDefault();
 							$('#add-technology-modal').modal('hide');
@@ -426,62 +555,107 @@ input.parsley-error {
 							$('#add-technology-modal').modal('show');
 							$('#add-trainer-modal').modal('hide');
 						});
+						//add trainer
 						var button = jQuery('#btn-save-trainer-submit').click(function(event){
 							event.preventDefault();
-							var name = jQuery('#names').val();
-						    var note = jQuery('#notes').val();
-							var active=1;
+					    		 var id = $('#trainerId option:selected').val(); 
+					    		 console.log(id);
+					    		 $.ajax({
+					    			 url : '${pageContext.request.contextPath}/technology/get1/'+ id,
+					    			 type: 'GET',
+					    			 success : function(data){
+					    				 /* $('#id-technology').val(data.id);
+					    				 $('#name1').val(data.name);
+					    				 $('#note1').val(data.note) */;
+					    				 console.log(data)
+					    				 /* $('#edit-department').val(data.department.id); */
+					    				 var table = document.getElementById("table-trainer");
+										    var row = table.insertRow(1);
+										    	row.id=data.id;
+										    var cell0 = row.insertCell(0);
+										    var cell1 = row.insertCell(1);
+										    var cell2 = row.insertCell(2);
+										    var cell3 = row.insertCell(3);
+										    var cell4 = row.insertCell(4)
+										    cell0.innerHTML = data.name;
+										    cell1.innerHTML = data.createdBy;
+										    if (data.active==true) {
+										    	cell2.innerHTML = "Active";
+											} else {
+												cell2.innerHTML = "Not Active";
+											}
+										    var button1 = document.createElement("input");
+										    button1.type = "button";
+										    button1.value = "EDIT";
+										    button1.id = data.id;
+										    button1.classList.add("btn-hapus");
+										    button1.classList.add("btn");
+										    button1.classList.add("btn-danger");
+										    button1.classList.add("btn-sm");
+										    var button2 = document.createElement("input");
+										    button2.type = "button";
+										    button2.value = "DEACTIVED";
+										    button2.id = data.id;
+										    button2.classList.add("btn-hapus");
+										    button2.classList.add("btn");
+										    button2.classList.add("btn-danger");
+										    button2.classList.add("btn-sm");
+										    cell3.appendChild(button1);
+										    cell3.appendChild(button2);
+										    
+					    			 },
+					    			 dataType: 'json'
+					    		 
+							 });
+
+
+							var active=true;
 							var trainer = {
 									name:name,
-									note:note,
 									active:active
 							}
-						 /*    var otable=$('#table-trainer');
+							
+							
+						/* 	var otable=$('#table-trainer');
 							var tbody=otable.find('tbody');
-							var tr ="<tr>";
-							tr += "<td>"+trainer.name+"</td>";
-							tr += "<td>"+trainer.createdBy+"</td>";
-							tr += "<td>"+trainer.active+"</td>";
-							tr += "<td>ddd</td>";
-							tr +="</tr>";
-							tbody.append(tr); */
+									var tr ="<tr>";
+									tr += "<td>"+trainer.name+"</td>";
+									tr += "<td>"+trainer.createdBy+"</td>";
+									tr += "<td>"+trainer.ctive+"</td>";
+									tr += "<td><a href='#'class='btn btn-primary btn-sm'>Edit</a><a href='#'class='btn-hapus btn btn-danger btn-sm'>Deactive</a></td>";
+									tr +="</tr>";
+									tbody.append(tr) */
+							
 							$('#add-technology-modal').modal('show');
 							$('#add-trainer-modal').modal('hide'); 
 							
-							jQuery.ajax({
-								url : '${pageContext.request.contextPath}/technology/savetrain',
-								type:'POST',
-									beforeSend:function(){
-										console.log(trainer);
-										console.log('mau contact server');
-									},
-								contentType: 'application/json',
-								data: JSON.stringify(trainer),
-								success : function(data){
-									console.log('data dari server');
-									console.log(data);
-
-								}
-							});
-							
 						});
 						
-
-						
+						//add technology
 						var button = jQuery('#btn-save-technology-submit').click(function(event){
 							event.preventDefault();
 							var name = jQuery('#name').val();
-					/* 		var createdBy =jQuery('#createdBy').val();
-							var active=jQuery('#active').val(); */
+							var createdBy =jQuery('#createdBy').val();
+							/* var active=jQuery('#active').val(); */ 
 						    var note = jQuery('#note').val();
 							var active=1;
+							var technologyTrainers = [];
+				            $.each($('#trainerId option:selected'), function(){
+								var technologyTrainer = {
+										trainer:{
+											id:$(this).val()
+										}
+								}
+								technologyTrainers.push(technologyTrainer);
+				            });
 							
 							var technology = {
 									name:name,
 									note:note,
-									active:active
-
+									active:active,
+									techTran:technologyTrainers
 							}
+							
 							jQuery.ajax({
 								url : '${pageContext.request.contextPath}/technology/save',
 								type:'POST',
@@ -492,10 +666,11 @@ input.parsley-error {
 								contentType: 'application/json',
 								data: JSON.stringify(technology),
 								success : function(data){
+									
 									console.log('data dari server');
 									console.log(data);
-									window.location='${pageContext.request.contextPath}/technology'
-								}
+/* 									window.location='${pageContext.request.contextPath}/technology'
+ */								}
 							});
 							
 						});

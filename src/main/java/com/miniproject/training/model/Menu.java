@@ -46,7 +46,7 @@ public class Menu {
 	private Date modifiedOn;
 	private boolean active;
 	
-	@OneToMany(mappedBy = "menuId")
+	@OneToMany(mappedBy = "menu")
 	private List<Menu_Access> menu_access;
 	
 	

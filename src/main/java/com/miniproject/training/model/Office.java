@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -46,10 +47,10 @@ public class Office {
 	@Column(name="modified_on")
 	private Date modifiedOn;
 	@Column(nullable=true)
-	private Boolean active;
+	private Boolean active = true;
 	
 	@JsonManagedReference
-	@OneToMany(mappedBy="office")
+	@OneToMany(mappedBy="office", fetch = FetchType.EAGER)
 	private List<Room> rooms; 
 	
 	public List<Room> getRooms() {

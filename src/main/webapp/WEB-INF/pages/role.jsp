@@ -1,10 +1,22 @@
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@page import="java.util.Random" %>
 <c:url value="/j_spring_security_logout" var="logoutUrl" />
 <!doctype html>
 <html lang="en">
-
+<%
+Random rng = new Random();
+String characters = "0123456789";
+char[] pattern = new char[6];
+pattern[0] = 'R';
+pattern[1] = 'O';
+for(int i=2;i<pattern.length;i++)
+{
+	pattern[i] = characters.charAt(rng.nextInt(characters.length()));
+}
+String RndmCode = new String(pattern);
+%>
 <head>
     <meta charset="utf-8" />
     <link rel="apple-touch-icon" sizes="76x76" href="${pageContext.request.contextPath}/resources/assets/img/apple-icon.png" />
@@ -180,8 +192,8 @@
                        									</c:choose>
                        								</td>
                        								<td>
-                                            			<a id="${role.id }" href="#" class="btn-hapus btn btn-danger btn-sm">Deactived</a>
-                                            			<a id="${role.id }" href="#" class="btn btn-primary btn-sm">Edit</a>
+                                            			<a id="${role.id }" class="btn-deactivate btn btn-danger btn-sm">Deactived</a>
+                                            			<a id="${role.id }" class="btn-update btn btn-primary btn-sm">Edit</a>
                        								</td>
                                             	</tr>
                                             </c:forEach>
@@ -229,7 +241,7 @@
                 </div>
             </footer>
         </div>
-        <!-- modal -->
+        <!-- modal add role-->
         <div class="modal fade" id="addRole" tabindex="-1" role="dialog"
 		aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document">
@@ -240,7 +252,7 @@
 				<form action="${pageContext.request.contextPath }/role/save" method="POST">
 					<div class="modal-body">
 						<div class="form-group">
-							<input type="text" id="code" class="form-control" placeholder="Code"/>
+							<input type="text" id="code" value="<%out.print(RndmCode);%>" class="form-control" placeholder="<%out.print(RndmCode);%>" style="background-color: #bcbcbc" readonly/>
 						</div>
 						<div class="form-group">
 							<input type="text" id="name" class="form-control" placeholder="Name"/>
@@ -251,6 +263,62 @@
 					</div>
 					<div class="modal-footer">
 						<button type="submit" id="add-role" class="btn btn-primary">Add</button>
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Cancel</button>
+					</div>
+				</form>
+			</div>
+			</div>
+		</div>
+		<!-- modal deactivate role-->
+        <div class="modal fade" id="deactivate-role" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title">Are You Sure to Deactivate this Role?</h3>
+				</div>
+				<form action="${pageContext.request.contextPath }/role/deactivate" method="POST">
+					<div class="modal-body">
+						<input type="hidden" id="id-role"/>
+						<input type="hidden" id="name-role"/>
+						<input type="hidden" id="code-role"/>
+						<input type="hidden" id="description-role"/>
+						<input type="hidden" id="createdOn-role"/>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" id="deactivate-btn" class="btn btn-primary">Deactivate</button>
+						<button type="button" class="btn btn-secondary"
+							data-dismiss="modal">Cancel</button>
+					</div>
+				</form>
+			</div>
+			</div>
+		</div>
+		<!-- modal edit role-->
+        <div class="modal fade" id="update-role" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h3 class="modal-title">Edit Role</h3>
+				</div>
+				<form action="${pageContext.request.contextPath }/role/update" method="POST">
+					<div class="modal-body">
+						<input type="hidden" id="id-role2"/>
+						<div class="form-group">
+							<input type="text" id="code-role2" class="form-control" readonly/>
+						</div>
+						<div class="form-group">
+							<input type="text" id="name-role2" class="form-control"/>
+						</div>
+						<div class="form-group">
+							<textarea rows="4" cols="50" id="description-role2" class="form-control"></textarea>
+						</div>
+						<input type="hidden" id="createdOn-role2"/>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" id="update-btn" class="btn btn-primary">Update</button>
 						<button type="button" class="btn btn-secondary"
 							data-dismiss="modal">Cancel</button>
 					</div>
@@ -407,7 +475,7 @@
  			$('#addRole').modal();
  		});
     	
- 		//tambah user
+ 		//tambah role
    	    var button = jQuery('#add-role').click(function(event){
    								event.preventDefault();
    								var code = jQuery('#code').val();
@@ -433,6 +501,121 @@
    										console.log('data dari server');
    										console.log(data);
    										window.location='${pageContext.request.contextPath}/role'
+   										alert("Berhasil menambahkan Role")
+   									}
+   								});
+   								
+   			});
+ 		
+   		//deactivate-confirm
+ 		$(".btn-deactivate").on('click', function(){
+    		 var id = $(this).attr('id');
+    		 $.ajax({
+    			 url : '${pageContext.request.contextPath}/role/get/'+ id,
+    			 type: 'GET',
+    			 success : function(data){
+    				 $('#id-role').val(data.id);
+    				 $('#name-role').val(data.name);
+    				 $('#code-role').val(data.code);
+    				 $('#createdOn-role').val(data.createdOn);
+    				 $('#description-role').val(data.description);
+    			 },
+    			 dataType: 'json'
+    		 })
+    		 
+    		$('#deactivate-role').modal();
+    	 });
+   	
+   		//deactivate role
+   	    var button = jQuery('#deactivate-btn').click(function(event){
+   								event.preventDefault();
+   								var active = 0;
+   								var modifiedOn = new Date();
+   								var id = jQuery('#id-role').val();
+   								var name = jQuery('#name-role').val();
+   								var code = jQuery('#code-role').val();
+   								var createdOn = jQuery('#createdOn-role').val();
+   								var description = jQuery('#description-role').val();
+   								var role = {
+   										id:id,
+   										code:code,
+   										name:name,
+   										description:description,
+   										modifiedOn:modifiedOn,
+   										createdOn:createdOn,
+   										active:active
+   								}
+   								jQuery.ajax({
+   									url : '${pageContext.request.contextPath}/role/deactivate',
+   									type:'POST',
+   										beforeSend:function(){
+   											console.log(role);
+   											console.log('mau contact server');
+   										},
+   									contentType: 'application/json',
+   									data: JSON.stringify(role),
+   									success : function(data){
+   										console.log('data dari server');
+   										console.log(data);
+   										window.location='${pageContext.request.contextPath}/role'
+   										alert("Role berhasil deactivate")
+   									}
+   								});
+   								
+   			});
+   		
+   		//update-confirm
+ 		$(".btn-update").on('click', function(){
+    		 var id = $(this).attr('id');
+    		 $.ajax({
+    			 url : '${pageContext.request.contextPath}/role/get/'+ id,
+    			 type: 'GET',
+    			 success : function(data){
+    				 $('#id-role2').val(data.id);
+    				 $('#name-role2').val(data.name);
+    				 $('#code-role2').val(data.code);
+    				 $('#createdOn-role2').val(data.createdOn);
+    				 $('#description-role2').val(data.description);
+    			 },
+    			 dataType: 'json'
+    		 })
+    		 
+    		$('#update-role').modal();
+    	 });
+   	
+   		//update role
+   	    var button = jQuery('#update-btn').click(function(event){
+   								event.preventDefault();
+   								var active = 1;
+   								var modifiedOn = new Date();
+   								var id = jQuery('#id-role2').val();
+   								var name = jQuery('#name-role2').val();
+   								var code = jQuery('#code-role2').val();
+   								var createdOn = jQuery('#createdOn-role2').val();
+   								var description = jQuery('#description-role2').val();
+   								var role = {
+   										id:id,
+   										code:code,
+   										name:name,
+   										description:description,
+   										createdOn:createdOn,
+   										modifiedOn:modifiedOn,
+   										active:active
+   								}
+   								jQuery.ajax({
+   									url : '${pageContext.request.contextPath}/role/update',
+   									type:'POST',
+   										beforeSend:function(){
+   											console.log(role);
+   											console.log('mau contact server');
+   										},
+   									contentType: 'application/json',
+   									data: JSON.stringify(role),
+   									success : function(data){
+   										console.log('data dari server');
+   										console.log(data);
+   										window.location='${pageContext.request.contextPath}/role'
+   										alert("Role berhasil update")
    									}
    								});
    								

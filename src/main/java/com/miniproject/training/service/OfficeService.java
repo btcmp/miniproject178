@@ -37,9 +37,32 @@ public class OfficeService {
 		}
 	}
 
-	public Office getOfficeById(int id) {
+	public Office getOfficeById(Long id) {
 		// TODO Auto-generated method stub
 		return officeDao.getOfficeById(id);
 	}
+
+	public void update(Office office) {
+		// TODO Auto-generated method stub
+		officeDao.update(office);
+		
+		List<Room> rooms = office.getRooms();
+		
+		// delete rooms
+		roomDao.delete(office.getId());
+		
+		// add data baru
+		
+		for (Room room: rooms) {
+			room.setOffice(office);
+			roomDao.save(room);
+		}
+	}
+
+	
+
+	
+
+	
 
 }

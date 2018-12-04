@@ -173,10 +173,10 @@
                                             		<td><c:out value="${office.phone }"></c:out></td>
                                             		<td><c:out value="${office.active }"></c:out></td>
 	                                            	<td>
-	                                            		<button id="btn-edit-office" type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs btn-edit">
+	                                            		<button type="button" rel="tooltip" title="Edit" value="${office.id }" class="btn btn-success btn-simple btn-xs btn-edit">
 										                    <i class="fa fa-edit"></i>
 										                </button>
-										                <button id="btn-deactive-office" type="button" rel="tooltip" title="Deactive" class="btn btn-danger btn-simple btn-xs btn-delete">
+										                <button type="button" rel="tooltip" title="Deactive" value="${office.id }" class="btn btn-danger btn-simple btn-xs btn-delete">
 										                    <i class="fa fa-times"></i>
 										                </button>
 														
@@ -242,6 +242,8 @@
 		      <div class="modal-body">
 			      <form  action="#" method="POST">
 			      <div class="form-group">
+			      <input type="hidden" id="action" value="add" class="form-control" placeholder="Name"/>
+			      <input type="hidden" id="id" />
 			      	<input type="text" id="name" class="form-control" placeholder="Name"/>
 			      </div>
 			      
@@ -331,62 +333,6 @@
 			</div>
 		</div>
 		
-		<!-- Modal EDIT OFFICE  -->
-		<div class="modal fade" id="modal-edit-office" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-	  aria-hidden="true">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header text-center">
-	        <h3 class="modal-title w-100 font-weight-bold">ADD OFFICE</h3>
-	      </div>
-		      
-		      <div class="modal-body">
-			      <form  action="#" method="POST">
-			      <div class="form-group">
-			      	<input type="text" id="name" class="form-control" placeholder="Name"/>
-			      </div>
-			      
-			      <div class="form-group">
-			      	<input type="text" id="phone" class="form-control" placeholder="Phone"/>       	
-			      </div>
-			       
-			      <div class="form-group"> 	
-			       	<input type="text" id="email" class="form-control" placeholder="Email"/>      	
-			      </div>
-			      
-			      <div class="form-group">
-			       	<input type="text" id="address" class="form-control" placeholder="Address"/>
-			      </div> 	
-			       	       	
-			      <div class="form-group"> 	
-			       	<input type="textarea" id="notes" class="form-control" placeholder="Description"/>
-			      </div>	
-		       	<button type="button" id="tambahRoom" class="btn btn-warning">+ROOM</button></br></br>
-		       
-		       	<div class="card-content table-responsive">
-	               <table id="table-room" class="table table-hover">
-	                   <thead class="text-warning">
-	                       <th>CODE</th>
-	                       <th>NAME</th>
-	                       <th>CAPACITY</th>
-	                       <th> </th>
-	                   </thead>
-	                   <tbody id="list-room">
-	                   	
-	                   </tbody>
-	                 </table>
-	             </div>
-		      
-		      </div>
-		      <div class="modal-footer">
-		        <button type="submit" id="btn-edit-office" class="btn btn-primary" data-dismiss="modal">Save</button>
-		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-		      </div>
-		      </form>
-		    </div>
-		  </div>
-		</div>
-		
 		
 		</body>
 <!--   Core JS Files   -->
@@ -426,8 +372,8 @@
 					code : code,
 					name : name,
 					capacity : capacity,
-					radio : radio,
-					description : description
+					any_projector : radio,
+					notes : description
 	
 				};
 			
@@ -438,7 +384,7 @@
 				trItem.find('.txt-code').val(room.code);
 				trItem.find('.txt-name').val(room.name);
 				trItem.find('.txt-capacity').val(room.capacity);
-				trItem.find('.txt-description').val(room.description);
+				trItem.find('.txt-description').val(room.notes);
 			}else{		
 			
 			
@@ -450,9 +396,10 @@
 					"<td><input type='text' name='txtname' class='form-control txt-name' value='"+room.name+"'/></td>" +
 					"<td><input type='text' name='txtcapacity' class='form-control txt-capacity' value='"+room.capacity+"'/></td>"+
 					"<td>"+
-					"<input type='hidden' name='txtdescription' class='form-control txt-description' value='"+room.description+"'/>"+
+					"<input type='hidden' name='txtid' class='form-control txt-id' value=''/>"+
+					"<input type='hidden' name='txtdescription' class='form-control txt-description' value='"+room.notes+"'/>"+
 						"<button type='button' class='btn btn-primary btn-sm btn-edit-room'>Edit </button>"+
-						"<button type='button' class='btn btn-secondary btn-sm btn-deactive-room'>Deactive </button>"+
+		
 					"</td>"+
 				"</tr>";
 	        tbody.append(tr);
@@ -469,20 +416,23 @@
 			$('#submitOffice').click(function(event){
 				event.preventDefault();
 			//event listener on click
+			var action = $('#action').val();
 			var name = jQuery('#name').val();
 			var phone = jQuery('#phone').val();
 			var email = jQuery('#email').val();
 			var address = jQuery('#address').val();
 			var desc = jQuery('#notes').val();
+			var id = jQuery('#id').val();
 			
 			var office = {
+					id : id,
 					name : name,
 					phone : phone,
 					email : email,
 					address : address,
 					notes : desc,
 					rooms :[]
-				};
+			};
 			
 			var oTable = $('#table-room');
 			var tbody = oTable.find('tbody');
@@ -492,7 +442,9 @@
 					var nameRoom = $(this).find('.txt-name').val();
 					var capacity = $(this).find('.txt-capacity').val();
 					var description = $(this).find('.txt-description').val();
+					var idRoom = $(this).find('.txt-id').val();
 					var rms = {
+							id : idRoom,
 							code : code,
 							name : nameRoom,
 							capacity : capacity,
@@ -502,22 +454,40 @@
 					office.rooms.push(rms);
 			});
 			
-			//console.log(office);
+			console.log(office);
 			
-			jQuery.ajax({
-				url: '${pageContext.request.contextPath}/office/save',
-				type : 'POST',
-				contentType : 'application/json',
-				data : JSON.stringify(office),
-				success : function(data){
-					window.location = '${pageContext.request.contextPath}/office'
-				},error: function(){
-					alert('update failed');
-				}
-			})
+			//update office & room dari db
+			
+			if (action == "add") {
+				jQuery.ajax({
+					url: '${pageContext.request.contextPath}/office/save',
+					type : 'POST',
+					contentType : 'application/json',
+					data : JSON.stringify(office),
+					success : function(data){
+						alert('Data Berhasil di Add')
+						window.location = '${pageContext.request.contextPath}/office'
+					},error: function(){
+						alert('Add Data Failed');
+					}
+				})
+			}else{
+				jQuery.ajax({
+					url: '${pageContext.request.contextPath}/office/editoffice',
+					type : 'POST',
+					contentType : 'application/json',
+					data : JSON.stringify(office),
+					success : function(data){
+						//console.log(data);
+						alert('Data Berhasil di Update')
+						window.location = '${pageContext.request.contextPath}/office'
+					},error: function(){
+						alert('Update Failed');
+					}
+				})   
+			}
+			
 			});
-			
-			
 	    });
 		
 		//edit room sebelum masuk db
@@ -537,38 +507,64 @@
 			$('#description').val(description);
 			
 			$('#addRoom').modal('show');
+			$('#addOffice').modal('hide');
 			
 		});
 		
-		/*  //edit office
-		$(".btn-edit").on('click', function(){
-			 var id = $(this).attr('id');
+		//button edit office
+		jQuery(".btn-edit").click(function(event){
+			event.preventDefault();
+			 var id = $(this).val();
+			 //alert('id get');
+			// $('#addOffice').modal();
 			 $.ajax({
-				 url : '${pageContext.request.contextPath}/office/get/'+ id,
+				 url : '${pageContext.request.contextPath}/office/editui/'+ id,
 				 type: 'GET',
+				 dataType: 'json',
 				 success : function(data){
+					 $('#action').val('edit');
 					 $('#name').val(data.name);
 					 $('#phone').val(data.phone);
 					 $('#email').val(data.email);
 					 $('#address').val(data.address);
 					 $('#notes').val(data.notes);
+					 $('#id').val(data.id);
+					 var oTable = $('#table-room'); //id table room
+						var tbody = oTable.find('tbody');
+					 var tr = "";
+					 $.each(data.rooms, function(index, room){
+						
+						  tr += "<tr id='data_"+index +"'>"+
+							"<td><input type='text' name='txtcode' class='form-control txt-code' value='"+room.code+"'/></td>"+
+							"<td><input type='text' name='txtname' class='form-control txt-name' value='"+room.name+"'/></td>" +
+							"<td><input type='text' name='txtcapacity' class='form-control txt-capacity' value='"+room.capacity+"'/></td>"+
+							"<td>"+
+							"<input type='hidden' name='txtdescription' class='form-control txt-description' value='"+room.notes+"'/>"+
+							"<input type='hidden' name='txtid' class='form-control txt-id' value='"+room.id+"'/>"+
+								"<button type='button' class='btn btn-primary btn-sm btn-edit-room'>Edit </button>"+
+								"<button type='button' class='btn btn-secondary btn-sm btn-deactive-room'>Deactive </button>"+
+							"</td>"+
+						"</tr>";
+			       		 
+					 });
+					 tbody.html(tr);
+					 $('#addOffice').modal();
 				 },
-				 dataType: 'json'
-			 })
-			 
-			$('#modal-edit-office').modal();
+				
+			 }); 			 
+			//
 		 }); 
 		
-		 $('#btn-edit-office').on('click', function(){
+		/*  $('#btn-edit-office').on('click', function(){
 				var office = {
 					name : $('#name').val(),
 	   				phone :  $('#phone').val(),
 	   				email : $('#email').val(),
 	   				address : $('#address').val(),
 	   				notes :  $('#notes').val(),
-				}
+				} */
 				
-				ajaxSetUp();
+				/* ajaxSetUp();
 				$.ajax({
 					url : '${pageContext.request.contextPath}/office/update',
 					type: 'POST',
@@ -579,9 +575,8 @@
 					},error: function(){
 						alert('update failed');
 					}
-				});
-		 }); */
-	    });
+				}); */
+		 });
 	
 		
 		 
@@ -630,6 +625,7 @@
     	$('#tambahOffice').click(function(event){
     		event.preventDefault();
     		$('#addOffice').modal();
+    		$('#action').val('add');
     	});
     	
     	$('#tambahRoom').click(function(event){

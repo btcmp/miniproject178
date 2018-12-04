@@ -46,20 +46,20 @@ public class User {
 	
 	@ManyToOne
 	@JoinColumn(name="role_id",nullable=true)
-	private Role roleId;
+	private Role role;
 	
 	
+	public Role getRole() {
+		return role;
+	}
+	public void setRole(Role role) {
+		this.role = role;
+	}
 	public int getEnabled() {
 		return enabled;
 	}
 	public void setEnabled(int enabled) {
 		this.enabled = enabled;
-	}
-	public Role getRoleId() {
-		return roleId;
-	}
-	public void setRoleId(Role roleId) {
-		this.roleId = roleId;
 	}
 	public Long getId() {
 		return id;

@@ -27,24 +27,24 @@ public class Menu_Access {
 	
 	@ManyToOne
 	@JoinColumn(name="menu_id",nullable=false)
-	private Menu menuId;
+	private Menu menu;
 	
 	@ManyToOne
 	@JoinColumn(name="role_id",nullable=false)
-	private Role roleId;
+	private Role role;
 	
 	
-	public Role getRoleId() {
-		return roleId;
+	public Menu getMenu() {
+		return menu;
 	}
-	public void setRoleId(Role roleId) {
-		this.roleId = roleId;
+	public void setMenu(Menu menu) {
+		this.menu = menu;
 	}
-	public Menu getMenuId() {
-		return menuId;
+	public Role getRole() {
+		return role;
 	}
-	public void setMenuId(Menu menuId) {
-		this.menuId = menuId;
+	public void setRole(Role role) {
+		this.role = role;
 	}
 	public Long getId() {
 		return id;

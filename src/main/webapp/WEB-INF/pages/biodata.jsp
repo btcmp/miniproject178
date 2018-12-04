@@ -71,6 +71,12 @@
 						<i class="material-icons">person</i>
 						<p>Biodata</p>
 					</a></li>
+					<li><a href="${pageContext.request.contextPath }/monitoring"> 
+						<i class="material-icons">work</i>
+						<p>Monitoring</p>
+					</a></li>
+					<li>
+					<li>
 					<li>
                         <a href="${pageContext.request.contextPath }/office">
                             <i class="material-icons">work</i>

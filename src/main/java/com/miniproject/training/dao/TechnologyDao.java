@@ -10,4 +10,10 @@ public interface TechnologyDao {
 
 	public void save(Technology technology);
 
+	public Technology getAllTechnologyById(long id);
+
+	public List<Technology> searchTechnology(String search);
+
+	public void update(Technology technology);
+
 }
