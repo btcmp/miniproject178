@@ -1,5 +1,6 @@
 package com.miniproject.training.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -41,10 +42,27 @@ public class VersionController {
 	
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	@ResponseBody
-	public Version saving(@RequestBody Version version, RedirectAttributes redirectAttributes) {
+	public Version saving(@RequestBody Version version) {
 		versionService.saving(version);
-		redirectAttributes.addFlashAttribute("message", "Version berhasil ditambahkan");
 		return version;
+	}
+	
+	@RequestMapping(value="/addVersion")
+	public String addVer(Model model) {
+		List<Question> questions = new ArrayList<Question>();
+		questions = this.questionService.getAllQuestions();
+		model.addAttribute("questions", questions);
+		String jsp = "/addVersion";
+		return jsp;
+	}
+	
+	@RequestMapping(value="/addSelection")
+	public String addSelection(Model model) {
+		List<Question> questions = new ArrayList<Question>();
+		questions = this.questionService.getAllQuestions();
+		model.addAttribute("questions", questions);
+		String jsp = "/addSelection";
+		return jsp;
 	}
 	
 	@RequestMapping(value="/get/{id}", method=RequestMethod.GET)

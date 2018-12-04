@@ -173,10 +173,10 @@
                                             		<td><c:out value="${office.phone }"></c:out></td>
                                             		<td><c:out value="${office.active }"></c:out></td>
 	                                            	<td>
-	                                            		<button id="${office.id }" type="button" rel="tooltip" title="Edit ${office.name }" class="btn btn-success btn-simple btn-xs btn-edit">
+	                                            		<button id="btn-edit-office" type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs btn-edit">
 										                    <i class="fa fa-edit"></i>
 										                </button>
-										                <button id="${office.id }" type="button" rel="tooltip" title="Deactive" class="btn btn-danger btn-simple btn-xs btn-delete">
+										                <button id="btn-deactive-office" type="button" rel="tooltip" title="Deactive" class="btn btn-danger btn-simple btn-xs btn-delete">
 										                    <i class="fa fa-times"></i>
 										                </button>
 														
@@ -270,7 +270,7 @@
 	                       <th>CAPACITY</th>
 	                       <th> </th>
 	                   </thead>
-	                   <tbody>
+	                   <tbody id="list-room">
 	                   	
 	                   </tbody>
 	                 </table>
@@ -298,8 +298,8 @@
 					<div class="modal-body">
 					
 					<div class="modal-body">
-				      <form action="">
 				      <div class="form-group">
+				      	<input type="hidden" id="id-add-room"/>
 				      	<input type="text" id="code" class="form-control" placeholder="Code"/>
 				      </div>
 				      
@@ -331,6 +331,62 @@
 			</div>
 		</div>
 		
+		<!-- Modal EDIT OFFICE  -->
+		<div class="modal fade" id="modal-edit-office" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	  aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header text-center">
+	        <h3 class="modal-title w-100 font-weight-bold">ADD OFFICE</h3>
+	      </div>
+		      
+		      <div class="modal-body">
+			      <form  action="#" method="POST">
+			      <div class="form-group">
+			      	<input type="text" id="name" class="form-control" placeholder="Name"/>
+			      </div>
+			      
+			      <div class="form-group">
+			      	<input type="text" id="phone" class="form-control" placeholder="Phone"/>       	
+			      </div>
+			       
+			      <div class="form-group"> 	
+			       	<input type="text" id="email" class="form-control" placeholder="Email"/>      	
+			      </div>
+			      
+			      <div class="form-group">
+			       	<input type="text" id="address" class="form-control" placeholder="Address"/>
+			      </div> 	
+			       	       	
+			      <div class="form-group"> 	
+			       	<input type="textarea" id="notes" class="form-control" placeholder="Description"/>
+			      </div>	
+		       	<button type="button" id="tambahRoom" class="btn btn-warning">+ROOM</button></br></br>
+		       
+		       	<div class="card-content table-responsive">
+	               <table id="table-room" class="table table-hover">
+	                   <thead class="text-warning">
+	                       <th>CODE</th>
+	                       <th>NAME</th>
+	                       <th>CAPACITY</th>
+	                       <th> </th>
+	                   </thead>
+	                   <tbody id="list-room">
+	                   	
+	                   </tbody>
+	                 </table>
+	             </div>
+		      
+		      </div>
+		      <div class="modal-footer">
+		        <button type="submit" id="btn-edit-office" class="btn btn-primary" data-dismiss="modal">Save</button>
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+		      </div>
+		      </form>
+		    </div>
+		  </div>
+		</div>
+		
 		
 		</body>
 <!--   Core JS Files   -->
@@ -354,6 +410,8 @@
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script src="${pageContext.request.contextPath}/resources/assets/js/demo.js"></script>
 <script type="text/javascript">
+
+		//tampil data room ke table
 		jQuery(document).ready(function(){
 			$('#saveRoom').click(function(event){
 				event.preventDefault();
@@ -373,20 +431,40 @@
 	
 				};
 			
-			var oTable = $('#table-room');
+			var dataId = $('#id-add-room').val();
+			if (dataId!="" || dataId!='') {
+				var trItem = $('#'+dataId);
+				
+				trItem.find('.txt-code').val(room.code);
+				trItem.find('.txt-name').val(room.name);
+				trItem.find('.txt-capacity').val(room.capacity);
+				trItem.find('.txt-description').val(room.description);
+			}else{		
+			
+			
+			var oTable = $('#table-room'); //id table room
 			var tbody = oTable.find('tbody');
-			var tr = "<tr>";
-				tr += "<td>"+room.code+"</td>";
-				tr += "<td>"+room.name+"</td>";
-				tr += "<td>"+room.capacity+"</td>";
-				tr += "<td><a class='btn btn-simple btn-danger btn-sm' href='#'>Edit </a> <a class='btn btn-simple btn-danger btn-sm' href=''>Deactive </a></td>";
-				tr += "</tr>";
+			var index = $('#list-room tr').length;
+			var tr = "<tr id='data_"+index +"'>"+
+					"<td><input type='text' name='txtcode' class='form-control txt-code' value='"+room.code+"'/></td>"+
+					"<td><input type='text' name='txtname' class='form-control txt-name' value='"+room.name+"'/></td>" +
+					"<td><input type='text' name='txtcapacity' class='form-control txt-capacity' value='"+room.capacity+"'/></td>"+
+					"<td>"+
+					"<input type='hidden' name='txtdescription' class='form-control txt-description' value='"+room.description+"'/>"+
+						"<button type='button' class='btn btn-primary btn-sm btn-edit-room'>Edit </button>"+
+						"<button type='button' class='btn btn-secondary btn-sm btn-deactive-room'>Deactive </button>"+
+					"</td>"+
+				"</tr>";
 	        tbody.append(tr);
+			}
 	        $('#addOffice').modal('show');
 			$('#addRoom').modal('hide');
+			
+			
+			emptyAddRoom();
 			});
 		
-		//add office
+		//add office dan room udah masuk ke database
 		jQuery(document).ready(function(){
 			$('#submitOffice').click(function(event){
 				event.preventDefault();
@@ -410,18 +488,21 @@
 			var tbody = oTable.find('tbody');
 			var listRoom = [];
 			$.each(tbody.find('tr'), function(index, value){
-					var code = $(this).find('td').eq(0).text();
-					var nameRoom = $(this).find('td').eq(1).text();
-					var capacity = $(this).find('td').eq(2).text();
+					var code = $(this).find('.txt-code').val();
+					var nameRoom = $(this).find('.txt-name').val();
+					var capacity = $(this).find('.txt-capacity').val();
+					var description = $(this).find('.txt-description').val();
 					var rms = {
 							code : code,
 							name : nameRoom,
-							capacity : capacity
+							capacity : capacity,
+							notes : description,
+							any_projector : true,
 			};
 					office.rooms.push(rms);
 			});
 			
-			console.log(office);
+			//console.log(office);
 			
 			jQuery.ajax({
 				url: '${pageContext.request.contextPath}/office/save',
@@ -438,9 +519,28 @@
 			
 			
 	    });
-	    });
-	
-		/* //edit office
+		
+		//edit room sebelum masuk db
+		$('#list-room').on('click', '.btn-edit-room', function(){
+			var trItem = $(this).parent().parent();
+			
+			var code = trItem.find('.txt-code').val();
+			var name = trItem.find('.txt-name').val();
+			var capacity = trItem.find('.txt-capacity').val();
+			var description = trItem.find('.txt-description').val();
+			
+			var dataId= trItem.attr('id');
+			$('#id-add-room').val(dataId);
+			$('#code').val(code);
+			$('#name-room').val(name);
+			$('#capacity').val(capacity);
+			$('#description').val(description);
+			
+			$('#addRoom').modal('show');
+			
+		});
+		
+		/*  //edit office
 		$(".btn-edit").on('click', function(){
 			 var id = $(this).attr('id');
 			 $.ajax({
@@ -456,7 +556,7 @@
 				 dataType: 'json'
 			 })
 			 
-			$('#addOffice').modal();
+			$('#modal-edit-office').modal();
 		 }); 
 		
 		 $('#btn-edit-office').on('click', function(){
@@ -480,10 +580,12 @@
 						alert('update failed');
 					}
 				});
-			
 		 }); */
-		 
+	    });
+	
 		
+		 
+	//------------------------------------------------------------	
     $(document).ready(function() {
     	//setting up datepicker
     	$('#birthDate123').datepicker();
@@ -517,7 +619,7 @@
     		 
     		 return false;
     	 });
-    	 
+   //------------------------------------------------------------------ 	 
     	 
     	//logout event button
     	 $('#logout').click(function(event){
@@ -532,6 +634,8 @@
     	
     	$('#tambahRoom').click(function(event){
     		event.preventDefault();
+    		
+    		emptyAddRoom();
     		$('#addOffice').modal('hide');
     		$('#addRoom').modal();
     	});
@@ -540,11 +644,16 @@
     		$('#addOffice').modal('show');
     		$('#addRoom').modal('hide');
     		
-    	});
-    	
-    	
-    	
+    	});    	
     });
+	
+    function emptyAddRoom(){
+		$('#id-add-room').val('');
+		$('#code').val('');
+		$('#name-room').val('');
+		$('#capacity').val('');
+		$('#description').val('');
+	}
 </script>
 
 </html>

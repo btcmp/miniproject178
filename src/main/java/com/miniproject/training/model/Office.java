@@ -27,6 +27,7 @@ public class Office {
 	private Long id;
 	@Column(nullable=false)
 	private String name;
+	
 	private String phone;
 	@Email
 	private String email;
@@ -46,6 +47,7 @@ public class Office {
 	private Date modifiedOn;
 	@Column(nullable=true)
 	private Boolean active;
+	
 	@JsonManagedReference
 	@OneToMany(mappedBy="office")
 	private List<Room> rooms; 
