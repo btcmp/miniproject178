@@ -21,7 +21,7 @@ public class OfficeDaoImpl implements OfficeDao{
 	public void save(Office office) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		session.save(office);
+		session.saveOrUpdate(office);
 	}
 	
 	public List<Office> getAllOffices() {
@@ -34,6 +34,20 @@ public class OfficeDaoImpl implements OfficeDao{
 			return offices;
 		}		
 		return new ArrayList();
+	}
+
+
+	public Office getOfficeById(int id) {
+		// TODO Auto-generated method stub
+		String hql = "from Office o where o.id = :id";
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery(hql);
+		query.setParameter("id", id);
+		List<Office> offices = query.list();
+		if (!offices.isEmpty()) {
+			return offices.get(0);
+		}		
+		return new Office();
 	}
 
 	

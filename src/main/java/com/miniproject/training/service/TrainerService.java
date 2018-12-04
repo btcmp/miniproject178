@@ -23,5 +23,10 @@ public class TrainerService {
 		// TODO Auto-generated method stub
 		trainerDao.save(trainer);
 	}
+	public Trainer getAllTrainerById(long id) {
+		// TODO Auto-generated method stub
+		Trainer trainer=trainerDao.getAllTrainerById(id);
+		return trainer;
+	}
 
 }

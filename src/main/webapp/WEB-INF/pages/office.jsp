@@ -164,16 +164,23 @@
                                             <th>NAME</th>
                                             <th>CONTACT</th>
                                             <th>STATUS</th>
+                                            <th></th>
                                         </thead>
                                         <tbody>
-                                            <c:forEach var="office" items="${offices }">
+                                            <c:forEach items = "${offices }" var="office">
                                             	<tr>
                                             		<td><c:out value="${office.name }"></c:out></td>
                                             		<td><c:out value="${office.phone }"></c:out></td>
                                             		<td><c:out value="${office.active }"></c:out></td>
-                                            		<td>
-                                            			<a id="${dept.id }" href="#" class="btn-hapus btn btn-danger btn-sm">Delete</a>
-                                            		</td>
+	                                            	<td>
+	                                            		<button id="btn-edit-office" type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs btn-edit">
+										                    <i class="fa fa-edit"></i>
+										                </button>
+										                <button id="btn-deactive-office" type="button" rel="tooltip" title="Deactive" class="btn btn-danger btn-simple btn-xs btn-delete">
+										                    <i class="fa fa-times"></i>
+										                </button>
+														
+													</td>
                                             	</tr>
                                             </c:forEach>
                                         </tbody>
@@ -233,45 +240,48 @@
 	      </div>
 		      
 		      <div class="modal-body">
-			      <form:form commandName = "officeForm" action="${pageContext.request.contextPath }/office/save" method="POST">
+			      <form  action="#" method="POST">
 			      <div class="form-group">
-			      	<form:input type="text" path="name" class="form-control" placeholder="Name"/>
+			      	<input type="text" id="name" class="form-control" placeholder="Name"/>
 			      </div>
 			      
 			      <div class="form-group">
-			      	<form:input type="text" path="phone" class="form-control" placeholder="Phone"/>       	
+			      	<input type="text" id="phone" class="form-control" placeholder="Phone"/>       	
 			      </div>
 			       
 			      <div class="form-group"> 	
-			       	<form:input type="text" path="email" class="form-control" placeholder="Email"/>      	
+			       	<input type="text" id="email" class="form-control" placeholder="Email"/>      	
 			      </div>
 			      
 			      <div class="form-group">
-			       	<form:input type="text" path="address" class="form-control" placeholder="Address"/>
+			       	<input type="text" id="address" class="form-control" placeholder="Address"/>
 			      </div> 	
 			       	       	
 			      <div class="form-group"> 	
-			       	<form:input type="textarea" path="notes" class="form-control" placeholder="Description"/>
+			       	<input type="textarea" id="notes" class="form-control" placeholder="Description"/>
 			      </div>	
-		       	<form:button type="button" id="tambahRoom" class="btn btn-warning">+ROOM</form:button></br></br>
+		       	<button type="button" id="tambahRoom" class="btn btn-warning">+ROOM</button></br></br>
 		       
 		       	<div class="card-content table-responsive">
-	               <table id="table-user" class="table table-hover">
+	               <table id="table-room" class="table table-hover">
 	                   <thead class="text-warning">
 	                       <th>CODE</th>
 	                       <th>NAME</th>
 	                       <th>CAPACITY</th>
 	                       <th> </th>
 	                   </thead>
+	                   <tbody id="list-room">
+	                   	
+	                   </tbody>
 	                 </table>
 	             </div>
 		      
 		      </div>
 		      <div class="modal-footer">
-		        <form:button type="submit" id="submit" class="btn btn-primary" >Save</form:button>
-		        <form:button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</form:button>
+		        <button type="submit" id="submitOffice" class="btn btn-primary" data-dismiss="modal">Save</button>
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 		      </div>
-		      </form:form>
+		      </form>
 		    </div>
 		  </div>
 		</div>
@@ -288,39 +298,97 @@
 					<div class="modal-body">
 					
 					<div class="modal-body">
-				      <form action="">
 				      <div class="form-group">
-				      	<input type="text" name="code" class="form-control" placeholder="Code"/>
+				      	<input type="hidden" id="id-add-room"/>
+				      	<input type="text" id="code" class="form-control" placeholder="Code"/>
 				      </div>
 				      
 				      <div class="form-group">
-				      	<input type="text" name="name" class="form-control" placeholder="Name"/>       	
+				      	<input type="text" id="name-room" class="form-control" placeholder="Name"/>       	
 				      </div>
 				       
 				      <div class="form-group"> 	
-				       	<input type="text" name="capacity" class="form-control" placeholder="Capacity"/>      	
+				       	<input type="text" id="capacity" class="form-control" placeholder="Capacity"/>      	
 				      </div>
 				      
 				      <div class="form-group"> 	
 				     	Any Projector? &nbsp;
-				     	<input type="radio" name="active" value="1" >True   &nbsp;
-				       	<input type="radio" name="active" value="0" >False </br>
+				     	<input type="radio" id="selection" name="sama" value="Yes">True   &nbsp;
+				       	<input type="radio" id="selection" name="sama" value="No">False</br>
 				      </div>
 				      
 				      <div class="form-group"> 	
-				       	<input type="text" name="description" class="form-control" placeholder="Description"/>      	
+				       	<input type="text" id="description" class="form-control" placeholder="Description"/>      	
 				      </div>
 				      
 					</div>
 					<div class="modal-footer">
-						<button type="button" id="saveRoom" class="btn btn-primary">Add</button>
-						<button type="button" id="cancelRoom" class="btn btn-secondary"
-							data-dismiss="modal">Cancel</button>
+						<button type="submit" id="saveRoom" class="btn btn-primary" >Add</button>
+						<button type="button" id="cancelRoom" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 
 					</div>
 				</div>
 			</div>
-		</div></body>
+		</div>
+		
+		<!-- Modal EDIT OFFICE  -->
+		<div class="modal fade" id="modal-edit-office" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	  aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header text-center">
+	        <h3 class="modal-title w-100 font-weight-bold">ADD OFFICE</h3>
+	      </div>
+		      
+		      <div class="modal-body">
+			      <form  action="#" method="POST">
+			      <div class="form-group">
+			      	<input type="text" id="name" class="form-control" placeholder="Name"/>
+			      </div>
+			      
+			      <div class="form-group">
+			      	<input type="text" id="phone" class="form-control" placeholder="Phone"/>       	
+			      </div>
+			       
+			      <div class="form-group"> 	
+			       	<input type="text" id="email" class="form-control" placeholder="Email"/>      	
+			      </div>
+			      
+			      <div class="form-group">
+			       	<input type="text" id="address" class="form-control" placeholder="Address"/>
+			      </div> 	
+			       	       	
+			      <div class="form-group"> 	
+			       	<input type="textarea" id="notes" class="form-control" placeholder="Description"/>
+			      </div>	
+		       	<button type="button" id="tambahRoom" class="btn btn-warning">+ROOM</button></br></br>
+		       
+		       	<div class="card-content table-responsive">
+	               <table id="table-room" class="table table-hover">
+	                   <thead class="text-warning">
+	                       <th>CODE</th>
+	                       <th>NAME</th>
+	                       <th>CAPACITY</th>
+	                       <th> </th>
+	                   </thead>
+	                   <tbody id="list-room">
+	                   	
+	                   </tbody>
+	                 </table>
+	             </div>
+		      
+		      </div>
+		      <div class="modal-footer">
+		        <button type="submit" id="btn-edit-office" class="btn btn-primary" data-dismiss="modal">Save</button>
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+		      </div>
+		      </form>
+		    </div>
+		  </div>
+		</div>
+		
+		
+		</body>
 <!--   Core JS Files   -->
 <script src="${pageContext.request.contextPath}/resources/assets/js/jquery-3.2.1.min.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap.min.js" type="text/javascript"></script>
@@ -342,6 +410,182 @@
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script src="${pageContext.request.contextPath}/resources/assets/js/demo.js"></script>
 <script type="text/javascript">
+
+		//tampil data room ke table
+		jQuery(document).ready(function(){
+			$('#saveRoom').click(function(event){
+				event.preventDefault();
+			//event listener on click
+			var code = jQuery('#code').val();
+			var name = jQuery('#name-room').val();
+			var capacity = jQuery('#capacity').val();
+			var radio= $('input[name=sama]:checked').val();
+			var description = jQuery('#description').val();
+			
+			var room = {
+					code : code,
+					name : name,
+					capacity : capacity,
+					radio : radio,
+					description : description
+	
+				};
+			
+			var dataId = $('#id-add-room').val();
+			if (dataId!="" || dataId!='') {
+				var trItem = $('#'+dataId);
+				
+				trItem.find('.txt-code').val(room.code);
+				trItem.find('.txt-name').val(room.name);
+				trItem.find('.txt-capacity').val(room.capacity);
+				trItem.find('.txt-description').val(room.description);
+			}else{		
+			
+			
+			var oTable = $('#table-room'); //id table room
+			var tbody = oTable.find('tbody');
+			var index = $('#list-room tr').length;
+			var tr = "<tr id='data_"+index +"'>"+
+					"<td><input type='text' name='txtcode' class='form-control txt-code' value='"+room.code+"'/></td>"+
+					"<td><input type='text' name='txtname' class='form-control txt-name' value='"+room.name+"'/></td>" +
+					"<td><input type='text' name='txtcapacity' class='form-control txt-capacity' value='"+room.capacity+"'/></td>"+
+					"<td>"+
+					"<input type='hidden' name='txtdescription' class='form-control txt-description' value='"+room.description+"'/>"+
+						"<button type='button' class='btn btn-primary btn-sm btn-edit-room'>Edit </button>"+
+						"<button type='button' class='btn btn-secondary btn-sm btn-deactive-room'>Deactive </button>"+
+					"</td>"+
+				"</tr>";
+	        tbody.append(tr);
+			}
+	        $('#addOffice').modal('show');
+			$('#addRoom').modal('hide');
+			
+			
+			emptyAddRoom();
+			});
+		
+		//add office dan room udah masuk ke database
+		jQuery(document).ready(function(){
+			$('#submitOffice').click(function(event){
+				event.preventDefault();
+			//event listener on click
+			var name = jQuery('#name').val();
+			var phone = jQuery('#phone').val();
+			var email = jQuery('#email').val();
+			var address = jQuery('#address').val();
+			var desc = jQuery('#notes').val();
+			
+			var office = {
+					name : name,
+					phone : phone,
+					email : email,
+					address : address,
+					notes : desc,
+					rooms :[]
+				};
+			
+			var oTable = $('#table-room');
+			var tbody = oTable.find('tbody');
+			var listRoom = [];
+			$.each(tbody.find('tr'), function(index, value){
+					var code = $(this).find('.txt-code').val();
+					var nameRoom = $(this).find('.txt-name').val();
+					var capacity = $(this).find('.txt-capacity').val();
+					var description = $(this).find('.txt-description').val();
+					var rms = {
+							code : code,
+							name : nameRoom,
+							capacity : capacity,
+							notes : description,
+							any_projector : true,
+			};
+					office.rooms.push(rms);
+			});
+			
+			//console.log(office);
+			
+			jQuery.ajax({
+				url: '${pageContext.request.contextPath}/office/save',
+				type : 'POST',
+				contentType : 'application/json',
+				data : JSON.stringify(office),
+				success : function(data){
+					window.location = '${pageContext.request.contextPath}/office'
+				},error: function(){
+					alert('update failed');
+				}
+			})
+			});
+			
+			
+	    });
+		
+		//edit room sebelum masuk db
+		$('#list-room').on('click', '.btn-edit-room', function(){
+			var trItem = $(this).parent().parent();
+			
+			var code = trItem.find('.txt-code').val();
+			var name = trItem.find('.txt-name').val();
+			var capacity = trItem.find('.txt-capacity').val();
+			var description = trItem.find('.txt-description').val();
+			
+			var dataId= trItem.attr('id');
+			$('#id-add-room').val(dataId);
+			$('#code').val(code);
+			$('#name-room').val(name);
+			$('#capacity').val(capacity);
+			$('#description').val(description);
+			
+			$('#addRoom').modal('show');
+			
+		});
+		
+		/*  //edit office
+		$(".btn-edit").on('click', function(){
+			 var id = $(this).attr('id');
+			 $.ajax({
+				 url : '${pageContext.request.contextPath}/office/get/'+ id,
+				 type: 'GET',
+				 success : function(data){
+					 $('#name').val(data.name);
+					 $('#phone').val(data.phone);
+					 $('#email').val(data.email);
+					 $('#address').val(data.address);
+					 $('#notes').val(data.notes);
+				 },
+				 dataType: 'json'
+			 })
+			 
+			$('#modal-edit-office').modal();
+		 }); 
+		
+		 $('#btn-edit-office').on('click', function(){
+				var office = {
+					name : $('#name').val(),
+	   				phone :  $('#phone').val(),
+	   				email : $('#email').val(),
+	   				address : $('#address').val(),
+	   				notes :  $('#notes').val(),
+				}
+				
+				ajaxSetUp();
+				$.ajax({
+					url : '${pageContext.request.contextPath}/office/update',
+					type: 'POST',
+					data: JSON.stringify(office),
+					contentType: "application/json",
+					success : function(data){
+						window.location = "${pageContext.request.contextPath}/office";
+					},error: function(){
+						alert('update failed');
+					}
+				});
+		 }); */
+	    });
+	
+		
+		 
+	//------------------------------------------------------------	
     $(document).ready(function() {
     	//setting up datepicker
     	$('#birthDate123').datepicker();
@@ -353,7 +597,7 @@
     		    xhr.setRequestHeader(header, token);
     		  });
     	 }
-    	 
+    	   
     	 $('#table-user').DataTable();
     	 
     	 $('.btn-hapus').on('click', function(){
@@ -375,6 +619,7 @@
     		 
     		 return false;
     	 });
+   //------------------------------------------------------------------ 	 
     	 
     	//logout event button
     	 $('#logout').click(function(event){
@@ -389,6 +634,8 @@
     	
     	$('#tambahRoom').click(function(event){
     		event.preventDefault();
+    		
+    		emptyAddRoom();
     		$('#addOffice').modal('hide');
     		$('#addRoom').modal();
     	});
@@ -397,9 +644,16 @@
     		$('#addOffice').modal('show');
     		$('#addRoom').modal('hide');
     		
-    	});
-    	
+    	});    	
     });
+	
+    function emptyAddRoom(){
+		$('#id-add-room').val('');
+		$('#code').val('');
+		$('#name-room').val('');
+		$('#capacity').val('');
+		$('#description').val('');
+	}
 </script>
 
 </html>
