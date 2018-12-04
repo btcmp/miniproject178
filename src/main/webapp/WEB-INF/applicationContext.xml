@@ -45,7 +45,8 @@
 				<value>com.miniproject.training.model.BootcampTestType</value>
 				<value>com.miniproject.training.model.Technology</value>
 				<value>com.miniproject.training.model.TechnologyTrainer</value>
-				<value>com.miniproject.training.model.Trainer</value>
+ 				<value>com.miniproject.training.model.Trainer</value>
+				<value>com.miniproject.training.model.Testimony</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

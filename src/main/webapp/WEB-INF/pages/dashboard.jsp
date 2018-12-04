@@ -89,8 +89,16 @@
 							<p>Questions</p>
 					</a></li>
 					<li><a href="${pageContext.request.contextPath }/technology">
-							<i class="material-icons">library_books</i>
+							<i class="material-icons">developer_mode</i>
 							<p>Technology</p>
+					</a></li>
+					<li class="active"><a href="${pageContext.request.contextPath }/trainer">
+							<i class="material-icons">supervisor_account</i>
+							<p>Trainer</p>
+					</a></li>
+					<li><a href="${pageContext.request.contextPath }/testimony">
+							<i class="material-icons">list</i>
+							<p>Testimony</p>
 					</a></li>
 					<li>
                         <a href="#" id="logout">
