@@ -49,7 +49,7 @@
 				<value>com.miniproject.training.model.IdleNews</value>
 				<value>com.miniproject.training.model.Testimony</value>
 				<value>com.miniproject.training.model.Batch</value>
-				<value>com.miniproject.training.model.class</value>
+				<value>com.miniproject.training.model.Class</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
