@@ -46,7 +46,7 @@ public class Room {
 	@Column(name="modified_on")
 	private Date modifiedOn;
 	@Column(nullable=true)
-	private Boolean active;
+	private Boolean active = true;
 	
 	@ManyToOne
 	@JoinColumn(name="office_id", nullable=false)
