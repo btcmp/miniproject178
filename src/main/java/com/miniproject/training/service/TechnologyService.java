@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.miniproject.training.dao.TechnologyDao;
+import com.miniproject.training.dao.TechnologyTrainerDao;
 import com.miniproject.training.model.Technology;
+import com.miniproject.training.model.TechnologyTrainer;
 
 @Service
 @Transactional
@@ -16,6 +18,9 @@ public class TechnologyService {
 	
 	@Autowired
 	TechnologyDao technologyDao;
+	
+	@Autowired
+	TechnologyTrainerDao technologyTrainerDao;
 
 	public List<Technology> getAllTechnology() {
 		// TODO Auto-generated method stub
@@ -24,7 +29,19 @@ public class TechnologyService {
 
 	public void save(Technology technology) {
 		// TODO Auto-generated method stub
-		technologyDao.save(technology);
+		Technology tech = new Technology();
+		tech.setName(technology.getName());
+		tech.setNote(technology.getNote());
+		tech.setActive(technology.isActive());
+		technologyDao.save(tech);
+		if (!technology.getTechTran().isEmpty()) {
+			for (TechnologyTrainer techTrain : technology.getTechTran()) {
+				TechnologyTrainer techTrainer = new TechnologyTrainer();
+				techTrainer.setTechnology(tech);
+				techTrainer.setTrainer(techTrain.getTrainer());
+				technologyTrainerDao.save(techTrainer);
+			}
+		}
 	}
 
 	public Technology getAllTechnologyById(long id) {

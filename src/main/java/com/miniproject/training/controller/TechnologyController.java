@@ -84,6 +84,13 @@ public class TechnologyController {
 		Technology technology=technologyService.getAllTechnologyById(id);
 		return technology;
 	}
+	
+	@RequestMapping(value="/get1/{id}",method=RequestMethod.GET)
+	@ResponseBody
+	public Trainer getTrainerById(@PathVariable long id) {
+		Trainer trainer=trainerService.getAllTrainerById(id);
+		return trainer;
+	}
 	//save trainer
 	@RequestMapping(value="/savetrain",method=RequestMethod.POST)
 	@ResponseBody

@@ -262,6 +262,13 @@ input.parsley-error {
 												<th>Action</th>
 											</thead>
 											<tbody>
+												<!--  <tr>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td></td>
+													<td></td>
+												</tr> --> 
 												 <%-- <c:forEach var="dept" items="${training}">
 													<tr>
 														<td><c:out value="${dept.name}"></c:out></td>
@@ -309,7 +316,7 @@ input.parsley-error {
 						<form
 							action="${pageContext.request.contextPath }/technology/savetrain" method="POST">
 							<div class="form-group">
-								<select id="trainer-dropdown" name="training" class="form-control">
+								<select id="trainerId" name="training" class="form-control">
 									<option>--Trainer--</option>
 									<c:forEach items="${training}" var="train">
 										<option value="${train.id}">${train.name}</option>
@@ -445,7 +452,9 @@ input.parsley-error {
 							});
 						}
 
-						/* $('#table-user').DataTable(); */
+						 $('#table-trainer').DataTable({
+							 searching:false
+						 });
 
 						$('.btn-hapus').on('click',function() {var conf = confirm("Are you sure delete this data ?");
 											if (conf == true) {
@@ -483,6 +492,7 @@ input.parsley-error {
 				    				 $('#id-technology').val(data.id);
 				    				 $('#name1').val(data.name);
 				    				 $('#note1').val(data.note);
+				    				 console.log(data)
 				    				 /* $('#edit-department').val(data.department.id); */
 				    			 },
 				    			 dataType: 'json'
@@ -526,6 +536,7 @@ input.parsley-error {
 								});
 								
 							});
+						 
 
 						
 						//modal tambah technology
@@ -547,13 +558,64 @@ input.parsley-error {
 						//add trainer
 						var button = jQuery('#btn-save-trainer-submit').click(function(event){
 							event.preventDefault();
-							var name = jQuery('#trainer-dropdown').val();
+					    		 var id = $('#trainerId option:selected').val(); 
+					    		 console.log(id);
+					    		 $.ajax({
+					    			 url : '${pageContext.request.contextPath}/technology/get1/'+ id,
+					    			 type: 'GET',
+					    			 success : function(data){
+					    				 /* $('#id-technology').val(data.id);
+					    				 $('#name1').val(data.name);
+					    				 $('#note1').val(data.note) */;
+					    				 console.log(data)
+					    				 /* $('#edit-department').val(data.department.id); */
+					    				 var table = document.getElementById("table-trainer");
+										    var row = table.insertRow(1);
+										    	row.id=data.id;
+										    var cell0 = row.insertCell(0);
+										    var cell1 = row.insertCell(1);
+										    var cell2 = row.insertCell(2);
+										    var cell3 = row.insertCell(3);
+										    var cell4 = row.insertCell(4)
+										    cell0.innerHTML = data.name;
+										    cell1.innerHTML = data.createdBy;
+										    if (data.active==true) {
+										    	cell2.innerHTML = "Active";
+											} else {
+												cell2.innerHTML = "Not Active";
+											}
+										    var button1 = document.createElement("input");
+										    button1.type = "button";
+										    button1.value = "EDIT";
+										    button1.id = data.id;
+										    button1.classList.add("btn-hapus");
+										    button1.classList.add("btn");
+										    button1.classList.add("btn-danger");
+										    button1.classList.add("btn-sm");
+										    var button2 = document.createElement("input");
+										    button2.type = "button";
+										    button2.value = "DEACTIVED";
+										    button2.id = data.id;
+										    button2.classList.add("btn-hapus");
+										    button2.classList.add("btn");
+										    button2.classList.add("btn-danger");
+										    button2.classList.add("btn-sm");
+										    cell3.appendChild(button1);
+										    cell3.appendChild(button2);
+										    
+					    			 },
+					    			 dataType: 'json'
+					    		 
+							 });
+
+
 							var active=true;
 							var trainer = {
 									name:name,
-									note:note,
 									active:active
 							}
+							
+							
 						/* 	var otable=$('#table-trainer');
 							var tbody=otable.find('tbody');
 									var tr ="<tr>";
@@ -577,12 +639,21 @@ input.parsley-error {
 							/* var active=jQuery('#active').val(); */ 
 						    var note = jQuery('#note').val();
 							var active=1;
+							var technologyTrainers = [];
+				            $.each($('#trainerId option:selected'), function(){
+								var technologyTrainer = {
+										trainer:{
+											id:$(this).val()
+										}
+								}
+								technologyTrainers.push(technologyTrainer);
+				            });
 							
 							var technology = {
 									name:name,
 									note:note,
-									createdBy:createdBy,
 									active:active,
+									techTran:technologyTrainers
 							}
 							
 							jQuery.ajax({
@@ -598,8 +669,8 @@ input.parsley-error {
 									
 									console.log('data dari server');
 									console.log(data);
-									window.location='${pageContext.request.contextPath}/technology'
-								}
+/* 									window.location='${pageContext.request.contextPath}/technology'
+ */								}
 							});
 							
 						});

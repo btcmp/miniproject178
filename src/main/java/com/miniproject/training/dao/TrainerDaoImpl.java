@@ -25,5 +25,15 @@ public class TrainerDaoImpl implements TrainerDao{
 		Session session=sessionFactory.getCurrentSession();
 		session.save(trainer);
 	}
+	public Trainer getAllTrainerById(long id) {
+		// TODO Auto-generated method stub
+		Session session=sessionFactory.getCurrentSession();
+		String hql="from Trainer tr where tr.id= :data";
+		List<Trainer> trainer=session.createQuery(hql).setParameter("data", id).list();
+		if(trainer.isEmpty()) {
+			return null;
+		}
+		return trainer.get(0);
+	}
 
 }
