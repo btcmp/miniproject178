@@ -111,8 +111,16 @@ input.parsley-error {
 							<p>Questions</p>
 					</a></li>
 					<li class="active"><a href="${pageContext.request.contextPath }/technology">
-							<i class="material-icons">library_books</i>
+							<i class="material-icons">developer_mode</i>
 							<p>Technology</p>
+					</a></li>
+					<li><a href="${pageContext.request.contextPath }/trainer">
+							<i class="material-icons">supervisor_account</i>
+							<p>Trainer</p>
+					</a></li>
+					<li><a href="${pageContext.request.contextPath }/testimony">
+							<i class="material-icons">list</i>
+							<p>Testimony</p>
 					</a></li>
 					<li><a href="#" id="logout"> <i class="material-icons">block</i>
 							<p>Logout</p>
@@ -152,15 +160,27 @@ input.parsley-error {
 									<h4 class="title">Technology</h4>
 								</div>
 								<div class="card-content table-responsive">
-									<form action="${pageContext.request.contextPath }/technology">
-										<input type="search" name="search"
+									<form class="navbar-form navbar-left" role ="search" action="${pageContext.request.contextPath }/technology">
+										<div class="form-group is-empty">
+											<input class="form-control" type="text" name="search"
 											placeholder="Search by Technology" />
-										<button type="button" id="tambahTechnology"
-											class="btn btn-sm btn-primary">+Technology</button>
+										</div>
+										<span class="material-input"></span>
+										<span class="material-input"></span>
+										<button type= "submit" class="btn btn-primary btn-round btn-just-icon">
+										<i class="material-icons">search</i>
+										</button>
+										<div>
+											<button type="button" id="tambahTechnology"
+											class="btn btn-sm btn-primary">
+												<i class="material-icons">add</i>
+												technology
+											</button>
+										</div>
 									</form>
-
+									
 									<div class="table-responsive">
-										<table id="table-user" class="table">
+										<table id="table-technology" class="table">
 											<thead class="text-warning">
 												<th>Technology</th>
 												<th>Created By</th>
@@ -253,46 +273,21 @@ input.parsley-error {
 								class="form-control" placeholder="Enter note technology" ></textarea>
 							</div>
 							<button type="button" id="tambahTrainer" class="btn btn-primary bts-sm">+Trainer</button><br><br>
+									<div class="card">
 									<div class="table-responsive">
 										<table id="table-trainer" class="table">
 											<thead class="text-warning">
+												<th></th>
 												<th>Trainer</th>
 												<th>Created By</th>
 												<th>Status</th>
 												<th>Action</th>
 											</thead>
 											<tbody>
-												<!--  <tr>
-													<td></td>
-													<td></td>
-													<td></td>
-													<td></td>
-													<td></td>
-												</tr> --> 
-												 <%-- <c:forEach var="dept" items="${training}">
-													<tr>
-														<td><c:out value="${dept.name}"></c:out></td>
-														<td><c:out value="${dept.createdBy }"></c:out></td>
-														<td>
-															<c:choose>
-																<c:when test="${dept.active==true}">
-																	Active
-																</c:when>
-																<c:otherwise>
-   																	 Not Active
-  																</c:otherwise>
-															</c:choose>
-														</td>
-														<td><a id="${dept.id }" href="#"class="btn-hapus btn btn-danger btn-sm">Edit</a>
-														<a id="${dept.id }" href="#"
-															class="btn-hapus btn btn-danger btn-sm">Deactived</a>
-														</td>
-													</tr>
-												</c:forEach>
- 				 --%>						 	</tbody>
+ 				 						 	</tbody>
 										</table>
 									</div>
-		      
+		      						</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary"
 									data-dismiss="modal">Close</button>
@@ -369,19 +364,9 @@ input.parsley-error {
 													<tr>
 														<td><c:out value="${dept.name}"></c:out></td>
 														<td><c:out value="${dept.createdBy }"></c:out></td>
-														<td>
-															<c:choose>
-																<c:when test="${dept.active==true}">
-																	Active
-																</c:when>
-																<c:otherwise>
-   																	 Not Active
-  																</c:otherwise>
-															</c:choose>
+														<td><a id="${dept.id }" href="#"class="btn-edit1 btn btn-danger btn-sm">Edit</a>
 														</td>
-														<td><a id="${dept.id }" href="#"class="btn-hapus btn btn-danger btn-sm">Edit</a>
-														<a id="${dept.id }" href="#"
-															class="btn-hapus btn btn-danger btn-sm">Deactived</a>
+														<td><a id="${dept.id }" href="#"class="btn-hapus btn btn-danger btn-sm">Delete</a>
 														</td>
 													</tr>
 												</c:forEach>
@@ -452,9 +437,16 @@ input.parsley-error {
 							});
 						}
 
-						 $('#table-trainer').DataTable({
-							 searching:false
-						 });
+					 	   $('#table-trainer').DataTable({
+							 searching:false,
+							 bSort:false,
+							 paging:false
+						  });  
+						  $('#table-technology').DataTable({
+								 searching:false,
+								 bSort:false,
+								 paging:false
+						});  
 
 						$('.btn-hapus').on('click',function() {var conf = confirm("Are you sure delete this data ?");
 											if (conf == true) {
@@ -571,38 +563,41 @@ input.parsley-error {
 					    				 /* $('#edit-department').val(data.department.id); */
 					    				 var table = document.getElementById("table-trainer");
 										    var row = table.insertRow(1);
-										    	row.id=data.id;
 										    var cell0 = row.insertCell(0);
 										    var cell1 = row.insertCell(1);
 										    var cell2 = row.insertCell(2);
 										    var cell3 = row.insertCell(3);
-										    var cell4 = row.insertCell(4)
-										    cell0.innerHTML = data.name;
-										    cell1.innerHTML = data.createdBy;
+										    var cell4 = row.insertCell(4);
+										    var button = document.createElement("input");
+										    button.type = "hidden";
+										    button.id = data.id;
+										    button.name = "trainer";
+										    cell0.appendChild(button);
+										    cell1.innerHTML = data.name;
+										    cell2.innerHTML = data.createdBy;
 										    if (data.active==true) {
-										    	cell2.innerHTML = "Active";
+										    	cell3.innerHTML = "Active";
 											} else {
-												cell2.innerHTML = "Not Active";
+												cell3.innerHTML = "Not Active";
 											}
 										    var button1 = document.createElement("input");
 										    button1.type = "button";
 										    button1.value = "EDIT";
 										    button1.id = data.id;
-										    button1.classList.add("btn-hapus");
+										    button1.classList.add("btn-edit1");
 										    button1.classList.add("btn");
-										    button1.classList.add("btn-danger");
+										    button1.classList.add("btn-primary");
 										    button1.classList.add("btn-sm");
 										    var button2 = document.createElement("input");
 										    button2.type = "button";
-										    button2.value = "DEACTIVED";
+										    button2.value = "DELETE";
 										    button2.id = data.id;
 										    button2.classList.add("btn-hapus");
 										    button2.classList.add("btn");
 										    button2.classList.add("btn-danger");
 										    button2.classList.add("btn-sm");
-										    cell3.appendChild(button1);
-										    cell3.appendChild(button2);
-										    
+										    cell4.appendChild(button1);
+										    cell4.appendChild(button2);
 					    			 },
 					    			 dataType: 'json'
 					    		 
@@ -640,10 +635,10 @@ input.parsley-error {
 						    var note = jQuery('#note').val();
 							var active=1;
 							var technologyTrainers = [];
-				            $.each($('#trainerId option:selected'), function(){
+				            $.each($("input[name='trainer']:hidden"), function(){
 								var technologyTrainer = {
 										trainer:{
-											id:$(this).val()
+											id:$(this).attr('id')
 										}
 								}
 								technologyTrainers.push(technologyTrainer);
@@ -669,9 +664,9 @@ input.parsley-error {
 									
 									console.log('data dari server');
 									console.log(data);
-/* 									window.location='${pageContext.request.contextPath}/technology'
- */								}
-							});
+ 									window.location='${pageContext.request.contextPath}/technology'
+ 							}
+							}); 
 							
 						});
 				});				    	

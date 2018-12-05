@@ -91,15 +91,15 @@
 						<i class="material-icons">person</i>
 						<p>Biodata</p>
 					</a></li>
-					<li class="active">
+					<li>
                         <a href="${pageContext.request.contextPath }/office">
                             <i class="material-icons">meeting_room</i>
                             <p>Office</p>
                         </a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="${pageContext.request.contextPath }/bootcamp">
-                            <i class="material-icons">group</i>
+                            <i class="material-icons">work</i>
                             <p>Bootcamp Test Type</p>
                         </a>
                     </li>
@@ -137,7 +137,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#"> Office Datatable </a>
+                        <a class="navbar-brand" href="#"> Bootcamp Test Type Datatable </a>
                     </div>
                     <div class="collapse navbar-collapse">
                     </div>
@@ -159,24 +159,24 @@
 	                                    <h4 class="title">Office</h4>
 	                                </div>
 	                             	<div class="card-content table-responsive">
-	                             	<form action="${pageContext.request.contextPath }/office">
+	                             	<form action="${pageContext.request.contextPath }/bootcamp">
 									<input type="search" name="name" placeholder="Search by Name"/>
-									<button type="button" id="tambahOffice" class="btn btn-sm btn-primary"> + </button>
+									<button type="button" id="tambah-bootcamp" class="btn btn-sm btn-primary"> + </button>
 								</form>
 	            
                                 <div class="card-content table-responsive">
                                     <table id="table-user" class="table table-hover">
                                         <thead class="text-warning">
                                             <th>NAME</th>
-                                            <th>CONTACT</th>
+                                            <th>CREATED BY</th>
                                             <th>STATUS</th>
                                             <th></th>
                                         </thead>
                                         <tbody>
-                                            <c:forEach items = "${offices }" var="office">
+                                            <c:forEach items = "${bootcamps }" var="bootcamp">
                                             	<tr>
-                                            		<td><c:out value="${office.name }"></c:out></td>
-                                            		<td><c:out value="${office.phone }"></c:out></td>
+                                            		<td><c:out value="${bootcamp.name }"></c:out></td>
+                                            		<td><c:out value="${bootcamp.createdBy }"></c:out></td>
                                             		<td><c:out value="${office.active }"></c:out></td>
 	                                            	<td>
 	                                            		<button type="button" rel="tooltip" title="Edit" value="${office.id }" class="btn btn-success btn-simple btn-xs btn-edit">
@@ -236,17 +236,17 @@
         </div>
     </div>
     
-	<!-- Modal OFFICE  -->
-		<div class="modal fade" id="addOffice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	<!-- Modal ADD BOOTCAMP  -->
+		<div class="modal fade" id="add-bootcamp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 	  aria-hidden="true">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header text-center">
-	        <h3 class="modal-title w-100 font-weight-bold">ADD OFFICE</h3>
+	        <h3 class="modal-title w-100 font-weight-bold">ADD DATA</h3>
 	      </div>
 		      
 		      <div class="modal-body">
-			      <form  action="#" id = "form-office" method="POST">
+			      <form  action="#" method="POST">
 			      <div class="form-group">
 			      <input type="hidden" id="action" value="add" class="form-control" placeholder="Name"/>
 			      <input type="hidden" id="id" />
@@ -254,93 +254,19 @@
 			      </div>
 			      
 			      <div class="form-group">
-			      	<input type="text" id="phone" class="form-control" placeholder="Phone"/>       	
+			      	<input type="text" id="notes" class="form-control" placeholder="Notes"/>       	
 			      </div>
 			       
-			      <div class="form-group"> 	
-			       	<input type="text" id="email" class="form-control" placeholder="Email"/>      	
-			      </div>
-			      
-			      <div class="form-group">
-			       	<input type="text" id="address" class="form-control" placeholder="Address"/>
-			      </div> 	
 			       	       	
-			      <div class="form-group"> 	
-			       	<textarea type="text" id="notes" class="form-control" placeholder="Description"></textarea>
-			      </div>	
-			      <input type="hidden" id="createdOn" class="form-control" placeholder="Address"/>
-		       	<button type="button" id="tambahRoom" class="btn btn-warning">+ROOM</button></br></br>
-		       
-		       	<div class="card-content table-responsive">
-	               <table id="table-room" class="table table-hover">
-	                   <thead class="text-warning">
-	                       <th>CODE</th>
-	                       <th>NAME</th>
-	                       <th>CAPACITY</th>
-	                       <th> </th>
-	                   </thead>
-	                   <tbody id="list-room">
-	                   	
-	                   </tbody>
-	                 </table>
-	             </div>
-		      
-		      </div>
 		      <div class="modal-footer">
-		        <button type="submit" id="submitOffice" class="btn btn-primary" data-dismiss="modal">Save</button>
-		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+			        <button type="submit" id="submit-bootcamp" class="btn btn-primary" data-dismiss="modal">Save</button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 		      </div>
 		      </form>
 		    </div>
 		  </div>
 		</div>
-		
-	
-	<!-- Modal ROOM -->
-		<div class="modal fade" id="addRoom" tabindex="-1" role="dialog"
-			aria-labelledby="myModalLabel" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header text-center">
-						<h3 class="modal-title w-100 font-weight-bold">ADD ROOM</h3>
-					</div>
-					<div class="modal-body">
-					
-					<div class="modal-body">
-				      <div class="form-group">
-				      	<input type="hidden" id="id-add-room"/>
-				      	<input type="text" id="code" class="form-control" placeholder="Code"/>
-				      </div>
-				      
-				      <div class="form-group">
-				      	<input type="text" id="name-room" class="form-control" placeholder="Name"/>       	
-				      </div>
-				       
-				      <div class="form-group"> 	
-				       	<input type="text" id="capacity" class="form-control" placeholder="Capacity"/>      	
-				      </div>
-				      
-				      <div class="form-group"> 	
-				     	Any Projector? &nbsp;
-				     	<input type="radio" id="selection" name="sama" value="yes">True   &nbsp;
-				       	<input type="radio" id="selection1" name="sama" checked value="no">False</br>
-				      </div>
-				      
-				      <div class="form-group"> 	
-				       	<input type="text" id="description" class="form-control" placeholder="Description"/>      	
-				      </div>
-				      
-					</div>
-					<div class="modal-footer">
-						<button type="submit" id="saveRoom" class="btn btn-primary" >Add</button>
-						<button type="button" id="cancelRoom" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 
-					</div>
-				</div>
-			</div>
-		</div>
-		
-		
 		</body>
 <!--   Core JS Files   -->
 <script src="${pageContext.request.contextPath}/resources/assets/js/jquery-3.2.1.min.js" type="text/javascript"></script>
@@ -364,7 +290,38 @@
 <script src="${pageContext.request.contextPath}/resources/assets/js/demo.js"></script>
 <script type="text/javascript">
 
-		//tampil data room ke table
+		//add data btcmp
+		jQuery(document).ready(function(){
+			$('#submit-bootcamp').click(function(event){
+				event.preventDefault();
+			//event listener on click
+			//var action = $('#action').val();
+			var name = jQuery('#name').val();
+			var notes = jQuery('#notes').val();
+			
+			var bootcamp = {
+					name : name,
+					notes : notes,
+					
+			};
+			console.log(bootcamp);
+			
+			jQuery.ajax({
+				url: '${pageContext.request.contextPath}/bootcamp/save',
+				type : 'POST',
+				contentType : 'application/json',
+				data : JSON.stringify(bootcamp),
+				success : function(data){
+					alert('Data Berhasil di Add')
+					window.location = '${pageContext.request.contextPath}/bootcamp'
+				},error: function(){
+					alert('Add Data Failed');
+				}
+			}) 
+		});
+		});
+
+		/* //tampil data room ke table
 		jQuery(document).ready(function(){
 			$('#saveRoom').click(function(event){
 				event.preventDefault();
@@ -379,7 +336,7 @@
 					code : code,
 					name : name,
 					capacity : capacity,
-					any_projector : radio == 'yes' ? true : false,
+					any_projector : radio,
 					notes : description
 	
 				};
@@ -430,7 +387,6 @@
 			var address = jQuery('#address').val();
 			var desc = jQuery('#notes').val();
 			var id = jQuery('#id').val();
-			var date = new Date;
 			
 			var office = {
 					id : id,
@@ -439,19 +395,12 @@
 					email : email,
 					address : address,
 					notes : desc,
-					createdOn : date,
 					rooms :[]
 			};
 			
 			var oTable = $('#table-room');
 			var tbody = oTable.find('tbody');
 			var listRoom = [];
-			var projector = true;
-			/* if (radio == 'yes') {
-				projector = true;
-			}else{
-				projector = false; */
-			//}
 			$.each(tbody.find('tr'), function(index, value){
 					var code = $(this).find('.txt-code').val();
 					var nameRoom = $(this).find('.txt-name').val();
@@ -464,6 +413,7 @@
 							name : nameRoom,
 							capacity : capacity,
 							notes : description,
+							any_projector : true,
 			};
 					office.rooms.push(rms);
 			});
@@ -485,7 +435,7 @@
 						alert('Add Data Failed');
 					}
 				})
-			 }else{
+			}else{
 				jQuery.ajax({
 					url: '${pageContext.request.contextPath}/office/editoffice',
 					type : 'POST',
@@ -512,7 +462,6 @@
 			var name = trItem.find('.txt-name').val();
 			var capacity = trItem.find('.txt-capacity').val();
 			var description = trItem.find('.txt-description').val();
-			var radio = trItem.find('.txt-radio').val();
 			
 			var dataId= trItem.attr('id');
 			$('#id-add-room').val(dataId);
@@ -520,19 +469,10 @@
 			$('#name-room').val(name);
 			$('#capacity').val(capacity);
 			$('#description').val(description);
-			console.log(radio);
-			if (radio == "true") {
-				$('#selection').prop('checked',true);
-				$('#selection1').prop('checked',false);
-			}
-			else{
-				$('#selection1').prop('checked',true);
-				$('#selection').prop('checked',false);
-			}
-			
 			
 			$('#addRoom').modal('show');
 			$('#addOffice').modal('hide');
+			
 		});
 		
 		//button edit office
@@ -565,7 +505,6 @@
 							"<td>"+
 							"<input type='hidden' name='txtdescription' class='form-control txt-description' value='"+room.notes+"'/>"+
 							"<input type='hidden' name='txtid' class='form-control txt-id' value='"+room.id+"'/>"+
-							"<input type='hidden' name='txtradio' class='form-control txt-radio' value='"+room.any_projector+"'/>"+
 								"<button type='button' class='btn btn-primary btn-sm btn-edit-room'>Edit </button>"+
 								"<button type='button' class='btn btn-secondary btn-sm btn-deactive-room'>Deactive </button>"+
 							"</td>"+
@@ -578,7 +517,7 @@
 				
 			 }); 			 
 			//
-		 }); 
+		 });  */
 		
 		/*  $('#btn-edit-office').on('click', function(){
 				var office = {
@@ -600,12 +539,9 @@
 					},error: function(){
 						alert('update failed');
 					}
-				}); */
-		 });
+				}); 
+		 }); */
 	
-		function clearAllForm(formId){
-			$(formId).trigger("reset");
-		}
 		
 		 
 	//------------------------------------------------------------	
@@ -650,12 +586,10 @@
     		$('#logoutForm').submit();
     	 });
     	
-    	$('#tambahOffice').click(function(event){
+    	$('#tambah-bootcamp').click(function(event){
     		event.preventDefault();
-    		clearAllForm('#form-office');
-    		$('#table-room tbody tr').remove();
-    		$('#addOffice').modal();
-    		$('#action').val('add');
+    		$('#add-bootcamp').modal();
+    		//$('#action').val('add');
     	});
     	
     	$('#tambahRoom').click(function(event){
