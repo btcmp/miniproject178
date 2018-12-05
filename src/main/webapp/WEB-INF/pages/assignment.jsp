@@ -70,15 +70,16 @@
 						<i class="material-icons">person</i>
 						<p>Biodata</p>
 					</a></li>
-					<li class="active"><a href="${pageContext.request.contextPath }/monitoring"> 
+					<li><a href="${pageContext.request.contextPath }/monitoring"> 
 						<i class="material-icons">work</i>
 						<p>Monitoring</p>
 					</a></li>
-					<li><a href="${pageContext.request.contextPath }/assignment"> 
+					<li class="active"><a href="${pageContext.request.contextPath }/assignment"> 
 						<i class="material-icons">work</i>
 						<p>Assignment</p>
 					</a></li>
-					<li><a href="${pageContext.request.contextPath }/office">
+					<li>
+                        <a href="${pageContext.request.contextPath }/office">
                             <i class="material-icons">work</i>
                             <p>Office</p>
                         </a>
@@ -111,7 +112,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="#"> MONITORING TABLE </a>
+						<a class="navbar-brand" href="#"> ASSIGNMENT TABLE </a>
 					</div>
 				</div>
 			</nav>
@@ -122,14 +123,14 @@
 						<div class="col-lg-12 col-md-12">
 							<div class="card">
 								<div class="card-header" data-background-color="orange">
-									<h4 class="title">Idle Monitoring</h4>
+									<h4 class="title">Assignment</h4>
 									<p class="category">
 								</div>
 					
 	                           	<div class="card-content table-responsive">
-	                           		<form action="${pageContext.request.contextPath }/monitoring">
+	                           		<form action="${pageContext.request.contextPath }/assignment">
 	                           			<input type="search" id="search" placeholder="Search by Name"/>
-	                           			<button type="button" id="tambahMonitoring" class="btn btn-sm btn-primary"> + </button>
+	                           			<button type="button" id="tambahAssignment" class="btn btn-sm btn-primary"> + </button>
                        				</form>
 	                     		</div>
 								
@@ -137,26 +138,29 @@
 									<table id="table-user" class="table table-hover">
 										<thead class="text-warning">
 											<th>NAME</th>
-											<th>IDLE DATE</th>
-											<th>PLACEMENT DATE</th>
+											<th>START DATE</th>
+											<th>END DATE</th>
 											<th>ACTION</th>
 										</thead>
 										<tbody>
-											<c:forEach var="monitoring" items="${monitorings }">
+											<c:forEach var="assignment" items="${assignments }">
 												<tr>
-													<td><c:out value="${monitoring.testId.name }"></c:out></td>
-													<td><c:out value="${monitoring.idleDate }"></c:out></td>
-													<td><c:out value="${monitoring.placementDate }"></c:out></td>
+													<td><c:out value="${assignment.testId.name }"></c:out></td>
+													<td><c:out value="${assignment.startDate }"></c:out></td>
+													<td><c:out value="${assignment.endDate }"></c:out></td>
 													<td>
-														<button id="${monitoring.id }" type="button" rel="tooltip" title="Edit ${monitoring.testId.name }" class="btn btn-success btn-simple btn-xs btn-edit">
+														<button id="${assignment.id }" type="button" rel="tooltip" title="Edit ${assignment.testId.name }" class="btn btn-success btn-simple btn-xs btn-edit">
 										                    <i class="fa fa-edit"></i>
 										                </button>
-										                <button id="${monitoring.id }" type="button" rel="tooltip" title="Placement ${monitoring.testId.name }" class="btn btn-warning btn-simple btn-xs btn-placement">
-										                    <i class="fa fa-edit"></i>
-										                </button>
-										                <button id="${monitoring.id }" type="button" rel="tooltip" title="Deactive ${monitoring.testId.name }" class="btn btn-danger btn-simple btn-xs btn-delete">
+										                <button id="${assignment.id }" type="button" rel="tooltip" title="Deactive ${assignment.testId.name }" class="btn btn-danger btn-simple btn-xs btn-delete">
 										                    <i class="fa fa-times"></i>
 										             	</button>
+										             	<button id="${assignment.id }" type="button" rel="tooltip" title="Hold ${assignment.testId.name }" class="btn btn-warning btn-simple btn-xs btn-hold">
+										                    <i class="fa fa-edit"></i>
+										                </button>
+										                <button id="${assignment.id }" type="button" rel="tooltip" title="Mark As Done ${assignment.testId.name }" class="btn btn-secondary btn-simple btn-xs btn-done">
+										                    <i class="fa fa-check"></i>
+										                </button>
 										            </td>
 												</tr>
 											</c:forEach>
@@ -193,18 +197,18 @@
 	</div>
 	
 <!-- Modal -->
-	<div class="modal fade" id="addMonitoring" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="addAssignment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header text-center">
-					<h3 class="modal-title w-100 font-weight-bold">Input Idle</h3>
+					<h3 class="modal-title w-100 font-weight-bold">Create Assignment</h3>
 				</div>
 		     	
 		     	<div class="modal-body">
 		     		<input type="hidden" id="action" value="add">
 		     		<input type="hidden" name="createdOn" id="createdOn"/>
 		     		
-		     		<form action="${pageContext.request.contextPath }/monitoring/save" method="POST">
+		     		<form action="${pageContext.request.contextPath }/assignment/save" method="POST">
 				      	<div class="form-group">
 							<select class="form-control" id="biodata-id" name="testId">
 								<c:forEach items="${biodatas }" var="biodata">
@@ -213,14 +217,16 @@
 							</select>
 						</div>
 						<div class="form-group">
-							<input type="text" id="idleDate" class="form-control" placeholder="Idle Date">
-						</div>
-						
-						<div class="form-group">
-							<input type="text" id="lastProject" class="form-control" placeholder="Last Project At" />
+							<input type="text" id="title" class="form-control" placeholder="Title" />
 						</div>
 						<div class="form-group">
-							<input type="text" id="idleReason" class="form-control" placeholder="Idle Reason" />
+							<input type="text" id="startDate" class="form-control" placeholder="Start Date">
+						</div>
+						<div class="form-group">
+							<input type="text" id="endDate" class="form-control" placeholder="End Date" />
+						</div>
+						<div class="form-group">
+							<input type="text" id="description" class="form-control" placeholder="Description" />
 						</div>	
 
 						<div class="modal-footer">
@@ -323,32 +329,30 @@
 	function formEmpty(){
 		$('#id').val("");
 		$('#testId').val("");
-		$('#idleDate').val("");
-		$('#lastProject').val("");
-		$('#idleReason').val("");
+		$('#title').val("");
+		$('#startDate').val("");
+		$('#endDate').val("");
+		$('#description').val("");
 		$('#createdOn').val("");
-		$('#placementDate').val("");
-		$('#placementAt').val("");
-		$('#notes').val("");
 	}
 
 	$(document).ready(function(){
 		//modal1
-		$('#tambahMonitoring').click(function(event) {
+		$('#tambahAssignment').click(function(event) {
 			event.preventDefault();
 			$('#action').val('add');
 			formEmpty();
-			$('#addMonitoring').modal();
+			$('#addAssignment').modal();
 		});
 		
-		//setting up datepicker idleDate
-		$('#idleDate').datepicker({
+		//setting up datepicker startDate
+		$('#startDate').datepicker({
 	   		format: 'yyyy-mm-dd',
 	    	autoclose: true
 		});
 		
-		//setting up datepicker placementDate
-		$('#placementDate').datepicker({
+		//setting up datepicker ednDate
+		$('#endDate').datepicker({
 	   		format: 'yyyy-mm-dd',
 	    	autoclose: true
 		});
@@ -361,33 +365,35 @@
 			var action=$('#action').val();
 				
 			if(action=='add'){
-				var idleDate=jQuery('#idleDate').val();
-				var lastProject=jQuery('#lastProject').val();
-				var idleReason=jQuery('#idleReason').val();
+				var title=jQuery('#title').val();
+				var startDate=jQuery('#startDate').val();
+				var endDate=jQuery('#endDate').val();
+				var description=jQuery('#description').val();
 				
-				var idle={
+				var assign={
 	 					testId:{
 	 						id:testId,
 	 					},
-						idleDate:idleDate,
-						lastProject:lastProject,
-						idleReason:idleReason,
+	 					title:title,
+	 					startDate:startDate,
+	 					endDate:endDate,
+	 					description:description,
 						createdOn:date
 				};
 				
 				jQuery.ajax({
-					url:'${pageContext.request.contextPath}/monitoring/save',
+					url:'${pageContext.request.contextPath}/assignment/save',
 					type:'POST',
 					beforeSend: function(){
-						console.log(idle);
+						console.log(assign);
 						console.log('contact server');
 					},
 					contentType:'application/json',
-					data:JSON.stringify(idle),
+					data:JSON.stringify(assign),
 					success: function(data){
 						console.log(data);
-						alert('Idle berhasil ditambahkan');
-						window.location='${pageContext.request.contextPath}/monitoring'
+						alert('Assignment berhasil ditambahkan');
+						window.location='${pageContext.request.contextPath}/assignment'
 					}
 				});
 			}
@@ -397,18 +403,16 @@
 						testId:{
 							id:testId,
 						},
-						placementDate:$('#placementDate').val(),
-						placementAt:$('#placementAt').val(),
-						notes:$('#notes').val(),
-						idleDate:$('#idleDate').val(),
-						lastProject:$('#lastProject').val(),		
-						idleReason:$('#idleReason').val(),
+						title:$('#title').val(),
+						startDate:$('#startDate').val(),
+						endDate:$('#endDate').val(),
+						description:$('#description').val(),
 						createdOn:$('#createdOn').val(),
 						modifiedOn:date
 				};
 				
 				jQuery.ajax({
-					url:'${pageContext.request.contextPath}/monitoring/edit',
+					url:'${pageContext.request.contextPath}/assignment/edit',
 					type:'POST',
 					beforeSend: function(){
 						console.log(editidle);
@@ -418,75 +422,13 @@
 					data:JSON.stringify(editidle),
 					success: function(data){
 						console.log(data);
-						alert('Edit idle berhasil');
-						window.location='${pageContext.request.contextPath}/monitoring';
+						alert('Edit assignment berhasil');
+						window.location='${pageContext.request.contextPath}/assignment';
 					}
 				})
 			}
 		});
-		
-		//get id
-		jQuery('.btn-placement').click(function(event){
-			event.preventDefault();
-			var id=$(this).attr('id');
-			$.ajax({
-				url : '${pageContext.request.contextPath}/monitoring/get/'+ id,
-				type :'GET',
-				dataType:'json',
-				success : function(data){
-					$('#id').val(data.id);
-					$('#testId').val(data.testId);
-					$('#idleDate').val(data.idleDate);
-					$('#lastProject').val(data.lastProject);
-					$('#idleReason').val(data.idleReason);
-					$('#createdOn').val(data.createdOn);
-					$('#placementDate').val(data.placementDate);
-					$('#placementAt').val(data.placementAt);
-					$('#notes').val(data.notes);
-				},
-			})
-			$('#addPlacement').modal();
-		})
-		
-		//saving placement
-		jQuery('#saving-placement').click(function(event){
-			event.preventDefault();
-			var date=new Date();
-			var testId= $('#biodata-id option:selected').val();
-			
-			var placement={
-					id:$('#id').val(),
-					testId:{
-						id:testId,
-					},
-					placementDate:$('#placementDate').val(),
-					placementAt:$('#placementAt').val(),
-					notes:$('#notes').val(),
-					idleDate:$('#idleDate').val(),
-					lastProject:$('#lastProject').val(),		
-					idleReason:$('#idleReason').val(),
-					createdOn:$('#createdOn').val(),
-					modifiedOn:date
-			};
-			
-			jQuery.ajax({
-				url:'${pageContext.request.contextPath}/monitoring/edit',
-				type:'POST',
-				beforeSend: function(){
-					console.log(placement);
-					console.log('contact server');
-				},
-				contentType:'application/json',
-				data:JSON.stringify(placement),
-				success: function(data){
-					console.log(data);
-					alert('Placement berhasil ditambahkan');
-					window.location='${pageContext.request.contextPath}/monitoring'
-				}
-			});
-		});
- 
-		
+
 		//get id edit
 		jQuery('.btn-edit').click(function(event){
 			event.preventDefault();
@@ -494,23 +436,21 @@
 			var action=('edit');
 			
 			$.ajax({
-				url : '${pageContext.request.contextPath}/monitoring/get/'+ id,
+				url : '${pageContext.request.contextPath}/assignment/get/'+ id,
 				type :'GET',
 				dataType:'json',
 				success : function(data){
 					$('#id').val(data.id);
 					$('#action').val(action);
 					$('#testId').val(data.testId);
-					$('#idleDate').val(data.idleDate);
-					$('#lastProject').val(data.lastProject);
-					$('#idleReason').val(data.idleReason);
+					$('#title').val(data.title);
+					$('#startDate').val(data.startDate);
+					$('#endDate').val(data.endDate);
 					$('#createdOn').val(data.createdOn);
-					$('#placementDate').val(data.placementDate);
-					$('#placementAt').val(data.placementAt);
-					$('#notes').val(data.notes);
+					$('#description').val(data.description);
 				},
 			})
-			$('#addMonitoring').modal();
+			$('#addAssignment').modal();
 		})
 
 		//nonactive

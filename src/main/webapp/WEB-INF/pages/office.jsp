@@ -93,8 +93,14 @@
 					</a></li>
 					<li class="active">
                         <a href="${pageContext.request.contextPath }/office">
-                            <i class="material-icons">work</i>
+                            <i class="material-icons">meeting_room</i>
                             <p>Office</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="${pageContext.request.contextPath }/bootcamp">
+                            <i class="material-icons">group</i>
+                            <p>Bootcamp Test Type</p>
                         </a>
                     </li>
 					<li><a href="${pageContext.request.contextPath }/question">
@@ -240,7 +246,7 @@
 	      </div>
 		      
 		      <div class="modal-body">
-			      <form  action="#" method="POST">
+			      <form  action="#" id = "form-office" method="POST">
 			      <div class="form-group">
 			      <input type="hidden" id="action" value="add" class="form-control" placeholder="Name"/>
 			      <input type="hidden" id="id" />
@@ -260,8 +266,9 @@
 			      </div> 	
 			       	       	
 			      <div class="form-group"> 	
-			       	<input type="textarea" id="notes" class="form-control" placeholder="Description"/>
+			       	<textarea type="text" id="notes" class="form-control" placeholder="Description"></textarea>
 			      </div>	
+			      <input type="hidden" id="createdOn" class="form-control" placeholder="Address"/>
 		       	<button type="button" id="tambahRoom" class="btn btn-warning">+ROOM</button></br></br>
 		       
 		       	<div class="card-content table-responsive">
@@ -315,8 +322,8 @@
 				      
 				      <div class="form-group"> 	
 				     	Any Projector? &nbsp;
-				     	<input type="radio" id="selection" name="sama" value="Yes">True   &nbsp;
-				       	<input type="radio" id="selection" name="sama" value="No">False</br>
+				     	<input type="radio" id="selection" name="sama" value="yes">True   &nbsp;
+				       	<input type="radio" id="selection1" name="sama" checked value="no">False</br>
 				      </div>
 				      
 				      <div class="form-group"> 	
@@ -372,7 +379,7 @@
 					code : code,
 					name : name,
 					capacity : capacity,
-					any_projector : radio,
+					any_projector : radio == 'yes' ? true : false,
 					notes : description
 	
 				};
@@ -423,6 +430,7 @@
 			var address = jQuery('#address').val();
 			var desc = jQuery('#notes').val();
 			var id = jQuery('#id').val();
+			var date = new Date;
 			
 			var office = {
 					id : id,
@@ -431,12 +439,19 @@
 					email : email,
 					address : address,
 					notes : desc,
+					createdOn : date,
 					rooms :[]
 			};
 			
 			var oTable = $('#table-room');
 			var tbody = oTable.find('tbody');
 			var listRoom = [];
+			var projector = true;
+			/* if (radio == 'yes') {
+				projector = true;
+			}else{
+				projector = false; */
+			//}
 			$.each(tbody.find('tr'), function(index, value){
 					var code = $(this).find('.txt-code').val();
 					var nameRoom = $(this).find('.txt-name').val();
@@ -449,7 +464,6 @@
 							name : nameRoom,
 							capacity : capacity,
 							notes : description,
-							any_projector : true,
 			};
 					office.rooms.push(rms);
 			});
@@ -471,7 +485,7 @@
 						alert('Add Data Failed');
 					}
 				})
-			}else{
+			 }else{
 				jQuery.ajax({
 					url: '${pageContext.request.contextPath}/office/editoffice',
 					type : 'POST',
@@ -498,6 +512,7 @@
 			var name = trItem.find('.txt-name').val();
 			var capacity = trItem.find('.txt-capacity').val();
 			var description = trItem.find('.txt-description').val();
+			var radio = trItem.find('.txt-radio').val();
 			
 			var dataId= trItem.attr('id');
 			$('#id-add-room').val(dataId);
@@ -505,10 +520,19 @@
 			$('#name-room').val(name);
 			$('#capacity').val(capacity);
 			$('#description').val(description);
+			console.log(radio);
+			if (radio == "true") {
+				$('#selection').prop('checked',true);
+				$('#selection1').prop('checked',false);
+			}
+			else{
+				$('#selection1').prop('checked',true);
+				$('#selection').prop('checked',false);
+			}
+			
 			
 			$('#addRoom').modal('show');
 			$('#addOffice').modal('hide');
-			
 		});
 		
 		//button edit office
@@ -541,6 +565,7 @@
 							"<td>"+
 							"<input type='hidden' name='txtdescription' class='form-control txt-description' value='"+room.notes+"'/>"+
 							"<input type='hidden' name='txtid' class='form-control txt-id' value='"+room.id+"'/>"+
+							"<input type='hidden' name='txtradio' class='form-control txt-radio' value='"+room.any_projector+"'/>"+
 								"<button type='button' class='btn btn-primary btn-sm btn-edit-room'>Edit </button>"+
 								"<button type='button' class='btn btn-secondary btn-sm btn-deactive-room'>Deactive </button>"+
 							"</td>"+
@@ -578,6 +603,9 @@
 				}); */
 		 });
 	
+		function clearAllForm(formId){
+			$(formId).trigger("reset");
+		}
 		
 		 
 	//------------------------------------------------------------	
@@ -624,6 +652,8 @@
     	
     	$('#tambahOffice').click(function(event){
     		event.preventDefault();
+    		clearAllForm('#form-office');
+    		$('#table-room tbody tr').remove();
     		$('#addOffice').modal();
     		$('#action').val('add');
     	});

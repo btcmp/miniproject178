@@ -10,4 +10,6 @@ public interface MonitoringDao {
 
 	void save(Monitoring monitoring);
 
+	Monitoring getMonitoringById(Long id);
+
 }
