@@ -19,7 +19,7 @@ public class MonitoringDaoImpl implements MonitoringDao{
 
 	public List<Monitoring> getAllMonitorings() {
 		// TODO Auto-generated method stub
-		String hql="from Monitoring";
+		String hql="from Monitoring m where m.isDelete='1'";
 		Session session=sessionFactory.getCurrentSession();
 		Query query=session.createQuery(hql);
 		List<Monitoring> monitorings=query.list();
@@ -33,5 +33,18 @@ public class MonitoringDaoImpl implements MonitoringDao{
 		// TODO Auto-generated method stub
 		Session session=sessionFactory.getCurrentSession();
 		session.saveOrUpdate(monitoring);
+	}
+
+	public Monitoring getMonitoringById(Long id) {
+		// TODO Auto-generated method stub
+		String hql="from Monitoring m where m.id= :id";
+		Session session=sessionFactory.getCurrentSession();
+		Query query=session.createQuery(hql);
+		query.setParameter("id", id);
+		List<Monitoring> monitorings=query.list();
+		if (!monitorings.isEmpty()) {
+			return monitorings.get(0);
+		}
+		return new Monitoring();
 	}
 }

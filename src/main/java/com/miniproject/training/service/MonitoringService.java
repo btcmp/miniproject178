@@ -28,4 +28,9 @@ public class MonitoringService {
 		monitoringDao.save(monitoring);
 	}
 
+	public Monitoring getMonitoringById(Long id) {
+		// TODO Auto-generated method stub
+		return monitoringDao.getMonitoringById(id);
+	}
+
 }
