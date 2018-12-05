@@ -26,11 +26,6 @@ public class QuestionService {
 		questionDao.save(question);
 	}
 
-	public void delete(Long id) {
-		// TODO Auto-generated method stub
-		questionDao.delete(id);
-	}
-
 	public Question getQuestionById(Long id) {
 		// TODO Auto-generated method stub
 		Question question = questionDao.getQuestionById(id);

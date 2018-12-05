@@ -169,8 +169,7 @@ input.parsley-error {
                                             	<tr>
                                             		<td><c:out value="${quest.question }"></c:out></td>
                                             		<td>
-                                            			<button id="${quest.id }" type="button" rel="tooltype"  href="#" class="btn btn-danger btn-simple btn-xs btn-hapus">
-                                            			<i class="fa fa-times"></i>
+                                            			<a id="${quest.id }" href="#" class="btn-hapus btn btn-danger btn-xs">Delete</a>
                                             		</td>
                                             	</tr>
                                             </c:forEach>
@@ -235,7 +234,7 @@ input.parsley-error {
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalCenterTitle">Question</h5>
+					<h5 class="modal-title" id="exampleModalCenterTitle">Are you sure?</h5>
 				</div>
 				<form id="editForm" action="#" method="POST">
 					<div class="modal-body">
