@@ -198,6 +198,8 @@
 				</div>
 		     	
 		     	<div class="modal-body">
+		     		<input type="hidden" id="action" value="add">
+		     		<input type="hidden" name="createdOn" id="createdOn"/>
 		     		
 		     		<form action="${pageContext.request.contextPath }/monitoring/save" method="POST">
 				      	<div class="form-group">
@@ -229,7 +231,7 @@
 		</div>
 	</div>
 	
-<%-- <!-- Modal2 Placement -->
+<!-- Modal2 Placement -->
 	<div class="modal fade" id="addPlacement" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -239,9 +241,11 @@
 		     	
 		     	<div class="modal-body">
 		     		
-		     		<form action="${pageContext.request.contextPath }/monitoring" method="POST">
+		     		<form action="${pageContext.request.contextPath }/monitoring/placement" method="POST">
+		     			<input type="hidden" name="id" id="id"/>
+		     			<input type="hidden" name="createdOn" id="createdOn"/>
 						<div class="form-group">
-							<input type="text" name="placementDate" class="form-control" placeholder="Placement Date"/>
+							<input type="text" id="placementDate" class="form-control" placeholder="Placement Date"/>
 						</div>
 						<div class="form-group">
 							<input type="text" id="placementAt" class="form-control" placeholder="Placement At" />
@@ -251,18 +255,18 @@
 						</div>	
 						
 						<div class="modal-footer">
-							<button type="submit" id="saving-a" class="btn btn-primary">Save</button>
-							<button type="submit" id="canceling" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+							<button type="submit" id="saving-placement" class="btn btn-primary">Save</button>
+							<button type="submit" id="canceling-placement" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 						</div>
 						
 					</form>
 		     	 </div>
 		    </div>
 		</div>
-	</div> --%>
+	</div>
 
 <!-- Modal3 Deactive-->
-	<div class="modal fade" id="deactive-biodata" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="deactive-monitoring" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header text-center">
@@ -271,7 +275,7 @@
 		     	
 		     	<div class="modal-body">
 		     		
-		     		<form action="${pageContext.request.contextPath }/biodata/editbiodata" method="POST">
+		     		<form action="${pageContext.request.contextPath }/monitoring/edit" method="POST">
 						<div class="modal-footer text-center">
 							<button type="submit" id="deactive" class="btn btn-primary">Yes</button>
 							<button type="submit" id="canceled-deactive" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -313,220 +317,262 @@
 <!-- Material Dashboard DEMO methods, don't include it in your project! -->
 <script	src="${pageContext.request.contextPath}/resources/assets/js/demo.js"></script>
 <script type="text/javascript">
-
+	function formEmpty(){
+		$('#id').val("");
+		$('#testId').val("");
+		$('#idleDate').val("");
+		$('#lastProject').val("");
+		$('#idleReason').val("");
+		$('#createdOn').val("");
+		$('#placementDate').val("");
+		$('#placementAt').val("");
+		$('#notes').val("");
+	}
 
 	$(document).ready(function(){
 		//modal1
 		$('#tambahMonitoring').click(function(event) {
 			event.preventDefault();
+			$('#action').val('add');
+			formEmpty();
 			$('#addMonitoring').modal();
 		});
 		
-		//setting up datepicker
+		//setting up datepicker idleDate
 		$('#idleDate').datepicker({
 	   		format: 'yyyy-mm-dd',
 	    	autoclose: true
 		});
 		
+		//setting up datepicker placementDate
+		$('#placementDate').datepicker({
+	   		format: 'yyyy-mm-dd',
+	    	autoclose: true
+		});
+		
 		//saving
-		var button=jQuery('#saving').click(function(event){
+		jQuery('#saving').click(function(event){
 			event.preventDefault();
  			var testId= $('#biodata-id option:selected').val();
-			var idleDate=jQuery('#idleDate').val();
-			var lastProject=jQuery('#lastProject').val();
-			var idleReason=jQuery('#idleReason').val();
 			var date=new Date();
+			var action=$('#action').val();
+				
+			if(action=='add'){
+				var idleDate=jQuery('#idleDate').val();
+				var lastProject=jQuery('#lastProject').val();
+				var idleReason=jQuery('#idleReason').val();
+				
+				var idle={
+	 					testId:{
+	 						id:testId,
+	 					},
+						idleDate:idleDate,
+						lastProject:lastProject,
+						idleReason:idleReason,
+						createdOn:date
+				};
+				
+				jQuery.ajax({
+					url:'${pageContext.request.contextPath}/monitoring/save',
+					type:'POST',
+					beforeSend: function(){
+						console.log(idle);
+						console.log('contact server');
+					},
+					contentType:'application/json',
+					data:JSON.stringify(idle),
+					success: function(data){
+						console.log(data);
+						alert('Idle berhasil ditambahkan');
+						window.location='${pageContext.request.contextPath}/monitoring'
+					}
+				});
+			}
+			else{
+				var editidle={
+						id:$('#id').val(),
+						testId:{
+							id:testId,
+						},
+						placementDate:$('#placementDate').val(),
+						placementAt:$('#placementAt').val(),
+						notes:$('#notes').val(),
+						idleDate:$('#idleDate').val(),
+						lastProject:$('#lastProject').val(),		
+						idleReason:$('#idleReason').val(),
+						createdOn:$('#createdOn').val(),
+						modifiedOn:date
+				};
+				
+				jQuery.ajax({
+					url:'${pageContext.request.contextPath}/monitoring/edit',
+					type:'POST',
+					beforeSend: function(){
+						console.log(editidle);
+						console.log('contact server');
+					},
+					contentType:'application/json',
+					data:JSON.stringify(editidle),
+					success: function(data){
+						console.log(data);
+						alert('Edit idle berhasil');
+						window.location='${pageContext.request.contextPath}/monitoring';
+					}
+				})
+			}
+		});
+		
+		//get id
+		jQuery('.btn-placement').click(function(event){
+			event.preventDefault();
+			var id=$(this).attr('id');
+			$.ajax({
+				url : '${pageContext.request.contextPath}/monitoring/get/'+ id,
+				type :'GET',
+				dataType:'json',
+				success : function(data){
+					$('#id').val(data.id);
+					$('#testId').val(data.testId);
+					$('#idleDate').val(data.idleDate);
+					$('#lastProject').val(data.lastProject);
+					$('#idleReason').val(data.idleReason);
+					$('#createdOn').val(data.createdOn);
+					$('#placementDate').val(data.placementDate);
+					$('#placementAt').val(data.placementAt);
+					$('#notes').val(data.notes);
+				},
+			})
+			$('#addPlacement').modal();
+		})
+		
+		//saving placement
+		jQuery('#saving-placement').click(function(event){
+			event.preventDefault();
+			var date=new Date();
+			var testId= $('#biodata-id option:selected').val();
 			
-			var idle={
- 					testId:{
- 						id:testId,
- 					},
-					idleDate:idleDate,
-					lastProject:lastProject,
-					idleReason:idleReason,
-					createdOn:date
+			var placement={
+					id:$('#id').val(),
+					testId:{
+						id:testId,
+					},
+					placementDate:$('#placementDate').val(),
+					placementAt:$('#placementAt').val(),
+					notes:$('#notes').val(),
+					idleDate:$('#idleDate').val(),
+					lastProject:$('#lastProject').val(),		
+					idleReason:$('#idleReason').val(),
+					createdOn:$('#createdOn').val(),
+					modifiedOn:date
 			};
 			
 			jQuery.ajax({
-				url:'${pageContext.request.contextPath}/monitoring/save',
+				url:'${pageContext.request.contextPath}/monitoring/edit',
 				type:'POST',
 				beforeSend: function(){
-					console.log(idle);
+					console.log(placement);
 					console.log('contact server');
 				},
 				contentType:'application/json',
-				data:JSON.stringify(idle),
+				data:JSON.stringify(placement),
 				success: function(data){
 					console.log(data);
-					alert('Biodata berhasil ditambahkan');
+					alert('Placement berhasil ditambahkan');
 					window.location='${pageContext.request.contextPath}/monitoring'
 				}
 			});
 		});
+ 
 		
+		//get id edit
+		jQuery('.btn-edit').click(function(event){
+			event.preventDefault();
+			var id=$(this).attr('id');
+			var action=('edit');
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath}/monitoring/get/'+ id,
+				type :'GET',
+				dataType:'json',
+				success : function(data){
+					$('#id').val(data.id);
+					$('#action').val(action);
+					$('#testId').val(data.testId);
+					$('#idleDate').val(data.idleDate);
+					$('#lastProject').val(data.lastProject);
+					$('#idleReason').val(data.idleReason);
+					$('#createdOn').val(data.createdOn);
+					$('#placementDate').val(data.placementDate);
+					$('#placementAt').val(data.placementAt);
+					$('#notes').val(data.notes);
+				},
+			})
+			$('#addMonitoring').modal();
+		})
 
-		//modal tampilan edit
-		var button2=jQuery('.btn-edit').click(function(event){
-			event.preventDefault();
-			var id=$(this).attr('id');
-			$.ajax({
-				url : '${pageContext.request.contextPath}/biodata/editui/'+ id,
-				type :'GET',
-				success : function(data){
-					$('#id-biodata').val(data.id);
-					$('#name-biodata').val(data.name);
-					$('#lasted-biodata').val(data.lastEducation);
-					$('#edlev-biodata').val(data.educationalLevel);
-					$('#majors-biodata').val(data.majors);
-					$('#gpa-biodata').val(data.gpa);
-					$('#bootcampTestTypeId').val(data.bootcampTestTypeId);
-					$('#iq').val(data.iq);
-					$('#du').val(data.du);
-					$('#nestedLogic').val(data.nestedLogic);
-					$('#joinTable').val(data.joinTable);
-					$('#graduationYear').val(data.graduationYear);
-					$('#arithmetic').val(data.arithmetic);
-					$('#tro').val(data.tro);
-					$('#interviewer').val(data.interviewer);
-					$('#notes').val(data.notes);
-					$('#createdOn').val(data.createdOn);
-				},
-				dataType:'json'
-			})
-			
-			$('#edit-biodata').modal();
-		})
-		
-		
-		
-		//radionbutton
-		var radiobtn;
-		$("input[type='radio']"). click(function(){
-			radiobtn=$("[name=gender]:checked").val();
-			
-		})
-		
-		//edit
-		var button3=jQuery('#edit').click(function(event){
-			event.preventDefault();
-			
-			var datemodif=new Date();
-			
-			var bio={
-					id :  $('#id-biodata').val(),
-					name : $('#name-biodata').val(),
-					gender:radiobtn,
-					lastEducation : $('#lasted-biodata').val(),
-					bootcampTestTypeId:$('#bootcampTestTypeId').val(),
-					educationalLevel : $('#edlev-biodata').val(),
-					iq:$('#iq').val(),
-					du:$('#du').val(),
-					nestedLogic:$('#nestedLogic').val(),
-					joinTable:$('#joinTable').val(),
-					graduationYear:$('#graduationYear').val(),
-					arithmetic:$('#arithmetic').val(),
-					majors : $('#majors-biodata').val(),
-					tro:$('#tro').val(),
-					gpa : $('#gpa-biodata').val(),
-					interviewer:$('#interviewer').val(),
-					notes:$('#notes').val(),
-					createdOn:$('#createdOn').val(),
-					modifiedOn:datemodif,
-			}
-			jQuery.ajax({
-				url:'${pageContext.request.contextPath}/biodata/editbiodata',
-				type:'POST',
-				beforeSend: function(){
-					console.log(bio);
-					console.log('contact server');
-				},
-				data:JSON.stringify(bio),
-				headers: { 
-			        'Accept': 'application/json',
-			        'Content-Type': 'application/json' 
-			    },
-				success: function(data){
-					console.log(data);
-					alert('Biodata berhasil diedit');
-					window.location='${pageContext.request.contextPath}/biodata'
-				}
-			})
-		})
-		
 		//nonactive
-		var button3=jQuery('.btn-delete').click(function(event){
+		jQuery('.btn-delete').click(function(event){
 			event.preventDefault();
 			var id=$(this).attr('id');
 			$.ajax({
-				url : '${pageContext.request.contextPath}/biodata/editui/'+ id,
+				url : '${pageContext.request.contextPath}/monitoring/get/'+ id,
 				type :'GET',
+				dataType:'json',
 				success : function(data){
-					$('#id-biodata').val(data.id);
-					$('#name-biodata').val(data.name);
-					$('#lasted-biodata').val(data.lastEducation);
-					$('#edlev-biodata').val(data.educationalLevel);
-					$('#majors-biodata').val(data.majors);
-					$('#gpa-biodata').val(data.gpa);
-					$('#bootcampTestTypeId').val(data.bootcampTestTypeId);
-					$('#iq').val(data.iq);
-					$('#du').val(data.du);
-					$('#nestedLogic').val(data.nestedLogic);
-					$('#joinTable').val(data.joinTable);
-					$('#graduationYear').val(data.graduationYear);
-					$('#arithmetic').val(data.arithmetic);
-					$('#tro').val(data.tro);
-					$('#interviewer').val(data.interviewer);
-					$('#notes').val(data.notes);
+					$('#id').val(data.id);
+					$('#testId').val(data.testId);
+					$('#idleDate').val(data.idleDate);
+					$('#lastProject').val(data.lastProject);
+					$('#idleReason').val(data.idleReason);
 					$('#createdOn').val(data.createdOn);
-					$('#active').val(data.active=false);
+					$('#placementDate').val(data.placementDate);
+					$('#placementAt').val(data.placementAt);
+					$('#notes').val(data.notes);
+					$('#isDelete').val(data.isDelete);
 				},
-				dataType:'json'
 			})
-			
-			$('#deactive-biodata').modal();
+			$('#deactive-monitoring').modal();
 		})
+		
 		//continue deactive
-		var button3=jQuery('#deactive-edit').click(function(event){
+		jQuery('#deactive').click(function(event){
 			event.preventDefault();
 			var datemodif=new Date();
-			var bio={
-					id :  $('#id-biodata').val(),
-					name : $('#name-biodata').val(),
-					gender:radiobtn,
-					lastEducation : $('#lasted-biodata').val(),
-					bootcampTestTypeId:$('#bootcampTestTypeId').val(),
-					educationalLevel : $('#edlev-biodata').val(),
-					iq:$('#iq').val(),
-					du:$('#du').val(),
-					nestedLogic:$('#nestedLogic').val(),
-					joinTable:$('#joinTable').val(),
-					graduationYear:$('#graduationYear').val(),
-					arithmetic:$('#arithmetic').val(),
-					majors : $('#majors-biodata').val(),
-					tro:$('#tro').val(),
-					gpa : $('#gpa-biodata').val(),
-					interviewer:$('#interviewer').val(),
+			var isDelete=false;
+			var testId= $('#biodata-id option:selected').val();
+			var moni={
+					id:$('#id').val(),
+					testId:{
+						id:testId,
+					},
+					placementDate:$('#placementDate').val(),
+					placementAt:$('#placementAt').val(),
 					notes:$('#notes').val(),
+					idleDate:$('#idleDate').val(),
+					lastProject:$('#lastProject').val(),		
+					idleReason:$('#idleReason').val(),
 					createdOn:$('#createdOn').val(),
-					modifiedOn:datemodif,
-					active:$('#active').val()
+					modifiedOn:$('#modifiedOn').val(),
+					createdOn:$('#createdOn').val(),
+					deleteOn:datemodif,
+					isDelete:isDelete
 			}
 			jQuery.ajax({
-				url:'${pageContext.request.contextPath}/biodata/editbiodata',
+				url:'${pageContext.request.contextPath}/monitoring/edit',
 				type:'POST',
 				beforeSend: function(){
-					console.log(bio);
+					console.log(moni);
 					console.log('contact server');
 				},
-				data:JSON.stringify(bio),
+				data:JSON.stringify(moni),
 				headers: { 
 			        'Accept': 'application/json',
 			        'Content-Type': 'application/json' 
 			    },
 				success: function(data){
 					console.log(data);
-					alert('Biodata berhasil dideactivekan');
-					window.location='${pageContext.request.contextPath}/biodata'
+					alert('idle berhasil dideactivekan');
+					window.location='${pageContext.request.contextPath}/monitoring'
 				}
 			})
 		})

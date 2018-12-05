@@ -509,6 +509,7 @@
 				success : function(data){
 					$('#id-biodata').val(data.id);
 					$('#name-biodata').val(data.name);
+					$('#gender').val(data.gender);
 					$('#lasted-biodata').val(data.lastEducation);
 					$('#edlev-biodata').val(data.educationalLevel);
 					$('#majors-biodata').val(data.majors);
@@ -538,7 +539,7 @@
 			var bio={
 					id :  $('#id-biodata').val(),
 					name : $('#name-biodata').val(),
-					gender:radiobtn,
+					gender: $('#gender').val(),
 					lastEducation : $('#lasted-biodata').val(),
 					bootcampTestTypeId:$('#bootcampTestTypeId').val(),
 					educationalLevel : $('#edlev-biodata').val(),
