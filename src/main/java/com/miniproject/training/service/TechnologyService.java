@@ -47,6 +47,8 @@ public class TechnologyService {
 	public Technology getAllTechnologyById(long id) {
 		// TODO Auto-generated method stub
 		Technology technology=technologyDao.getAllTechnologyById(id);
+		List<TechnologyTrainer> technologyTrainers=technologyTrainerDao.getTechnologyTrainerByTechnology(technology);
+		technology.setTechTran(technologyTrainers);
 		return technology;
 	}
 
