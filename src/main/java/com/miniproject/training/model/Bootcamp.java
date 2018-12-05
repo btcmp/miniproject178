@@ -13,7 +13,7 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="t_bootcamp_test_type")
-public class BootcampTestType {
+public class Bootcamp {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -21,10 +21,10 @@ public class BootcampTestType {
 	@Column(nullable=false)
 	private String name;
 	private String notes;
-	@Column(name= "created_by", nullable=false)
+	@Column(name= "created_by", nullable=true)
 	private Long createdBy;
 	@Temporal(TemporalType.DATE)
-	@Column(name="created_on", nullable=false)
+	@Column(name="created_on", nullable=true)
 	private Date createdOn;
 	@Column(name="modified_by")
 	private Long modifiedBy;
