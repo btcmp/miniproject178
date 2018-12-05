@@ -32,8 +32,7 @@ public class VersionDaoImpl implements VersionDao {
 	public void save(Version version) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		session.save(version);
-		session.flush();
+		session.saveOrUpdate(version);
 	}
 
 	public Version getVersionById(Long id) {

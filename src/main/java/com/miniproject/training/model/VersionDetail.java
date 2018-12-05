@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "T_VERSION_DETAIL")
 public class VersionDetail {
@@ -28,6 +30,7 @@ public class VersionDetail {
 	@ManyToOne
 	@JoinColumn(name="question_id", nullable = true)
 	private Question question;
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="version_id", nullable = true)
 	private Version version;
