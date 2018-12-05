@@ -66,7 +66,7 @@ public class Monitoring {
 	private Date deleteOn; //14. dateTime, Allow
 	
 	@Column(name="is_delete", nullable=true)
-	private Boolean isDelete; //15. boolean, No
+	private Boolean isDelete=true; //15. boolean, No
 
 	public Long getId() {
 		return id;

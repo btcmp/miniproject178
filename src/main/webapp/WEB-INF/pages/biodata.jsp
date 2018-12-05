@@ -75,8 +75,10 @@
 						<i class="material-icons">work</i>
 						<p>Monitoring</p>
 					</a></li>
-					<li>
-					<li>
+					<li><a href="${pageContext.request.contextPath }/assignment"> 
+						<i class="material-icons">work</i>
+						<p>Assignment</p>
+					</a></li>
 					<li>
                         <a href="${pageContext.request.contextPath }/office">
                             <i class="material-icons">work</i>
@@ -122,7 +124,7 @@
 						<div class="col-lg-12 col-md-12">
 							<div class="card">
 								<div class="card-header" data-background-color="orange">
-									<h4 class="title">List Biodata</h4>
+									<h4 class="title">Biodata</h4>
 									<p class="category">
 								</div>
 					
@@ -509,6 +511,7 @@
 				success : function(data){
 					$('#id-biodata').val(data.id);
 					$('#name-biodata').val(data.name);
+					$('#gender').val(data.gender);
 					$('#lasted-biodata').val(data.lastEducation);
 					$('#edlev-biodata').val(data.educationalLevel);
 					$('#majors-biodata').val(data.majors);
@@ -538,7 +541,7 @@
 			var bio={
 					id :  $('#id-biodata').val(),
 					name : $('#name-biodata').val(),
-					gender:radiobtn,
+					gender: $('#gender').val(),
 					lastEducation : $('#lasted-biodata').val(),
 					bootcampTestTypeId:$('#bootcampTestTypeId').val(),
 					educationalLevel : $('#edlev-biodata').val(),

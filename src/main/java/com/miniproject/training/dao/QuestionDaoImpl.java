@@ -35,16 +35,6 @@ public class QuestionDaoImpl implements QuestionDao {
 		Session session = sessionFactory.getCurrentSession();
 		session.saveOrUpdate(question);
 	}
-	
-	public void delete(Long id) {
-		// TODO Auto-generated method stub
-		Question quest = new Question();
-		quest.setId(id);
-		Session session = sessionFactory.getCurrentSession();
-		//session.delete(dept);
-		session.delete(session.get(Question.class, id));
-		session.flush();
-	}
 
 	public Question getQuestionById(Long id) {
 		// TODO Auto-generated method stub

@@ -10,4 +10,10 @@ public interface BootcampDao {
 
 	void save(Bootcamp bootcamp);
 
+	void update(Bootcamp bootcamp);
+
+	Bootcamp getBootcampById(Long id);
+
+	List<Bootcamp> searchByName(String name);
+
 }

@@ -216,7 +216,7 @@ input.parsley-error {
 	               			<table id="table-user" class="table table-hover">
 	                   			<thead class="text-warning">
 		                   			<tr>
-				                       <th>Question</th>
+				                       <th>Version</th>
 		                   			</tr>
 	                   			</thead>
 	                   			<tbody id="list-question">
@@ -257,6 +257,31 @@ input.parsley-error {
 					<div class="modal-footer">
 						<button type="submit" id="saveQuestion" value="${question.id }" class="btn btn-primary">Add</button>
 						<button type="button" id="cancelQuestion" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="editVersion" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalCenterTitle">Version</h5>
+				</div>
+				<form id="editForm" action="#" method="POST">
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="question">Are you sure?</label>
+							<input type="hidden" class="form-control" id="id-version" name="id-version"/>
+							<input type="hidden" class="form-control" id="created-on" name="created-on"/>
+							<input type="hidden" class="form-control" name="isDelete" id="actives" value="true"/>
+							<input id="versions" class="form-control" name="version" rows="5" placeholder="Enter a question" readonly="readonly"/>
+						</div>
+					<div class="modal-footer">
+						<button type="submit" id="deleteVersion" class="btn btn-danger">Delete</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 					</div>
 				</form>
 			</div>
@@ -336,8 +361,6 @@ input.parsley-error {
 				beforeSend: function(){
 					console.log(versions);
 					console.log('mau contact server..');
-					window.location = '${pageContext.request.contextPath}/version';
-					alert('data berhasil ditambahkan');
 				},
 				contentType: 'application/json',
 				dataType: "json",
@@ -345,8 +368,8 @@ input.parsley-error {
 				success: function(data) {
 					console.log('dapat data dari server');
 					console.log(data);
-					window.location = '${pageContext.request.contextPath}/version'
-					alert('data berhasil ditambahkan')
+					window.location = '${pageContext.request.contextPath}/version';
+					alert('version berhasil ditambahkan');
 				}
 			});
 		});
@@ -378,42 +401,76 @@ $(document).ready(function() {
 		  currentTr.remove();
 	});
 	
-	$('.btn-hapus').on('click', function(){
+	var button1 = jQuery('.btn-hapus').click(function(event){
+		event.preventDefault();
 		var id = $(this).attr('id');
 		 $.ajax({
-			 url : '${pageContext.request.contextPath}/question/get/'+ id,
+			 url : '${pageContext.request.contextPath}/version/get/'+ id,
 			 type: 'GET',
 			 success : function(data){
-				 $('textarea[name="question"]').val(data.question);
+				 $('#id-version').val(data.id);
+				 $('#created-on').val(data.createdOn);
+				 $('input[name="version"]').val(data.version);
 				 $('input[name="isDelete"]').val(data.isDelete = true);
 			 },
 			 dataType: 'json'
 		 })
-		$('#editQuestion').modal();
+		$('#editVersion').modal();
 	 });
 	
-	$('#deleteQuestion').on('click', function(){
-		var validate = $('#addForm').parsley();
-		if(validate.validate()){
-			var questionss = {
-				question : $('#questions').val(),
-				isDelete :  $('#actives').val()
-			}
-			
-			ajaxSetUp();
-			$.ajax({
-				url : '${pageContext.request.contextPath}/question/save',
-				type: 'POST',
-				data: JSON.stringify(questionss),
-				contentType: "application/json",
-				success : function(data){
-					window.location = "${pageContext.request.contextPath}/question";
-				},error: function(){
-					console.log(questionss);
-					alert('update failed');
+	var button = jQuery('#deleteVersion').click(function(event){
+		event.preventDefault();
+		var d = new Date();
+		/* var versionss = {
+			id : $('#id-version').val(),
+			version : $('#versions').val(),
+			isDelete :  $('#actives').val(),
+			createdOn : $('#created-on').val(),
+			deletedOn : d
+		} */
+		
+		var versionss = {
+				id : $('#id-version').val(),
+				version : $('#versions').val(),
+				isDelete :  $('#actives').val(),
+				createdOn : $('#created-on').val(),
+				deletedOn : d,
+				versionDetail: []
+		};
+		
+		var oTable = $('#addVersion').find('#list-question tr');
+		var listQuestion = [];
+		$.each(oTable, function(index, value){
+				var questions = $(this).find('.txt-question').val();
+				var date = new Date();
+				
+				var versionDetail = {
+					question : {
+						id : questions
+					},
+					createdOn: date
 				}
-			});
-		}
+				versions.versionDetail.push(versionDetail);
+		});
+			
+		jQuery.ajax({
+			url : '${pageContext.request.contextPath}/version/update',
+			type: 'POST',
+			beforeSend: function(){
+				console.log(versionss);
+				console.log('contact server');
+			},
+			data: JSON.stringify(versionss),
+			headers: {
+				'Accept' : 'application/json',
+				'Content-Type' : 'application/json'
+			},
+			success : function(data){
+			console.log(data);
+			alert('berhasil dihapus');
+			window.location = "${pageContext.request.contextPath}/version";
+			}
+		});
 	 });
 	
 	//setting up datepicker
@@ -440,6 +497,12 @@ $(document).ready(function() {
 	//modal tambah version
 	$('#tambahVersion').click(function(event) {
 		event.preventDefault();
+		$.ajax({
+			url: "${pageContext.request.contextPath}/version/generatedversion",
+			success: function(data){
+				$('#version').val(data);
+			}
+		})
 		$('#addVersion').modal();
 	});
 	

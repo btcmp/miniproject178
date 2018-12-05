@@ -59,6 +59,11 @@ public class OfficeService {
 		}
 	}
 
+	public List<Office> searchByName(String name) {
+		// TODO Auto-generated method stub
+		return officeDao.searchByName(name);
+	}
+
 	
 
 	
