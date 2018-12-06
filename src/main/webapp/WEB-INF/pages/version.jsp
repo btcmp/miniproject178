@@ -110,6 +110,10 @@ input.parsley-error {
 							<i class="material-icons">library_books</i>
 							<p>Versions</p>
 					</a></li>
+					<li><a href="${pageContext.request.contextPath }/feedback">
+							<i class="material-icons">library_books</i>
+							<p>Feedback</p>
+					</a></li>
 					<li><a href="${pageContext.request.contextPath }/technology">
 							<i class="material-icons">library_books</i>
 							<p>Technology</p>
@@ -485,8 +489,8 @@ $(document).ready(function() {
 		});
 	}
 	
-	$('#table-version').DataTable();
-	$('#table-question').DataTable();
+	//$('#table-version').DataTable();
+	//$('#table-question').DataTable();
 
 	//logout event button
 	$('#logout').click(function(event) {

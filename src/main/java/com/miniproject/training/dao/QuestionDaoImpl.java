@@ -47,4 +47,24 @@ public class QuestionDaoImpl implements QuestionDao {
 		return questions.get(0);
 	}
 
+	public List<Question> searchQuestion(String search) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from Question q where q.isDelete = '0' AND lower(q.question) like :search";
+		List<Question> questions = session.createQuery(hql).setParameter("search", "%"+search.toLowerCase()+"%").list();
+		return questions;
+	}
+
+	public List<Question> getLastVersionQuestions() {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "select q from Question q inner join (select qq.question from versiondetail qq where qq.version = (select max(qqq.version) from versiondetail qqq) a on qq.question = q.id)";
+		Query query = session.createQuery(hql);
+		List<Question> questions = query.list();
+		if (!questions.isEmpty()) {
+			return questions;
+		}
+		return new ArrayList();
+	}
+
 }

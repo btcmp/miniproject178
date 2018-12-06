@@ -92,12 +92,6 @@ input.parsley-error {
                             <p>User</p>
                         </a>
                     </li>
-                    <li>
-                        <a href="${pageContext.request.contextPath}/role">
-                            <i class="material-icons">person</i>
-                            <p>Role</p>
-                        </a>
-                    </li>
 					<li><a href="${pageContext.request.contextPath }/biodata"> 
 						<i class="material-icons">person</i>
 						<p>Biodata</p>
@@ -108,7 +102,7 @@ input.parsley-error {
                             <p>Office</p>
                         </a>
                     </li>
-					<li class="active"><a href="${pageContext.request.contextPath }/question">
+					<li><a href="${pageContext.request.contextPath }/question">
 							<i class="material-icons">library_books</i>
 							<p>Questions</p>
 					</a></li>
@@ -116,7 +110,7 @@ input.parsley-error {
 							<i class="material-icons">library_books</i>
 							<p>Versions</p>
 					</a></li>
-					<li><a href="${pageContext.request.contextPath }/feedback">
+					<li class="active"><a href="${pageContext.request.contextPath }/feedback">
 							<i class="material-icons">library_books</i>
 							<p>Feedback</p>
 					</a></li>
@@ -143,7 +137,7 @@ input.parsley-error {
 								class="icon-bar"></span> <span class="icon-bar"></span> <span
 								class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="#"> Questions Datatable </a>
+						<a class="navbar-brand" href="#"> Feedback Datatable </a>
 					</div>
 				</div>
 			</nav>
@@ -158,40 +152,31 @@ input.parsley-error {
 							</c:if>
 							<div class="card">
 								<div class="card-header" data-background-color="orange">
-									<h4 class="title">Questions</h4>
+									<h4 class="title">Feedback</h4>
 								</div>
 								<div class="card-content table-responsive">
-								<form class="navbar-form navbar-left" role ="search" action="${pageContext.request.contextPath }/question">
-									<div class="form-group is-empty">
-										<input class="form-control" type="text" name="search" placeholder="Search by Technology" />
-									</div>
-									<span class="material-input"></span>
-									<span class="material-input"></span>
-									<button type= "submit" class="btn btn-primary btn-round btn-just-icon"> <i class="material-icons">search</i></button>
-									<!-- <button type="button" id="tambahQuestion" class="btn btn-sm btn-primary">+</button> -->
-									<div>
-									<button type="button" id="tambahQuestion" class="btn btn-sm btn-primary">
-									<i class="material-icons">add</i>Question</button>
-									</div>
-									</form>
 									<table id="table-user" class="table table-hover">
-                                        <thead class="text-warning">
-                                        <tr>
-                                            <th>Question Name</th>
-                                            <th>Action</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:forEach var="quest" items="${questions }">
-                                            	<tr>
-                                            		<td><c:out value="${quest.question }"></c:out></td>
-                                            		<td>
-                                            			<a id="${quest.id }" href="#" class="btn-hapus btn btn-danger btn-xs">Delete</a>
-                                            		</td>
-                                            	</tr>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>
+										<thead class="text-warning">
+											<select class="form-control" id="selected" name="test.id">
+												<c:forEach items="${tests}" var="t">
+													<option value="${t.id }">${t.name }</option>
+												</c:forEach>
+											</select>
+										</thead>
+										<tbody>
+												<c:forEach var="vd" items="${versions.versionDetail }">
+														<input type="hidden" value="${versions.id }" id="versionId">
+	                                            		<td><c:out value="${vd.question.question }"></c:out></td>
+	                                            	</tr>
+	                                            	<tr>
+	                                            		<td><textarea cols="135" rows="5" id="jsonFeedback" placeholder="Notes"></textarea></td>
+	                                            	</tr>
+	                                            </c:forEach>
+										</tbody>
+									</table>
+									<div>
+										<button type="submit" id="saveFeedback" class="btn btn-primary">Save</button>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -219,56 +204,6 @@ input.parsley-error {
 					</p>
 				</div>
 			</footer>
-		</div>
-	</div>
-	<!--modal-->
-	<div class="modal fade" id="addQuestion" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalCenterTitle">Question</h5>
-				</div>
-				<form id="addForm" action="#" method="POST">
-					<div class="modal-body">
-						<div class="form-group">
-						<input type="hidden" class="form-control" id="active"/>
-						<label for="question">Question:</label>
-						<textarea id="question" class="form-control" rows="5" placeholder="Enter a question"></textarea>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="submit" id="saveQuestion" class="btn btn-primary">Add</button>
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	
-	<div class="modal fade" id="editQuestion" tabindex="-1" role="dialog"
-		aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalCenterTitle">Are you sure?</h5>
-				</div>
-				<form id="editForm" action="#" method="POST">
-					<div class="modal-body">
-						<div class="form-group">
-						<input type="hidden" class="form-control" id="id-question" name="id-question"/>
-						<input type="hidden" class="form-control" id="created-on" name="created-on"/>
-						<input type="hidden" class="form-control" name="isDelete" id="actives" value="true"/>
-						<label for="question">Question:</label>
-						<textarea id="questions" class="form-control" name="question" rows="5" placeholder="Enter a question" readonly="readonly"></textarea>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="submit" id="deleteQuestion" class="btn btn-danger">Delete</button>
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-					</div>
-				</form>
-			</div>
 		</div>
 	</div>
 	
@@ -310,78 +245,133 @@ input.parsley-error {
 <script
 	src="${pageContext.request.contextPath}/resources/assets/js/demo.js"></script>
 <script type="text/javascript">
-	jQuery(document).ready(function() {
-		$('#saveQuestion').click(function(event) {
-			event.preventDefault();
-			var question = jQuery('#question').val();
-			var asd = jQuery('#active').val();
-			var date = new Date();
-			
-			var questions = {
-					question: question,
-					isDelete: asd,
-					createdOn: date
-			};
-			console.log(questions);
-			
-			jQuery.ajax({
-				url: '${pageContext.request.contextPath}/question/save',
-				type: 'post',
-				beforeSend: function(){
-					console.log(questions);
-					console.log('mau contact server..');
+jQuery(document).ready(function() {
+	$('#saveFeedback').click(function(event) {
+		event.preventDefault();
+		var testTxt = $('#selected option:selected').text();
+		var testId = $('#selected option:selected').val();
+		var versionId = $('#versionId').val();
+		var jsonFeedback = $('#jsonFeedback').val();
+		var date = new Date();
+		
+		var feedback = {
+				test : {
+					id: testId
 				},
-				contentType: 'application/json',
-				dataType: "json",
-				data: JSON.stringify(questions),
-				success: function(data) {
-					console.log('dapat data dari server');
-					console.log(data);
-					window.location = '${pageContext.request.contextPath}/question'
-					alert('data berhasil ditambahkan')
-				}
-			});
+				version : {
+					id: versionId,
+				},
+				jsonFeedback: jsonFeedback,
+				createdOn: date
+		};
+		console.log(feedback);
+		
+		jQuery.ajax({
+			url: '${pageContext.request.contextPath}/feedback/save',
+			type: 'post',
+			beforeSend: function(){
+				console.log(feedback);
+				console.log('mau contact server..');
+			},
+			contentType: 'application/json',
+			dataType: "json",
+			data: JSON.stringify(feedback),
+			success: function(data) {
+				console.log('dapat data dari server');
+				console.log(data);
+				window.location = '${pageContext.request.contextPath}/feedback'
+				alert('data berhasil ditambahkan')
+			}
 		});
 	});
+});
 
 $(document).ready(function() {
+	
+	$('#saveQuestion').click(function(event) {
+		event.preventDefault();
+		var questiontxt = $('#selected option:selected').text();
+		var questionval = $('#selected option:selected').val();
+		var oTable = $('#table-user');
+		var tbody = oTable.find('tbody');
+		var tr = $("<tr>");
+		tr.append($('<td><input type="hidden" class="form-control txt-question" value="' + questionval + '"/>' + questiontxt + '</td>'));
+		tr.append($('<td><button type="button" href="#" id="btn_Edit" class="btn-delete btn-danger btn-simple btn-xs"><i class="fa fa-times"></i></td>'));
+		$('table-user tbody').append(tr);
+		$('#selected').val('');
+			tbody.append(tr);
+			$('#addVersion').modal('show');
+			$('#addQuestion').modal('hide');
+	});
+	
+	$(document).on('click', '#btn_Edit', function() {
+		  var currentTr = $(this).closest('tr');
+		  var indx = $(currentTr).prop('index');
+		  var questionval = $(currentTr).find('td').eq(0).attr('val');
+		  $('#selected').val(questionval);
+		  currentTr.remove();
+	});
 	
 	var button1 = jQuery('.btn-hapus').click(function(event){
 		event.preventDefault();
 		var id = $(this).attr('id');
 		 $.ajax({
-			 url : '${pageContext.request.contextPath}/question/get/'+ id,
+			 url : '${pageContext.request.contextPath}/version/get/'+ id,
 			 type: 'GET',
 			 success : function(data){
-				 $('#id-question').val(data.id);
-				 $('#created-on').val(data.createdOn)
-				 $('textarea[name="question"]').val(data.question);
+				 $('#id-version').val(data.id);
+				 $('#created-on').val(data.createdOn);
+				 $('input[name="version"]').val(data.version);
 				 $('input[name="isDelete"]').val(data.isDelete = true);
 			 },
 			 dataType: 'json'
 		 })
-		$('#editQuestion').modal();
+		$('#editVersion').modal();
 	 });
 	
-	var button = jQuery('#deleteQuestion').click(function(event){
+	var button = jQuery('#deleteVersion').click(function(event){
 		event.preventDefault();
 		var d = new Date();
-		var questionss = {
-			id : $('#id-question').val(),
-			question : $('#questions').val(),
+		/* var versionss = {
+			id : $('#id-version').val(),
+			version : $('#versions').val(),
 			isDelete :  $('#actives').val(),
 			createdOn : $('#created-on').val(),
 			deletedOn : d
-		}
+		} */
+		
+		var versionss = {
+				id : $('#id-version').val(),
+				version : $('#versions').val(),
+				isDelete :  $('#actives').val(),
+				createdOn : $('#created-on').val(),
+				deletedOn : d,
+				versionDetail: []
+		};
+		
+		var oTable = $('#addVersion').find('#list-question tr');
+		var listQuestion = [];
+		$.each(oTable, function(index, value){
+				var questions = $(this).find('.txt-question').val();
+				var date = new Date();
+				
+				var versionDetail = {
+					question : {
+						id : questions
+					},
+					createdOn: date
+				}
+				versions.versionDetail.push(versionDetail);
+		});
 			
 		jQuery.ajax({
-			url : '${pageContext.request.contextPath}/question/update',
+			url : '${pageContext.request.contextPath}/version/update',
 			type: 'POST',
 			beforeSend: function(){
-				console.log(questionss);
+				console.log(versionss);
 				console.log('contact server');
 			},
-			data: JSON.stringify(questionss),
+			data: JSON.stringify(versionss),
 			headers: {
 				'Accept' : 'application/json',
 				'Content-Type' : 'application/json'
@@ -389,7 +379,7 @@ $(document).ready(function() {
 			success : function(data){
 			console.log(data);
 			alert('berhasil dihapus');
-			window.location = "${pageContext.request.contextPath}/question";
+			window.location = "${pageContext.request.contextPath}/version";
 			}
 		});
 	 });
@@ -406,7 +396,8 @@ $(document).ready(function() {
 		});
 	}
 	
-	//$('#table-user').DataTable();
+	//$('#table-version').DataTable();
+	//$('#table-question').DataTable();
 
 	//logout event button
 	$('#logout').click(function(event) {
@@ -414,10 +405,37 @@ $(document).ready(function() {
 		$('#logoutForm').submit();
 	});
 
+	//modal tambah version
+	$('#tambahVersion').click(function(event) {
+		event.preventDefault();
+		$.ajax({
+			url: "${pageContext.request.contextPath}/version/generatedversion",
+			success: function(data){
+				$('#version').val(data);
+			}
+		})
+		$('#addVersion').modal();
+	});
+	
 	//modal tambah question
 	$('#tambahQuestion').click(function(event) {
 		event.preventDefault();
-		$('#addQuestion').modal();
+		$('#addVersion').modal('hide');
+		$('#addQuestion').modal('show');
+	});
+	
+	//modal save version
+	$('#saveQuestion').click(function(event) {
+		event.preventDefault();
+		$('#addVersion').modal('show');
+		$('#addQuestion').modal('hide');
+	});
+	
+	//modal cancel question
+	$('#cancelQuestion').click(function(event) {
+		event.preventDefault();
+		$('#addVersion').modal('show');
+		$('#addQuestion').modal('hide');
 	});
 
 });

@@ -9,4 +9,6 @@ public interface VersionDetailDao {
 
 	public void save(VersionDetail versionDetail);
 
+	public List<VersionDetail> getVersionDetailByVersion(Version ver);
+
 }
