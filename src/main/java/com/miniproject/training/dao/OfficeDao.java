@@ -14,4 +14,6 @@ public interface OfficeDao {
 
 	void update(Office office);
 
+	List<Office> searchByName(String name);
+
 }
