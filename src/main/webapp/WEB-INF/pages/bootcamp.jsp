@@ -103,6 +103,12 @@
                             <p>Bootcamp Test Type</p>
                         </a>
                     </li>
+                    <li>
+                        <a href="${pageContext.request.contextPath }/category">
+                            <i class="material-icons">library_books</i>
+                            <p>Category</p>
+                        </a>
+                    </li>
 					<li><a href="${pageContext.request.contextPath }/question">
 							<i class="material-icons">library_books</i>
 							<p>Questions</p>
