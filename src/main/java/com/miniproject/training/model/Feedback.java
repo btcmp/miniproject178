@@ -23,12 +23,12 @@ public class Feedback {
 	@Column(name = "JSON_FEEDBACK", nullable = true)
 	private String jsonFeedback;
 	@Column(name = "CREATED_BY", nullable = true)
-	private String createdBy;
+	private Long createdBy;
 	@Column(name = "CREATED_ON", nullable = true)
 	@Temporal(TemporalType.DATE)
 	private Date createdOn;
 	@Column(name = "DELETED_BY", nullable = true)
-	private String deletedBy;
+	private Long deletedBy;
 	@Column(name = "DELETED_ON", nullable = true)
 	private Date deletedOn;
 	@Column(name = "IS_DELETE", nullable = false)
@@ -53,10 +53,10 @@ public class Feedback {
 	public void setJsonFeedback(String jsonFeedback) {
 		this.jsonFeedback = jsonFeedback;
 	}
-	public String getCreatedBy() {
+	public Long getCreatedBy() {
 		return createdBy;
 	}
-	public void setCreatedBy(String createdBy) {
+	public void setCreatedBy(Long createdBy) {
 		this.createdBy = createdBy;
 	}
 	public Date getCreatedOn() {
@@ -65,10 +65,10 @@ public class Feedback {
 	public void setCreatedOn(Date createdOn) {
 		this.createdOn = createdOn;
 	}
-	public String getDeletedBy() {
+	public Long getDeletedBy() {
 		return deletedBy;
 	}
-	public void setDeletedBy(String deletedBy) {
+	public void setDeletedBy(Long deletedBy) {
 		this.deletedBy = deletedBy;
 	}
 	public Date getDeletedOn() {

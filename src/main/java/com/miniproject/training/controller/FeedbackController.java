@@ -14,6 +14,7 @@ import com.miniproject.training.model.Feedback;
 import com.miniproject.training.model.Question;
 import com.miniproject.training.model.Test;
 import com.miniproject.training.model.Version;
+import com.miniproject.training.model.VersionDetail;
 import com.miniproject.training.service.FeedbackService;
 import com.miniproject.training.service.QuestionService;
 import com.miniproject.training.service.TestService;
@@ -39,10 +40,10 @@ public class FeedbackController {
 	public String view(Model model) {
 		List<Feedback> feedbacks = feedbackService.getAllFeedbacks();
 		List<Test> tests = testService.getAllTests();
-		Version versions = versionService.getLastVersion();
+		Version version = versionService.getLastVersion();
 		model.addAttribute("feedbacks", feedbacks);
 		model.addAttribute("tests", tests);
-		model.addAttribute("versions", versions);
+		model.addAttribute("versions", version);
 		return "feedback";
 	}
 	
