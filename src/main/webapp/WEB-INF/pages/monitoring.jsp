@@ -541,7 +541,7 @@
 		jQuery('#deactive').click(function(event){
 			event.preventDefault();
 			var datemodif=new Date();
-			var isDelete=false;
+			var isDelete=true;
 			var testId= $('#biodata-id option:selected').val();
 			var moni={
 					id:$('#id').val(),

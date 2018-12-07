@@ -25,7 +25,7 @@ public class Assignment {
 	@JoinColumn(name="biodata_id", nullable=true)
 	private Biodata testId; //2. Long, 11, No
 	
-	@Column(nullable=false)
+	@Column(nullable=true)
 	private String title; //3. VarChar, 255, No
 	
 	@Temporal(TemporalType.DATE)
@@ -45,10 +45,10 @@ public class Assignment {
 	private String notes; //8. Varchar, 255, Allow
 	
 	@Column(name="is_hold")
-	private Boolean isHold; //9. Boolean, Allow
+	private Boolean isHold=false; //9. Boolean, Allow
 	
 	@Column(name="is_done")
-	private Boolean isDone; //10. Boolean, Allow
+	private Boolean isDone=false; //10. Boolean, Allow
 	
 	@Column(name="created_by", nullable=true)
 	private Long createdBy; //11. Long, 11, No
@@ -72,7 +72,7 @@ public class Assignment {
 	private Date deletedOn; //16. dateTime, Allow
 	
 	@Column(name="is_delete", nullable=true)
-	private Boolean isDelete; //17. Boolean, No
+	private Boolean isDelete=false; //17. Boolean, No
 
 	public Long getId() {
 		return id;

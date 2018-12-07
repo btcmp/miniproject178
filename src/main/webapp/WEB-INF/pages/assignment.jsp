@@ -241,31 +241,28 @@
 	</div>
 	
 <!-- Modal2 Placement -->
-	<div class="modal fade" id="addPlacement" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="addDone" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header text-center">
-					<h3 class="modal-title w-100 font-weight-bold">Input Placement</h3>
+					<h3 class="modal-title w-100 font-weight-bold">Mark As Done</h3>
 				</div>
 		     	
 		     	<div class="modal-body">
 		     		
-		     		<form action="${pageContext.request.contextPath }/monitoring/placement" method="POST">
+		     		<form action="${pageContext.request.contextPath }/assignment/edit" method="POST">
 		     			<input type="hidden" name="id" id="id"/>
 		     			<input type="hidden" name="createdOn" id="createdOn"/>
 						<div class="form-group">
-							<input type="text" id="placementDate" class="form-control" placeholder="Placement Date"/>
-						</div>
-						<div class="form-group">
-							<input type="text" id="placementAt" class="form-control" placeholder="Placement At" />
+							<input type="text" id="realizationDate" class="form-control" placeholder="Realization Date"/>
 						</div>
 						<div class="form-group">
 							<input type="text" id="notes" class="form-control" placeholder="Notes" />
-						</div>	
+						</div>
 						
 						<div class="modal-footer">
-							<button type="submit" id="saving-placement" class="btn btn-primary">Save</button>
-							<button type="submit" id="canceling-placement" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+							<button type="submit" id="saving-done" class="btn btn-primary">Save</button>
+							<button type="submit" id="canceling-done" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 						</div>
 						
 					</form>
@@ -274,8 +271,9 @@
 		</div>
 	</div>
 
+
 <!-- Modal3 Deactive-->
-	<div class="modal fade" id="deactive-monitoring" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal fade" id="deactive-assignment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header text-center">
@@ -284,7 +282,7 @@
 		     	
 		     	<div class="modal-body">
 		     		
-		     		<form action="${pageContext.request.contextPath }/monitoring/edit" method="POST">
+		     		<form action="${pageContext.request.contextPath }/assignment/edit" method="POST">
 						<div class="modal-footer text-center">
 							<button type="submit" id="deactive" class="btn btn-primary">Yes</button>
 							<button type="submit" id="canceled-deactive" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -353,6 +351,12 @@
 		
 		//setting up datepicker ednDate
 		$('#endDate').datepicker({
+	   		format: 'yyyy-mm-dd',
+	    	autoclose: true
+		});
+		
+		//setting up datepicker realization date
+		$('#realizationDate').datepicker({
 	   		format: 'yyyy-mm-dd',
 	    	autoclose: true
 		});
@@ -451,74 +455,141 @@
 				},
 			})
 			$('#addAssignment').modal();
-		})
+		});
 
-		//nonactive
-		jQuery('.btn-delete').click(function(event){
+		//get mark as done
+		jQuery('.btn-done').click(function(event){
 			event.preventDefault();
 			var id=$(this).attr('id');
 			$.ajax({
-				url : '${pageContext.request.contextPath}/monitoring/get/'+ id,
+				url : '${pageContext.request.contextPath}/assignment/get/'+ id,
 				type :'GET',
 				dataType:'json',
 				success : function(data){
 					$('#id').val(data.id);
 					$('#testId').val(data.testId);
-					$('#idleDate').val(data.idleDate);
-					$('#lastProject').val(data.lastProject);
-					$('#idleReason').val(data.idleReason);
+					$('#title').val(data.title);
+					$('#startDate').val(data.startDate);
+					$('#endDate').val(data.endDate);
 					$('#createdOn').val(data.createdOn);
-					$('#placementDate').val(data.placementDate);
-					$('#placementAt').val(data.placementAt);
+					$('#description').val(data.description);
+					$('#isDone').val(data.isDone);
+					$('#realizationDate').val(data.realizationDate);
 					$('#notes').val(data.notes);
-					$('#isDelete').val(data.isDelete);
 				},
 			})
-			$('#deactive-monitoring').modal();
-		})
+			$('#addDone').modal();
+		});
 		
-		//continue deactive
-		jQuery('#deactive').click(function(event){
+
+		//continue mark as done
+		jQuery('#saving-done').click(function(event){
 			event.preventDefault();
-			var datemodif=new Date();
-			var isDelete=false;
+			var date=new Date();
+			var isDone=true;
 			var testId= $('#biodata-id option:selected').val();
-			var moni={
+			var markdone={
 					id:$('#id').val(),
 					testId:{
 						id:testId,
 					},
-					placementDate:$('#placementDate').val(),
-					placementAt:$('#placementAt').val(),
+					title:$('#title').val(),
+					startDate:$('#startDate').val(),
+					endDate:$('#endDate').val(),
+					description:$('#description').val(),
+					createdOn:$('#createdOn').val(),
 					notes:$('#notes').val(),
-					idleDate:$('#idleDate').val(),
-					lastProject:$('#lastProject').val(),		
-					idleReason:$('#idleReason').val(),
-					createdOn:$('#createdOn').val(),
-					modifiedOn:$('#modifiedOn').val(),
-					createdOn:$('#createdOn').val(),
-					deleteOn:datemodif,
-					isDelete:isDelete
+					modifiedOn:date,
+					realizationDate:$('#realizationDate').val(),
+					isDone:isDone
 			}
 			jQuery.ajax({
-				url:'${pageContext.request.contextPath}/monitoring/edit',
+				url:'${pageContext.request.contextPath}/assignment/edit',
 				type:'POST',
 				beforeSend: function(){
-					console.log(moni);
+					console.log(markdone);
 					console.log('contact server');
 				},
-				data:JSON.stringify(moni),
+				data:JSON.stringify(markdone),
 				headers: { 
 			        'Accept': 'application/json',
 			        'Content-Type': 'application/json' 
 			    },
 				success: function(data){
 					console.log(data);
-					alert('idle berhasil dideactivekan');
-					window.location='${pageContext.request.contextPath}/monitoring'
+					alert('Mark as Done Berhasil');
+					window.location='${pageContext.request.contextPath}/assignment'
 				}
 			})
-		})
+		});
+		
+		//get isDelete
+		jQuery('.btn-delete').click(function(event){
+			event.preventDefault();
+			var id=$(this).attr('id');
+			$.ajax({
+				url : '${pageContext.request.contextPath}/assignment/get/'+ id,
+				type :'GET',
+				dataType:'json',
+				success : function(data){
+					$('#id').val(data.id);
+					$('#testId').val(data.testId);
+					$('#title').val(data.title);
+					$('#startDate').val(data.startDate);
+					$('#endDate').val(data.endDate);
+					$('#createdOn').val(data.createdOn);
+					$('#modifiedOn').val(data.modifiedOn);
+					$('#description').val(data.description);
+					$('#isDelete').val(data.isDelete);
+					$('#realizationDate').val(data.realizationDate);
+					$('#notes').val(data.notes);
+				},
+			})
+			$('#deactive-assignment').modal();
+		});
+		
+
+		//continue isDelete
+		jQuery('#deactive').click(function(event){
+			event.preventDefault();
+			var date=new Date();
+			var isDelete=true;
+			var testId= $('#biodata-id option:selected').val();
+			var deac={
+					id:$('#id').val(),
+					testId:{
+						id:testId,
+					},
+					title:$('#title').val(),
+					startDate:$('#startDate').val(),
+					endDate:$('#endDate').val(),
+					description:$('#description').val(),
+					createdOn:$('#createdOn').val(),
+					modifiedOn:$('#modifiedOn').val(),
+					notes:$('#notes').val(),
+					realizationDate:$('#realizationDate').val(),
+					isDelete:isDelete,
+					deletedOn:date
+			}
+			jQuery.ajax({
+				url:'${pageContext.request.contextPath}/assignment/edit',
+				type:'POST',
+				beforeSend: function(){
+					console.log(deac);
+					console.log('contact server');
+				},
+				data:JSON.stringify(deac),
+				headers: { 
+			        'Accept': 'application/json',
+			        'Content-Type': 'application/json' 
+			    },
+				success: function(data){
+					console.log(data);
+					alert('Delete Berhasil');
+					window.location='${pageContext.request.contextPath}/assignment'
+				}
+			})
+		});
 
 		$('#table-user').DataTable();
 
