@@ -128,9 +128,10 @@
 								</div>
 					
 	                           	<div class="card-content table-responsive">
-	                           		<form action="${pageContext.request.contextPath }/assignment">
-	                           			<input type="search" id="search" placeholder="Search by Name"/>
-	                           			<button type="button" id="tambahAssignment" class="btn btn-sm btn-primary"> + </button>
+	                           		<form action="${pageContext.request.contextPath }/assignment/src" method="GET">
+	                           			<input type="text" id="searchAssignment" name="scrtxt" placeholder="Search by Name"/>
+	                           			<input type="submit" id="btn-search" class="btn btn-default btn-sm"/>
+	                           			<button type="button" id="tambahAssignment" class="btn btn-sm btn-primary"> + add </button>
                        				</form>
 	                     		</div>
 								
@@ -277,12 +278,13 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header text-center">
-					<h3 class="modal-title w-100 font-weight-bold">Sure to delete this???</h3>
+					<h3 class="modal-title w-100 font-weight-bold">Sure to deactive this???</h3>
 				</div>
 		     	
 		     	<div class="modal-body">
 		     		
 		     		<form action="${pageContext.request.contextPath }/assignment/edit" method="POST">
+		     		<input type="hidden" name="modifiedOn" id="modifiedOn"/>
 						<div class="modal-footer text-center">
 							<button type="submit" id="deactive" class="btn btn-primary">Yes</button>
 							<button type="submit" id="canceled-deactive" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -294,6 +296,28 @@
 		</div>
 	</div>
 	
+	
+<!-- Modal Hold-->
+	<div class="modal fade" id="hold-assignment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header text-center">
+					<h3 class="modal-title w-100 font-weight-bold">Sure to hold this???</h3>
+				</div>
+		     	
+		     	<div class="modal-body">
+		     		
+		     		<form action="${pageContext.request.contextPath }/assignment/edit" method="POST">
+						<div class="modal-footer text-center">
+							<button type="submit" id="hold" class="btn btn-primary">Yes</button>
+							<button type="submit" id="canceled-hold" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+						</div>
+						
+					</form>
+		     	 </div>
+		    </div>
+		</div>
+	</div>
 </body>
 
 <!--   Core JS Files   -->
@@ -396,8 +420,11 @@
 					data:JSON.stringify(assign),
 					success: function(data){
 						console.log(data);
-						alert('Assignment berhasil ditambahkan');
+						alert('Data assignment successfully added');
 						window.location='${pageContext.request.contextPath}/assignment'
+					},
+					error: function(){
+						alert('Data assignment failed added')
 					}
 				});
 			}
@@ -426,8 +453,11 @@
 					data:JSON.stringify(editidle),
 					success: function(data){
 						console.log(data);
-						alert('Edit assignment berhasil');
+						alert('Data assignment successfully updated');
 						window.location='${pageContext.request.contextPath}/assignment';
+					},
+					error: function(){
+						alert('Data assignment failed updated')
 					}
 				})
 			}
@@ -517,8 +547,11 @@
 			    },
 				success: function(data){
 					console.log(data);
-					alert('Mark as Done Berhasil');
+					alert('Data assignment successfully mark as done');
 					window.location='${pageContext.request.contextPath}/assignment'
+				},
+				error: function(){
+					alert('Data assignment failed updated')
 				}
 			})
 		});
@@ -585,8 +618,81 @@
 			    },
 				success: function(data){
 					console.log(data);
-					alert('Delete Berhasil');
+					alert('Data Assignment successfully deleted');
 					window.location='${pageContext.request.contextPath}/assignment'
+				},
+				error: function(){
+					alert('Data Assignment failed deleted')
+				}
+			})
+		});
+		
+		//get isHold
+		jQuery('.btn-hold').click(function(event){
+			event.preventDefault();
+			var id=$(this).attr('id');
+			$.ajax({
+				url : '${pageContext.request.contextPath}/assignment/get/'+ id,
+				type :'GET',
+				dataType:'json',
+				success : function(data){
+					$('#id').val(data.id);
+					$('#testId').val(data.testId);
+					$('#title').val(data.title);
+					$('#startDate').val(data.startDate);
+					$('#endDate').val(data.endDate);
+					$('#createdOn').val(data.createdOn);
+					$('#modifiedOn').val(data.modifiedOn);
+					$('#description').val(data.description);
+					$('#isHold').val(data.isHold);
+					$('#realizationDate').val(data.realizationDate);
+					$('#notes').val(data.notes);
+				},
+			})
+			$('#hold-assignment').modal();
+		});
+		
+
+		//continue isDelete
+		jQuery('#hold').click(function(event){
+			event.preventDefault();
+			var date=new Date();
+			var isHold=true;
+			var testId= $('#biodata-id option:selected').val();
+			var deac={
+					id:$('#id').val(),
+					testId:{
+						id:testId,
+					},
+					title:$('#title').val(),
+					startDate:$('#startDate').val(),
+					endDate:$('#endDate').val(),
+					description:$('#description').val(),
+					createdOn:$('#createdOn').val(),
+					modifiedOn:$('#modifiedOn').val(),
+					notes:$('#notes').val(),
+					realizationDate:$('#realizationDate').val(),
+					isHold:isHold,
+			}
+			jQuery.ajax({
+				url:'${pageContext.request.contextPath}/assignment/edit',
+				type:'POST',
+				beforeSend: function(){
+					console.log(deac);
+					console.log('contact server');
+				},
+				data:JSON.stringify(deac),
+				headers: { 
+			        'Accept': 'application/json',
+			        'Content-Type': 'application/json' 
+			    },
+				success: function(data){
+					console.log(data);
+					alert('Data Assignment successfully hold');
+					window.location='${pageContext.request.contextPath}/assignment'
+				},
+				error: function(){
+					alert('Data Assignment failed to hold')
 				}
 			})
 		});

@@ -19,18 +19,18 @@ public class Menu_Access {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
-	@Column(name="created_by",nullable= false)
+	@Column(name="created_by",nullable= true)
 	private Long createdBy;
-	@Column(name="created_on",nullable= false)
+	@Column(name="created_on",nullable= true)
 	@Temporal(TemporalType.DATE)
 	private Date createdOn;
 	
 	@ManyToOne
-	@JoinColumn(name="menu_id",nullable=false)
+	@JoinColumn(name="menu_id",nullable=true)
 	private Menu menu;
 	
 	@ManyToOne
-	@JoinColumn(name="role_id",nullable=false)
+	@JoinColumn(name="role_id",nullable=true)
 	private Role role;
 	
 	

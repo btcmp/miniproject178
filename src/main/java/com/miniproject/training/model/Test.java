@@ -25,12 +25,12 @@ public class Test {
 	@Column(name="NOTES", nullable = true)
 	private String notes;
 	@Column(name="CREATED_BY", nullable = true)
-	private String createdBy;
+	private Long createdBy;
 	@Column(name="CREATED_ON", nullable = true)
 	@Temporal(TemporalType.DATE)
 	private Date createdOn;
 	@Column(name="MODIFIED_BY", nullable = true)
-	private String modifiedBy;
+	private Long modifiedBy;
 	@Column(name="MODIFIED_ON", nullable = true)
 	@Temporal(TemporalType.DATE)
 	private Date modifiedOn;
@@ -58,10 +58,10 @@ public class Test {
 	public void setNotes(String notes) {
 		this.notes = notes;
 	}
-	public String getCreatedBy() {
+	public Long getCreatedBy() {
 		return createdBy;
 	}
-	public void setCreatedBy(String createdBy) {
+	public void setCreatedBy(Long createdBy) {
 		this.createdBy = createdBy;
 	}
 	public Date getCreatedOn() {
@@ -70,10 +70,10 @@ public class Test {
 	public void setCreatedOn(Date createdOn) {
 		this.createdOn = createdOn;
 	}
-	public String getModifiedBy() {
+	public Long getModifiedBy() {
 		return modifiedBy;
 	}
-	public void setModifiedBy(String modifiedBy) {
+	public void setModifiedBy(Long modifiedBy) {
 		this.modifiedBy = modifiedBy;
 	}
 	public Date getModifiedOn() {
