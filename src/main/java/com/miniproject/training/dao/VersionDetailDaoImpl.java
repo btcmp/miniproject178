@@ -1,7 +1,9 @@
 package com.miniproject.training.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,19 @@ public class VersionDetailDaoImpl implements VersionDetailDao {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
 		session.save(versionDetail);
+	}
+
+	public List<VersionDetail> getVersionDetailByVersion(Version ver) {
+		// TODO Auto-generated method stub
+		String hql = "from VersionDetail vd where vd.version.id = :ver";
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery(hql);
+		query.setParameter("ver", ver.getId());
+		List<VersionDetail> versionDetails = query.list();
+		if (!versionDetails.isEmpty()) {
+			return versionDetails;
+		}
+		return new ArrayList();
 	}
 	
 }

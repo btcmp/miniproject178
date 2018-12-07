@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.miniproject.training.model.Bootcamp;
+import com.miniproject.training.model.Office;
 
 @Repository
 public class BootcampDaoImpl implements BootcampDao {
@@ -35,6 +36,49 @@ public class BootcampDaoImpl implements BootcampDao {
 		return new ArrayList();
 	}
 
-	
+	public void update(Bootcamp bootcamp) {
+		// TODO Auto-generated method stub
+		String hql = "update Bootcamp b set b.name = :name, b.notes = :notes where b.id = :id";
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery(hql);
+		query.setParameter("name", bootcamp.getName());
+		query.setParameter("notes", bootcamp.getNotes());
+		query.setParameter("id", bootcamp.getId());
+		query.executeUpdate();
+	}
+
+	public Bootcamp getBootcampById(Long id) {
+		// TODO Auto-generated method stub
+		String hql = "from Bootcamp b where b.id = :id";
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery(hql);
+		query.setParameter("id", id);
+		List<Bootcamp> bootcamps = query.list();
+		if (!bootcamps.isEmpty()) {
+			return bootcamps.get(0);
+		}
+		return new Bootcamp();
+	}
+
+/*	public List<Bootcamp> search(String keySearch) {
+		// TODO Auto-generated method stub
+		String hql = "from Bootcamp b where b.name like :keySearch ";
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery(hql);
+		query.setParameter("keySearch", "%"+keySearch+"%");
+		List<Bootcamp> bootcamps = query.list();
+		if (!bootcamps.isEmpty()) {
+			return bootcamps;
+		}
+		return new ArrayList();
+	}*/
+
+	public List<Bootcamp> searchByName(String name) {
+		// TODO Auto-generated method stub
+		String hql = "from Bootcamp b where lower(b.name) like lower('%"+name+"%')";
+		Session session = sessionFactory.getCurrentSession();
+		List<Bootcamp> bootcamps = session.createQuery(hql).list();
+		return bootcamps;
+	}
 
 }

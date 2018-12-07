@@ -1,8 +1,10 @@
 package com.miniproject.training.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,18 @@ public class TechnologyTrainerDaoImpl implements TechnologyTrainerDao{
 		Session session=sessionFactory.getCurrentSession();
 		session.save(technologyTrainer);
 		
+	}
+	public List<TechnologyTrainer> getTechnologyTrainerByTechnology(Technology technology) {
+		// TODO Auto-generated method stub
+		String hql="from TechnologyTrainer tt where tt.technology = :technology";
+		Session session=sessionFactory.getCurrentSession();
+		Query query=session.createQuery(hql);
+		query.setParameter("technology", technology);
+		List<TechnologyTrainer> listdata=query.list();
+		if(listdata.isEmpty()) {
+			return new ArrayList<TechnologyTrainer>();
+		}
+		return listdata;
 	}
 
 }

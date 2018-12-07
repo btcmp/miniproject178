@@ -11,6 +11,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name="T_Testimony")
 public class Testimony {
@@ -37,6 +39,16 @@ public class Testimony {
 	@Column(name="deleted_on")
 	@Temporal(TemporalType.DATE)
 	private Date deletedOn;
+	@Column(name="is_delete")
+	@JsonProperty
+	private boolean isDelete=false;
+
+	public boolean isDelete() {
+		return isDelete;
+	}
+	public void setDelete(boolean isDelete) {
+		this.isDelete = isDelete;
+	}
 	public long getId() {
 		return id;
 	}

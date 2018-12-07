@@ -12,4 +12,6 @@ public interface VersionDao {
 
 	public Version getVersionById(Long id);
 
+	public Version getLastVersion();
+
 }

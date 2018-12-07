@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -45,6 +46,14 @@ public class OfficeController {
 		return office;
 	}
 	
+	//get data office
+	@RequestMapping(value="/editui/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public Office getOfficeById(@PathVariable("id") Long id) {
+		Office office = officeService.getOfficeById(id);
+		return office;
+	}
+	
 	//office update
 	@RequestMapping(value="/editoffice", method = RequestMethod.POST)
 	@ResponseBody
@@ -53,11 +62,11 @@ public class OfficeController {
 		return office;
 	}
 	
-	//get data office
-	@RequestMapping(value="/editui/{id}", method = RequestMethod.GET)
-	@ResponseBody
-	public Office getOfficeById(@PathVariable("id") Long id) {
-		Office office = officeService.getOfficeById(id);
-		return office;
-		}
+	//office search
+	@RequestMapping(value="/search", method = RequestMethod.GET)
+	public String search(@RequestParam("srcoffice") String name, Model model) {
+		List<Office> offices = officeService.searchByName(name);
+		model.addAttribute("offices", offices);
+		return "office";
 	}
+}

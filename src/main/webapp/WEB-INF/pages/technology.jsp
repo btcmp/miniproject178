@@ -202,10 +202,13 @@ input.parsley-error {
   																</c:otherwise>
 															</c:choose>
 														</td>
-														<td><a id="${dept.id }" href="#"
-															class="btn-edit btn btn-primary btn-sm">Edit</a>
-														<a id="${dept.id }" href="#"
-															class="btn-hapus btn btn-danger btn-sm">Deactived</a>
+														<td>
+														<button id="${dept.id }" type="button" rel="tooltip" title="Edit ${employee.name }" class="btn btn-success btn-simple btn-xs btn-edit">
+										                    <i class="fa fa-edit"></i>
+										                </button>
+														<button id="${dept.id }" type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs btn-hapus">
+										                    <i class="fa fa-times"></i>
+										                </button>
 														</td>
 													</tr>
 												</c:forEach>
@@ -272,8 +275,7 @@ input.parsley-error {
 								rows="4" cols="50" id="note" aria-describedby="nameHelp"
 								class="form-control" placeholder="Enter note technology" ></textarea>
 							</div>
-							<button type="button" id="tambahTrainer" class="btn btn-primary bts-sm">+Trainer</button><br><br>
-									<div class="card">
+							<button type="button" id="tambahTrainer" class="btn btn-primary bts-sm">+Trainer</button><br>
 									<div class="table-responsive">
 										<table id="table-trainer" class="table">
 											<thead class="text-warning">
@@ -287,7 +289,6 @@ input.parsley-error {
  				 						 	</tbody>
 										</table>
 									</div>
-		      						</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary"
 									data-dismiss="modal">Close</button>
@@ -352,7 +353,7 @@ input.parsley-error {
 								<textarea rows="4" cols="50" id="note1" class="form-control" placeholder="Enter note technology" ></textarea>
 							</div>
 							<div class="table-responsive">
-										<table id="table-trainer" class="table">
+										<table id="table-techtrain" class="table">
 											<thead class="text-warning">
 												<th>Trainer</th>
 												<th>Created By</th>
@@ -360,22 +361,11 @@ input.parsley-error {
 												<th>Action</th>
 											</thead>
 											<tbody>
-												  <c:forEach var="dept" items="${training}">
-													<tr>
-														<td><c:out value="${dept.name}"></c:out></td>
-														<td><c:out value="${dept.createdBy }"></c:out></td>
-														<td><a id="${dept.id }" href="#"class="btn-edit1 btn btn-danger btn-sm">Edit</a>
-														</td>
-														<td><a id="${dept.id }" href="#"class="btn-hapus btn btn-danger btn-sm">Delete</a>
-														</td>
-													</tr>
-												</c:forEach>
- 				 						 	</tbody>
+											</tbody>
 										</table>
 									</div>
-		      
 							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary"
+								<button type="button" class="btn btn-secondary" id="btn-close-update"
 									data-dismiss="modal">Close</button>
 								<button type="submit" id="btn-update-technology"
 									class="btn btn-primary">Update</button>
@@ -437,16 +427,16 @@ input.parsley-error {
 							});
 						}
 
-					 	   $('#table-trainer').DataTable({
+					 	/*    $('#table-trainer').DataTable({
 							 searching:false,
 							 bSort:false,
 							 paging:false
-						  });  
-						  $('#table-technology').DataTable({
-								 searching:false,
-								 bSort:false,
-								 paging:false
-						});  
+						  });   */
+						/*   $('#table-technology').DataTable({
+							searching:false,
+							bSort:false,
+							paging:false
+						});  */ 
 
 						$('.btn-hapus').on('click',function() {var conf = confirm("Are you sure delete this data ?");
 											if (conf == true) {
@@ -484,8 +474,22 @@ input.parsley-error {
 				    				 $('#id-technology').val(data.id);
 				    				 $('#name1').val(data.name);
 				    				 $('#note1').val(data.note);
-				    				 console.log(data)
-				    				 /* $('#edit-department').val(data.department.id); */
+ 				    				 console.log(data.techTran)
+				    				 
+				    				 var oTable=$('#table-techtrain');
+				    				 var tbody=oTable.find('tbody');
+				    				 $.each(data.techTran,function(key,value){
+				    					 if(value.trainer.active==true){
+				    						 active="Active";
+				    					 }
+				    					 	var tr ="<tr>";
+											tr += "<td>"+value.trainer.name+"</td>";
+											tr += "<td>"+value.trainer.createdBy+"</td>";
+											tr += "<td>"+active+"</td>";
+											tr += "<td><a href='#'class='btn-hapus btn btn-danger btn-sm'>Delete</a></td>";
+											tr +="</tr>";
+											tbody.append(tr)
+				    				 });
 				    			 },
 				    			 dataType: 'json'
 				    		 })
@@ -493,12 +497,13 @@ input.parsley-error {
 				    		$('#add-update-technology').modal();
 				    		 
 				    	 });
+						jQuery('#btn-close-update').click(function(event){
+							location.reload();
+						})
 						 //update technology
-						 var button = jQuery('#btn-update-technology').click(function(event){
+						jQuery('#btn-update-technology').click(function(event){
 								event.preventDefault();
 								var name = jQuery('#name1').val();
-						/* 		var createdBy =jQuery('#createdBy').val();
-								var active=jQuery('#active').val(); */
 							    var note = jQuery('#note1').val();
 								var id = jQuery('#id-technology').val();
 								var active=1;
@@ -548,7 +553,7 @@ input.parsley-error {
 							$('#add-trainer-modal').modal('hide');
 						});
 						//add trainer
-						var button = jQuery('#btn-save-trainer-submit').click(function(event){
+						jQuery('#btn-save-trainer-submit').click(function(event){
 							event.preventDefault();
 					    		 var id = $('#trainerId option:selected').val(); 
 					    		 console.log(id);
@@ -556,49 +561,21 @@ input.parsley-error {
 					    			 url : '${pageContext.request.contextPath}/technology/get1/'+ id,
 					    			 type: 'GET',
 					    			 success : function(data){
-					    				 /* $('#id-technology').val(data.id);
-					    				 $('#name1').val(data.name);
-					    				 $('#note1').val(data.note) */;
 					    				 console.log(data)
-					    				 /* $('#edit-department').val(data.department.id); */
-					    				 var table = document.getElementById("table-trainer");
-										    var row = table.insertRow(1);
-										    var cell0 = row.insertCell(0);
-										    var cell1 = row.insertCell(1);
-										    var cell2 = row.insertCell(2);
-										    var cell3 = row.insertCell(3);
-										    var cell4 = row.insertCell(4);
-										    var button = document.createElement("input");
-										    button.type = "hidden";
-										    button.id = data.id;
-										    button.name = "trainer";
-										    cell0.appendChild(button);
-										    cell1.innerHTML = data.name;
-										    cell2.innerHTML = data.createdBy;
-										    if (data.active==true) {
-										    	cell3.innerHTML = "Active";
-											} else {
-												cell3.innerHTML = "Not Active";
-											}
-										    var button1 = document.createElement("input");
-										    button1.type = "button";
-										    button1.value = "EDIT";
-										    button1.id = data.id;
-										    button1.classList.add("btn-edit1");
-										    button1.classList.add("btn");
-										    button1.classList.add("btn-primary");
-										    button1.classList.add("btn-sm");
-										    var button2 = document.createElement("input");
-										    button2.type = "button";
-										    button2.value = "DELETE";
-										    button2.id = data.id;
-										    button2.classList.add("btn-hapus");
-										    button2.classList.add("btn");
-										    button2.classList.add("btn-danger");
-										    button2.classList.add("btn-sm");
-										    cell4.appendChild(button1);
-										    cell4.appendChild(button2);
-					    			 },
+					    				  if(data.active==true){
+				    						 active="Active";
+				    					 }
+					    				 	var oTable=$('#table-trainer');
+				    				 		var tbody=oTable.find('tbody');
+				    				 			var tr = "<tr>";
+					    				 		tr +="<td><input type='hidden' name='trainer' id='"+data.id+"'/></td>";
+												tr += "<td>"+data.name+"</td>";
+												tr += "<td>"+data.createdBy+"</td>";
+												tr += "<td>"+active+"</td>";
+												tr += "<td><a href='#'class='btn-hapus btn btn-danger btn-sm'>Delete</a></td>";
+												tr +="</tr>";
+												tbody.append(tr);
+				    				 	 	 },
 					    			 dataType: 'json'
 					    		 
 							 });
@@ -610,35 +587,23 @@ input.parsley-error {
 									active:active
 							}
 							
-							
-						/* 	var otable=$('#table-trainer');
-							var tbody=otable.find('tbody');
-									var tr ="<tr>";
-									tr += "<td>"+trainer.name+"</td>";
-									tr += "<td>"+trainer.createdBy+"</td>";
-									tr += "<td>"+trainer.ctive+"</td>";
-									tr += "<td><a href='#'class='btn btn-primary btn-sm'>Edit</a><a href='#'class='btn-hapus btn btn-danger btn-sm'>Deactive</a></td>";
-									tr +="</tr>";
-									tbody.append(tr) */
-							
 							$('#add-technology-modal').modal('show');
 							$('#add-trainer-modal').modal('hide'); 
 							
 						});
 						
 						//add technology
-						var button = jQuery('#btn-save-technology-submit').click(function(event){
+						jQuery('#btn-save-technology-submit').click(function(event){
 							event.preventDefault();
 							var name = jQuery('#name').val();
-							var createdBy =jQuery('#createdBy').val();
-							/* var active=jQuery('#active').val(); */ 
+							var createdBy =jQuery('#createdBy').val(); 
 						    var note = jQuery('#note').val();
 							var active=1;
 							var technologyTrainers = [];
 				            $.each($("input[name='trainer']:hidden"), function(){
 								var technologyTrainer = {
 										trainer:{
-											id:$(this).attr('id')
+											id:$(this).attr("id")
 										}
 								}
 								technologyTrainers.push(technologyTrainer);
@@ -650,8 +615,7 @@ input.parsley-error {
 									active:active,
 									techTran:technologyTrainers
 							}
-							
-							jQuery.ajax({
+							  jQuery.ajax({
 								url : '${pageContext.request.contextPath}/technology/save',
 								type:'POST',
 									beforeSend:function(){
@@ -666,9 +630,9 @@ input.parsley-error {
 									console.log(data);
  									window.location='${pageContext.request.contextPath}/technology'
  							}
-							}); 
+							});  
 							
-						});
+					});
 				});				    	
 						
 </script>

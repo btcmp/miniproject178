@@ -159,8 +159,9 @@
 	                                    <h4 class="title">Office</h4>
 	                                </div>
 	                             	<div class="card-content table-responsive">
-	                             	<form action="${pageContext.request.contextPath }/office">
-									<input type="search" name="name" placeholder="Search by Name"/>
+	                             <form action="${pageContext.request.contextPath }/office/search" method = "GET">
+									<input type="text" id= "searchOffice" name="srcoffice" placeholder="Search by Name"/>
+									<input type="submit" value="Search" id="btn-search" class="btn btn-default btn-sm"/>
 									<button type="button" id="tambahOffice" class="btn btn-sm btn-primary"> + </button>
 								</form>
 	            
@@ -248,8 +249,8 @@
 		      <div class="modal-body">
 			      <form  action="#" id = "form-office" method="POST">
 			      <div class="form-group">
-			      <input type="hidden" id="action" value="add" class="form-control" placeholder="Name"/>
-			      <input type="hidden" id="id" />
+				      <input type="hidden" id="action" value="add" class="form-control" placeholder="Name"/>
+				      <input type="hidden" id="id" />
 			      	<input type="text" id="name" class="form-control" placeholder="Name"/>
 			      </div>
 			      
@@ -266,10 +267,11 @@
 			      </div> 	
 			       	       	
 			      <div class="form-group"> 	
-			       	<textarea type="text" id="notes" class="form-control" placeholder="Description"></textarea>
-			      </div>	
+			       	<textarea id="notes" class="form-control" placeholder="Description"></textarea>
+			      </div>
+			      	
 			      <input type="hidden" id="createdOn" class="form-control" placeholder="Address"/>
-		       	<button type="button" id="tambahRoom" class="btn btn-warning">+ROOM</button></br></br>
+		       		<button type="button" id="tambahRoom" class="btn btn-warning">+ROOM</button></br></br>
 		       
 		       	<div class="card-content table-responsive">
 	               <table id="table-room" class="table table-hover">
@@ -284,13 +286,12 @@
 	                   </tbody>
 	                 </table>
 	             </div>
-		      
-		      </div>
-		      <div class="modal-footer">
+		       <div class="modal-footer">
 		        <button type="submit" id="submitOffice" class="btn btn-primary" data-dismiss="modal">Save</button>
 		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 		      </div>
 		      </form>
+		      </div>
 		    </div>
 		  </div>
 		</div>
@@ -580,27 +581,6 @@
 			//
 		 }); 
 		
-		/*  $('#btn-edit-office').on('click', function(){
-				var office = {
-					name : $('#name').val(),
-	   				phone :  $('#phone').val(),
-	   				email : $('#email').val(),
-	   				address : $('#address').val(),
-	   				notes :  $('#notes').val(),
-				} */
-				
-				/* ajaxSetUp();
-				$.ajax({
-					url : '${pageContext.request.contextPath}/office/update',
-					type: 'POST',
-					data: JSON.stringify(office),
-					contentType: "application/json",
-					success : function(data){
-						window.location = "${pageContext.request.contextPath}/office";
-					},error: function(){
-						alert('update failed');
-					}
-				}); */
 		 });
 	
 		function clearAllForm(formId){

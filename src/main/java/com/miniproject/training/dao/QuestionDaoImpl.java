@@ -35,16 +35,6 @@ public class QuestionDaoImpl implements QuestionDao {
 		Session session = sessionFactory.getCurrentSession();
 		session.saveOrUpdate(question);
 	}
-	
-	public void delete(Long id) {
-		// TODO Auto-generated method stub
-		Question quest = new Question();
-		quest.setId(id);
-		Session session = sessionFactory.getCurrentSession();
-		//session.delete(dept);
-		session.delete(session.get(Question.class, id));
-		session.flush();
-	}
 
 	public Question getQuestionById(Long id) {
 		// TODO Auto-generated method stub
@@ -55,6 +45,26 @@ public class QuestionDaoImpl implements QuestionDao {
 			return null;
 		}
 		return questions.get(0);
+	}
+
+	public List<Question> searchQuestion(String search) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from Question q where q.isDelete = '0' AND lower(q.question) like :search";
+		List<Question> questions = session.createQuery(hql).setParameter("search", "%"+search.toLowerCase()+"%").list();
+		return questions;
+	}
+
+	public List<Question> getLastVersionQuestions() {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "select q from Question q inner join (select qq.question from versiondetail qq where qq.version = (select max(qqq.version) from versiondetail qqq) a on qq.question = q.id)";
+		Query query = session.createQuery(hql);
+		List<Question> questions = query.list();
+		if (!questions.isEmpty()) {
+			return questions;
+		}
+		return new ArrayList();
 	}
 
 }

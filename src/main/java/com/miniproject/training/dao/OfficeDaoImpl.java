@@ -63,6 +63,14 @@ public class OfficeDaoImpl implements OfficeDao{
 		query.executeUpdate();
 	}
 
+	public List<Office> searchByName(String name) {
+		// TODO Auto-generated method stub
+		String hql = "from Office o where lower(o.name) like lower('%"+name+"%')";
+		Session session = sessionFactory.getCurrentSession();
+		List<Office> offices = session.createQuery(hql).list();
+		return offices;
+	}
+
 
 	
 

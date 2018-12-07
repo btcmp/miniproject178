@@ -99,7 +99,7 @@
                     </li>
                     <li class="active">
                         <a href="${pageContext.request.contextPath }/bootcamp">
-                            <i class="material-icons">work</i>
+                            <i class="material-icons">group</i>
                             <p>Bootcamp Test Type</p>
                         </a>
                     </li>
@@ -159,11 +159,14 @@
 	                                    <h4 class="title">Office</h4>
 	                                </div>
 	                             	<div class="card-content table-responsive">
-	                             	<form action="${pageContext.request.contextPath }/bootcamp">
-									<input type="search" name="name" placeholder="Search by Name"/>
-									<button type="button" id="tambah-bootcamp" class="btn btn-sm btn-primary"> + </button>
-								</form>
-	            
+	                             	
+	                             	<form action="${pageContext.request.contextPath }/bootcamp/src" method = "GET">
+										<input type="text" id= "searchBootcamp" name="srctext" placeholder="Search by Name"/>
+										<input type="submit" value="search" id="btn-search" class="btn btn-default btn-sm"/>
+										<button type="button" id="tambah-bootcamp" class="btn btn-sm btn-primary"> +Add </button>
+									 </form>
+									 
+	            				</div>
                                 <div class="card-content table-responsive">
                                     <table id="table-user" class="table table-hover">
                                         <thead class="text-warning">
@@ -172,17 +175,17 @@
                                             <th>STATUS</th>
                                             <th></th>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="list-bootcamp">
                                             <c:forEach items = "${bootcamps }" var="bootcamp">
                                             	<tr>
                                             		<td><c:out value="${bootcamp.name }"></c:out></td>
                                             		<td><c:out value="${bootcamp.createdBy }"></c:out></td>
                                             		<td><c:out value="${office.active }"></c:out></td>
 	                                            	<td>
-	                                            		<button type="button" rel="tooltip" title="Edit" value="${office.id }" class="btn btn-success btn-simple btn-xs btn-edit">
+	                                            		<button type="button" rel="tooltip" title="Edit" value="${bootcamp.id }" class="btn btn-success btn-simple btn-xs btn-edit">
 										                    <i class="fa fa-edit"></i>
 										                </button>
-										                <button type="button" rel="tooltip" title="Deactive" value="${office.id }" class="btn btn-danger btn-simple btn-xs btn-delete">
+										                <button type="button" rel="tooltip" title="Deactive" value="${bootcamp.id }" class="btn btn-danger btn-simple btn-xs btn-delete">
 										                    <i class="fa fa-times"></i>
 										                </button>
 														
@@ -247,14 +250,15 @@
 		      
 		      <div class="modal-body">
 			      <form  action="#" method="POST">
+			      	<input type="hidden" id="action" value="add"/>
+			      	<input type="hidden" id="id" />
+			      
 			      <div class="form-group">
-			      <input type="hidden" id="action" value="add" class="form-control" placeholder="Name"/>
-			      <input type="hidden" id="id" />
 			      	<input type="text" id="name" class="form-control" placeholder="Name"/>
 			      </div>
 			      
 			      <div class="form-group">
-			      	<input type="text" id="notes" class="form-control" placeholder="Notes"/>       	
+			      	<textarea type="text" id="notes" class="form-control" placeholder="Notes"></textarea>      	
 			      </div>
 			       
 			       	       	
@@ -266,7 +270,40 @@
 		    </div>
 		  </div>
 		</div>
-
+		
+		<!-- Modal ADD BOOTCAMP  -->
+		<div class="modal fade" id="edit-bootcamp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	  aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header text-center">
+	        <h3 class="modal-title w-100 font-weight-bold">ADD DATA</h3>
+	      </div>
+		      
+		      <div class="modal-body">
+			      <form  action="#" id="form-bootcamp" method="POST">
+			      
+			      <input type="hidden" id="action" value="add"/>
+			      <input type="hidden" id="id" />
+			      
+			      <div class="form-group">
+			      	<input type="text" id="name" class="form-control" placeholder="Name"/>
+			      </div>
+			      
+			      <div class="form-group">
+			      	<textarea type="text" id="notes" class="form-control" placeholder="Notes"></textarea>      	
+			      </div>
+			       <input type="hidden" id="createdOn" class="form-control" placeholder="Name"/>
+			       	       	
+		      <div class="modal-footer">
+			        <button type="submit" id="submit-bootcamp" class="btn btn-primary" data-dismiss="modal">Save</button>
+			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+		      </div>
+		      </form>
+		    </div>
+		  </div>
+		</div>
+		
 		</body>
 <!--   Core JS Files   -->
 <script src="${pageContext.request.contextPath}/resources/assets/js/jquery-3.2.1.min.js" type="text/javascript"></script>
@@ -295,291 +332,79 @@
 			$('#submit-bootcamp').click(function(event){
 				event.preventDefault();
 			//event listener on click
-			//var action = $('#action').val();
+			var action = $('#action').val();
 			var name = jQuery('#name').val();
 			var notes = jQuery('#notes').val();
+			var id = jQuery('#id').val();
+			var date = new Date;
 			
 			var bootcamp = {
+					id : id,
 					name : name,
 					notes : notes,
+					createdOn : date
 					
 			};
 			console.log(bootcamp);
 			
-			jQuery.ajax({
-				url: '${pageContext.request.contextPath}/bootcamp/save',
-				type : 'POST',
-				contentType : 'application/json',
-				data : JSON.stringify(bootcamp),
-				success : function(data){
-					alert('Data Berhasil di Add')
-					window.location = '${pageContext.request.contextPath}/bootcamp'
-				},error: function(){
-					alert('Add Data Failed');
-				}
-			}) 
-		});
-		});
-
-		/* //tampil data room ke table
-		jQuery(document).ready(function(){
-			$('#saveRoom').click(function(event){
-				event.preventDefault();
-			//event listener on click
-			var code = jQuery('#code').val();
-			var name = jQuery('#name-room').val();
-			var capacity = jQuery('#capacity').val();
-			var radio= $('input[name=sama]:checked').val();
-			var description = jQuery('#description').val();
-			
-			var room = {
-					code : code,
-					name : name,
-					capacity : capacity,
-					any_projector : radio,
-					notes : description
-	
-				};
-			
-			var dataId = $('#id-add-room').val();
-			if (dataId!="" || dataId!='') {
-				var trItem = $('#'+dataId);
-				
-				trItem.find('.txt-code').val(room.code);
-				trItem.find('.txt-name').val(room.name);
-				trItem.find('.txt-capacity').val(room.capacity);
-				trItem.find('.txt-description').val(room.notes);
-			}else{		
-			
-			
-			var oTable = $('#table-room'); //id table room
-			var tbody = oTable.find('tbody');
-			var index = $('#list-room tr').length;
-			var tr = "<tr id='data_"+index +"'>"+
-					"<td><input type='text' name='txtcode' class='form-control txt-code' value='"+room.code+"'/></td>"+
-					"<td><input type='text' name='txtname' class='form-control txt-name' value='"+room.name+"'/></td>" +
-					"<td><input type='text' name='txtcapacity' class='form-control txt-capacity' value='"+room.capacity+"'/></td>"+
-					"<td>"+
-					"<input type='hidden' name='txtid' class='form-control txt-id' value=''/>"+
-					"<input type='hidden' name='txtdescription' class='form-control txt-description' value='"+room.notes+"'/>"+
-						"<button type='button' class='btn btn-primary btn-sm btn-edit-room'>Edit </button>"+
-		
-					"</td>"+
-				"</tr>";
-	        tbody.append(tr);
-			}
-	        $('#addOffice').modal('show');
-			$('#addRoom').modal('hide');
-			
-			
-			emptyAddRoom();
-			});
-		
-		//add office dan room udah masuk ke database
-		jQuery(document).ready(function(){
-			$('#submitOffice').click(function(event){
-				event.preventDefault();
-			//event listener on click
-			var action = $('#action').val();
-			var name = jQuery('#name').val();
-			var phone = jQuery('#phone').val();
-			var email = jQuery('#email').val();
-			var address = jQuery('#address').val();
-			var desc = jQuery('#notes').val();
-			var id = jQuery('#id').val();
-			
-			var office = {
-					id : id,
-					name : name,
-					phone : phone,
-					email : email,
-					address : address,
-					notes : desc,
-					rooms :[]
-			};
-			
-			var oTable = $('#table-room');
-			var tbody = oTable.find('tbody');
-			var listRoom = [];
-			$.each(tbody.find('tr'), function(index, value){
-					var code = $(this).find('.txt-code').val();
-					var nameRoom = $(this).find('.txt-name').val();
-					var capacity = $(this).find('.txt-capacity').val();
-					var description = $(this).find('.txt-description').val();
-					var idRoom = $(this).find('.txt-id').val();
-					var rms = {
-							id : idRoom,
-							code : code,
-							name : nameRoom,
-							capacity : capacity,
-							notes : description,
-							any_projector : true,
-			};
-					office.rooms.push(rms);
-			});
-			
-			console.log(office);
-			
-			//update office & room dari db
 			
 			if (action == "add") {
 				jQuery.ajax({
-					url: '${pageContext.request.contextPath}/office/save',
+					url: '${pageContext.request.contextPath}/bootcamp/save',
 					type : 'POST',
 					contentType : 'application/json',
-					data : JSON.stringify(office),
+					data : JSON.stringify(bootcamp),
 					success : function(data){
 						alert('Data Berhasil di Add')
-						window.location = '${pageContext.request.contextPath}/office'
+						window.location = '${pageContext.request.contextPath}/bootcamp'
 					},error: function(){
 						alert('Add Data Failed');
 					}
-				})
+				})  
 			}else{
 				jQuery.ajax({
-					url: '${pageContext.request.contextPath}/office/editoffice',
+					url: '${pageContext.request.contextPath}/bootcamp/update',
 					type : 'POST',
 					contentType : 'application/json',
-					data : JSON.stringify(office),
+					data : JSON.stringify(bootcamp),
 					success : function(data){
-						//console.log(data);
-						alert('Data Berhasil di Update')
-						window.location = '${pageContext.request.contextPath}/office'
+						alert('Data Berhasil di Add')
+						window.location = '${pageContext.request.contextPath}/bootcamp'
 					},error: function(){
-						alert('Update Failed');
+						alert('Add Data Failed');
 					}
 				})   
 			}
 			
-			});
-	    });
-		
-		//edit room sebelum masuk db
-		$('#list-room').on('click', '.btn-edit-room', function(){
-			var trItem = $(this).parent().parent();
-			
-			var code = trItem.find('.txt-code').val();
-			var name = trItem.find('.txt-name').val();
-			var capacity = trItem.find('.txt-capacity').val();
-			var description = trItem.find('.txt-description').val();
-			
-			var dataId= trItem.attr('id');
-			$('#id-add-room').val(dataId);
-			$('#code').val(code);
-			$('#name-room').val(name);
-			$('#capacity').val(capacity);
-			$('#description').val(description);
-			
-			$('#addRoom').modal('show');
-			$('#addOffice').modal('hide');
-			
 		});
 		
-		//button edit office
-		jQuery(".btn-edit").click(function(event){
-			event.preventDefault();
-			 var id = $(this).val();
-			 //alert('id get');
-			// $('#addOffice').modal();
-			 $.ajax({
-				 url : '${pageContext.request.contextPath}/office/editui/'+ id,
-				 type: 'GET',
-				 dataType: 'json',
-				 success : function(data){
-					 $('#action').val('edit');
-					 $('#name').val(data.name);
-					 $('#phone').val(data.phone);
-					 $('#email').val(data.email);
-					 $('#address').val(data.address);
-					 $('#notes').val(data.notes);
-					 $('#id').val(data.id);
-					 var oTable = $('#table-room'); //id table room
-						var tbody = oTable.find('tbody');
-					 var tr = "";
-					 $.each(data.rooms, function(index, room){
-						
-						  tr += "<tr id='data_"+index +"'>"+
-							"<td><input type='text' name='txtcode' class='form-control txt-code' value='"+room.code+"'/></td>"+
-							"<td><input type='text' name='txtname' class='form-control txt-name' value='"+room.name+"'/></td>" +
-							"<td><input type='text' name='txtcapacity' class='form-control txt-capacity' value='"+room.capacity+"'/></td>"+
-							"<td>"+
-							"<input type='hidden' name='txtdescription' class='form-control txt-description' value='"+room.notes+"'/>"+
-							"<input type='hidden' name='txtid' class='form-control txt-id' value='"+room.id+"'/>"+
-								"<button type='button' class='btn btn-primary btn-sm btn-edit-room'>Edit </button>"+
-								"<button type='button' class='btn btn-secondary btn-sm btn-deactive-room'>Deactive </button>"+
-							"</td>"+
-						"</tr>";
-			       		 
-					 });
-					 tbody.html(tr);
-					 $('#addOffice').modal();
-				 },
-				
-			 }); 			 
-			//
-		 });  */
-		
-		/*  $('#btn-edit-office').on('click', function(){
-				var office = {
-					name : $('#name').val(),
-	   				phone :  $('#phone').val(),
-	   				email : $('#email').val(),
-	   				address : $('#address').val(),
-	   				notes :  $('#notes').val(),
-				} */
-				
-				/* ajaxSetUp();
-				$.ajax({
-					url : '${pageContext.request.contextPath}/office/update',
-					type: 'POST',
-					data: JSON.stringify(office),
-					contentType: "application/json",
-					success : function(data){
-						window.location = "${pageContext.request.contextPath}/office";
-					},error: function(){
-						alert('update failed');
-					}
-				}); 
-		 }); */
+			//button edit data bootcamp
+			$(".btn-edit").on('click', function(){
+	    		 var id = $(this).val();
+	    		 var action = ('edit');
+	    		 $.ajax({
+	    			 url : '${pageContext.request.contextPath}/bootcamp/editui/'+ id,
+	    			 type: 'GET',
+	    			 dataType: 'json',
+	    			 success : function(data){
+	    				 $('#action').val(action);
+	    				 $('#id').val(data.id);
+	    				 $('#name').val(data.name);
+	    				 $('#notes').val(data.notes);
+	    			 }, 
+	    		 })
+	    		$('#add-bootcamp').modal();
+	    	 });
+		});
 	
-		
-		 
-	//------------------------------------------------------------	
+	function clearAllForm(formId){
+		$(formId).trigger("reset");
+	}
+	
     $(document).ready(function() {
-    	//setting up datepicker
-    	$('#birthDate123').datepicker();
     	
-    	 function ajaxSetUp(){
-    		 var token = $("meta[name='_csrf']").attr("content");
-    		  var header = $("meta[name='_csrf_header']").attr("content");
-    		  $(document).ajaxSend(function(e, xhr, options) {
-    		    xhr.setRequestHeader(header, token);
-    		  });
-    	 }
-    	   
     	 $('#table-user').DataTable();
-    	 
-    	 $('.btn-hapus').on('click', function(){
-    		 var conf = confirm("Are you sure delete this data ?");
-    		 if(conf == true){
-    			 var id = $(this).attr("id");
-    			 
-    			 ajaxSetUp();
-    			 $.ajax({
-    				 url : '${pageContext.request.contextPath}/department/delete/'+id,
-    				 type: 'DELETE',
-    				 success: function(data){
-    					 window.location = "${pageContext.request.contextPath}/department";
-    				 }, error : function(){
-    					 alert('delete data failed..!!');
-    				 }
-    			 });
-    		 }
-    		 
-    		 return false;
-    	 });
-   //------------------------------------------------------------------ 	 
-    	 
+    	 	 
     	//logout event button
     	 $('#logout').click(function(event){
     		 event.preventDefault();
@@ -588,32 +413,11 @@
     	
     	$('#tambah-bootcamp').click(function(event){
     		event.preventDefault();
+    		clearAllForm('#form-bootcamp');
     		$('#add-bootcamp').modal();
-    		//$('#action').val('add');
+    		$('#action').val('add');
     	});
-    	
-    	$('#tambahRoom').click(function(event){
-    		event.preventDefault();
-    		
-    		emptyAddRoom();
-    		$('#addOffice').modal('hide');
-    		$('#addRoom').modal();
-    	});
-    	$('#cancelRoom').click(function(event){
-    		event.preventDefault();
-    		$('#addOffice').modal('show');
-    		$('#addRoom').modal('hide');
-    		
-    	});    	
     });
-	
-    function emptyAddRoom(){
-		$('#id-add-room').val('');
-		$('#code').val('');
-		$('#name-room').val('');
-		$('#capacity').val('');
-		$('#description').val('');
-	}
 </script>
 
 </html>
