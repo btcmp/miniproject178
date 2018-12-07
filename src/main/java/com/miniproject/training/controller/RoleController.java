@@ -4,8 +4,10 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,14 +18,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.miniproject.training.model.Role;
+import com.miniproject.training.model.User;
 import com.miniproject.training.service.RoleService;
 
 @Controller
 @RequestMapping("/role")
-public class RoleController {
+public class RoleController{
 
 	@Autowired
 	RoleService roleService;
+	
+	@Autowired
+	HttpSession httpSession;
 	
 	@ModelAttribute("roleForm")
 	public Role getRoleForm()
@@ -43,7 +49,9 @@ public class RoleController {
 	@ResponseBody
 	public Role saving(@RequestBody Role role)
 	{
+		User user = (User) httpSession.getAttribute("application-user");	
 		role.setCreatedOn(new Date());
+		role.setCreatedBy(user.getId());
 		roleService.saving(role);
 		return role;
 	}
@@ -61,6 +69,8 @@ public class RoleController {
 	@ResponseBody
 	public Role deactivate(@RequestBody Role role)
 	{
+		User user = (User) httpSession.getAttribute("application-user");
+		role.setModifiedBy(user.getId());
 		roleService.deactivate(role);
 		return role;
 	}
@@ -69,6 +79,8 @@ public class RoleController {
 	@ResponseBody
 	public Role update(@RequestBody Role role)
 	{
+		User user = (User) httpSession.getAttribute("application-user");
+		role.setModifiedBy(user.getId());
 		roleService.update(role);
 		return role;
 	}

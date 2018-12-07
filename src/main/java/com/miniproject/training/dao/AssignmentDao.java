@@ -12,4 +12,6 @@ public interface AssignmentDao {
 
 	Assignment getAssignmentById(Long id);
 
+	List<Assignment> searchByName(String name);
+
 }

@@ -19,7 +19,7 @@ public class AssignmentDaoImpl implements AssignmentDao{
 
 	public List<Assignment> getAllAssignments() {
 		// TODO Auto-generated method stub
-		String hql="from Assignment";
+		String hql="from Assignment a where a.isDone='0' and a.isHold='0' and a.isDelete='0'";
 		Session session=sessionFactory.getCurrentSession();
 		Query query=session.createQuery(hql);
 		List<Assignment> assignments=query.list();
@@ -46,5 +46,18 @@ public class AssignmentDaoImpl implements AssignmentDao{
 			return assignments.get(0);
 		}
 		return new Assignment();
+	}
+
+	public List<Assignment> searchByName(String name) {
+		// TODO Auto-generated method stub
+		String hql="from Assignment a where lower(a.testId.name) like lower('%"+name+"%')";
+		Session session=sessionFactory.getCurrentSession();
+		Query query = session.createQuery(hql);
+		//query.setParameter("name", name);
+		List<Assignment> assigments = query.list();
+		if(assigments.isEmpty()) {
+			return new ArrayList();
+		}
+		return assigments;
 	}
 }

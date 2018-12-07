@@ -129,7 +129,7 @@
 	                           	<div class="card-content table-responsive">
 	                           		<form action="${pageContext.request.contextPath }/monitoring">
 	                           			<input type="search" id="search" placeholder="Search by Name"/>
-	                           			<button type="button" id="tambahMonitoring" class="btn btn-sm btn-primary"> + </button>
+	                           			<button type="button" id="tambahMonitoring" class="btn btn-sm btn-primary"> + add </button>
                        				</form>
 	                     		</div>
 								
@@ -386,8 +386,11 @@
 					data:JSON.stringify(idle),
 					success: function(data){
 						console.log(data);
-						alert('Idle berhasil ditambahkan');
+						alert('Idle successfully added');
 						window.location='${pageContext.request.contextPath}/monitoring'
+					},
+					error: function(){
+						alert('Idle failed added')
 					}
 				});
 			}
@@ -418,8 +421,11 @@
 					data:JSON.stringify(editidle),
 					success: function(data){
 						console.log(data);
-						alert('Edit idle berhasil');
+						alert('Idle successfully updated');
 						window.location='${pageContext.request.contextPath}/monitoring';
+					},
+					error: function(){
+						alert('Idle failed updated')
 					}
 				})
 			}
@@ -480,8 +486,11 @@
 				data:JSON.stringify(placement),
 				success: function(data){
 					console.log(data);
-					alert('Placement berhasil ditambahkan');
+					alert('Placement successfully added');
 					window.location='${pageContext.request.contextPath}/monitoring'
+				},
+				error: function(){
+					alert('Placement failed added')
 				}
 			});
 		});
@@ -541,7 +550,7 @@
 		jQuery('#deactive').click(function(event){
 			event.preventDefault();
 			var datemodif=new Date();
-			var isDelete=false;
+			var isDelete=true;
 			var testId= $('#biodata-id option:selected').val();
 			var moni={
 					id:$('#id').val(),
@@ -574,8 +583,11 @@
 			    },
 				success: function(data){
 					console.log(data);
-					alert('idle berhasil dideactivekan');
+					alert('idle successfully deactivated');
 					window.location='${pageContext.request.contextPath}/monitoring'
+				},
+				error: function(){
+					alert('idle failed deactivated')
 				}
 			})
 		})
