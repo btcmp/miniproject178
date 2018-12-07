@@ -1,9 +1,11 @@
 package com.miniproject.training.controller;
 
+import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,10 +30,14 @@ public class UserController {
 	UserService userService;
 	
 	@Autowired
+	HttpSession httpSession;
+	
+	@Autowired
 	RoleService roleService;
 	
 	@ModelAttribute("userForm")
-	public User getUserForm() {
+	public User getUserForm(Principal principal) {
+		String username = principal.getName();
 		return new User();
 	}
 	
@@ -48,8 +54,10 @@ public class UserController {
 	@ResponseBody
 	public User saving(@RequestBody User user)
 	{	
+		User userlogin = (User) httpSession.getAttribute("application-user");
+		user.setCreatedBy(userlogin.getId());
 		user.setCreatedOn(new Date());
-		userService.saving(user);	
+		userService.saving(user);
 		return user;
 	}
 	
