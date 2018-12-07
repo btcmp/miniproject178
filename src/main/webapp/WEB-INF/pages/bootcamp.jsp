@@ -103,6 +103,12 @@
                             <p>Bootcamp Test Type</p>
                         </a>
                     </li>
+                    <li>
+                        <a href="${pageContext.request.contextPath }/category">
+                            <i class="material-icons">library_books</i>
+                            <p>Category</p>
+                        </a>
+                    </li>
 					<li><a href="${pageContext.request.contextPath }/question">
 							<i class="material-icons">library_books</i>
 							<p>Questions</p>
@@ -162,7 +168,8 @@
 	                             	
 	                             	<form action="${pageContext.request.contextPath }/bootcamp/src" method = "GET">
 										<input type="text" id= "searchBootcamp" name="srctext" placeholder="Search by Name"/>
-										<input type="submit" value="search" id="btn-search" class="btn btn-default btn-sm"/>
+										<button type="submit" class="btn btn-sm btn-default"/>
+                                			<i class="material-icons">search</i>
 										<button type="button" id="tambah-bootcamp" class="btn btn-sm btn-primary"> +Add </button>
 									 </form>
 									 
@@ -180,7 +187,16 @@
                                             	<tr>
                                             		<td><c:out value="${bootcamp.name }"></c:out></td>
                                             		<td><c:out value="${bootcamp.createdBy }"></c:out></td>
-                                            		<td><c:out value="${office.active }"></c:out></td>
+                                            		<td>
+                                            		<c:choose>
+													    <c:when test="${bootcamp.active=='0'}">
+													        non active
+													    </c:when>    
+													    <c:otherwise>
+													        active
+													    </c:otherwise>
+													</c:choose>
+													</td>
 	                                            	<td>
 	                                            		<button type="button" rel="tooltip" title="Edit" value="${bootcamp.id }" class="btn btn-success btn-simple btn-xs btn-edit">
 										                    <i class="fa fa-edit"></i>
@@ -249,7 +265,7 @@
 	      </div>
 		      
 		      <div class="modal-body">
-			      <form  action="#" method="POST">
+			      <form  action="#" id="form-bootcamp" method="POST">
 			      	<input type="hidden" id="action" value="add"/>
 			      	<input type="hidden" id="id" />
 			      
@@ -263,48 +279,35 @@
 			       
 			       	       	
 		      <div class="modal-footer">
-			        <button type="submit" id="submit-bootcamp" class="btn btn-primary" data-dismiss="modal">Save</button>
+			        <button type="submit" id="submit-bootcamp" class="btn btn-primary">Save</button>
 			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 		      </div>
 		      </form>
 		    </div>
 		  </div>
 		</div>
-		
-		<!-- Modal ADD BOOTCAMP  -->
-		<div class="modal fade" id="edit-bootcamp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-	  aria-hidden="true">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header text-center">
-	        <h3 class="modal-title w-100 font-weight-bold">ADD DATA</h3>
-	      </div>
-		      
-		      <div class="modal-body">
-			      <form  action="#" id="form-bootcamp" method="POST">
-			      
-			      <input type="hidden" id="action" value="add"/>
-			      <input type="hidden" id="id" />
-			      
-			      <div class="form-group">
-			      	<input type="text" id="name" class="form-control" placeholder="Name"/>
-			      </div>
-			      
-			      <div class="form-group">
-			      	<textarea type="text" id="notes" class="form-control" placeholder="Notes"></textarea>      	
-			      </div>
-			       <input type="hidden" id="createdOn" class="form-control" placeholder="Name"/>
-			       	       	
-		      <div class="modal-footer">
-			        <button type="submit" id="submit-bootcamp" class="btn btn-primary" data-dismiss="modal">Save</button>
-			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-		      </div>
-		      </form>
-		    </div>
-		  </div>
 		</div>
-		
-		</body>
+
+		<!-- Modal DEACTIVE BOOTCAMP  -->
+		<div class="modal fade" id="deactive-bootcamp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header text-center">
+						<h3 class="modal-title w-100 font-weight-bold">Deactive Data???</h3>
+					</div>
+
+					<div class="modal-body text-center">
+						<form action="${pageContext.request.contextPath }/bootcamp/update" method="POST">
+							
+							<button type="submit" id="deactive-yes" class="btn btn-primary">YES</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+							</form>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</body>
 <!--   Core JS Files   -->
 <script src="${pageContext.request.contextPath}/resources/assets/js/jquery-3.2.1.min.js" type="text/javascript"></script>
 <script src="${pageContext.request.contextPath}/resources/assets/js/bootstrap.min.js" type="text/javascript"></script>
@@ -395,6 +398,52 @@
 	    		 })
 	    		$('#add-bootcamp').modal();
 	    	 });
+			
+			//deactive
+			$(".btn-delete").on('click', function(){
+	    		 var id = $(this).val();
+	    		 $.ajax({
+	    			 url : '${pageContext.request.contextPath}/bootcamp/delete/'+ id,
+	    			 type: 'GET',
+	    			 dataType: 'json',
+	    			 success : function(data){
+	    				 $('#id').val(data.id);
+	    				 $('#name').val(data.name);
+	    				 $('#notes').val(data.notes);
+	    			 }, 
+	    		 })
+	    		$('#deactive-bootcamp').modal();
+	    	 });
+			
+			$('#deactive-yes').click(function(event){
+				event.preventDefault();
+			//event listener on click
+			var name = jQuery('#name').val();
+			var notes = jQuery('#notes').val();
+			var id = jQuery('#id').val();
+			var date = new Date;
+			
+			var btcmp = {
+					id : id,
+					name : name,
+					notes : notes,
+					createdOn : date
+					
+			};
+				jQuery.ajax({
+					url: '${pageContext.request.contextPath}/bootcamp/update',
+					type : 'POST',
+					contentType : 'application/json',
+					data : JSON.stringify(btcmp),
+					success : function(data){
+						alert('Deactive Berhasil')
+						window.location = '${pageContext.request.contextPath}/bootcamp'
+					},error: function(){
+						alert('Gagal Deactive');
+					}
+				})   
+			
+		});
 		});
 	
 	function clearAllForm(formId){

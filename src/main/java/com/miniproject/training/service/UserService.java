@@ -41,4 +41,10 @@ public class UserService {
 		// TODO Auto-generated method stub
 		userDao.update(user);
 	}
+
+	public User getUserByUsername(String username) {
+		// TODO Auto-generated method stub
+		return userDao.getUserByUsername(username);
+	}
+
 }
