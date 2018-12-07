@@ -61,17 +61,17 @@ public class BootcampController {
 	
 	//search bootcamp
 	@RequestMapping(value="/src", method = RequestMethod.GET) //url di web
-	public String search(@RequestParam("srctext") String name, Model model) {
+	public String search(@RequestParam("srctext") String name, Model model) { //mengambil query variable di http
 		List<Bootcamp> bootcamps = bootcampService.searchByName(name);
 		model.addAttribute("bootcamps", bootcamps);
 		return "bootcamp";
 	}
 	
 	@RequestMapping(value="/delete/{id}", method = RequestMethod.GET)
-	@ResponseStatus(HttpStatus.OK)
-	public void deleteById(@PathVariable("id") Long id) {
+	@ResponseStatus(HttpStatus.OK) //untuk memberikan status request ok atau create
+	public void delete(@PathVariable("id") Long id) {
 		//Bootcamp bootcamp = bootcampService.getById(id);
-		bootcampService.deactiveBootcamp();
-		System.out.println(id);
+		bootcampService.deactiveBootcamp(id);
+		//System.out.println(id);
 	}
 }

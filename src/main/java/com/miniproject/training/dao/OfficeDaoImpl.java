@@ -26,7 +26,7 @@ public class OfficeDaoImpl implements OfficeDao{
 	
 	public List<Office> getAllOffices() {
 		// TODO Auto-generated method stub
-		String hql = "from Office";
+		String hql = "from Office o where o.active ='1'";
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery(hql);
 		List<Office> offices = query.list();
@@ -72,8 +72,13 @@ public class OfficeDaoImpl implements OfficeDao{
 	}
 
 
-	
-
-	
-
+	public void disbleOffice(Long id) {
+		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
+				String hql = "update Office o set o.active = '0' where o.id = :id";
+				Session session = sessionFactory.getCurrentSession();
+				Query query = session.createQuery(hql);
+				query.setParameter("id", id);
+				query.executeUpdate();
+	}
 }

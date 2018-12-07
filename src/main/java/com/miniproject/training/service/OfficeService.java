@@ -1,5 +1,6 @@
 package com.miniproject.training.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,10 @@ public class OfficeService {
 
 	public Office getOfficeById(Long id) {
 		// TODO Auto-generated method stub
-		return officeDao.getOfficeById(id);
+		Office office =  officeDao.getOfficeById(id);
+		List<Room> rooms = roomDao.getActivateRoomsByOfficeId(office);
+		office.setRooms(rooms);
+		return office;
 	}
 
 	public void update(Office office) {
@@ -48,20 +52,36 @@ public class OfficeService {
 		
 		List<Room> rooms = office.getRooms();
 		
-		// delete rooms
-		roomDao.delete(office.getId());
+		try {
+			// delete rooms
+			roomDao.delete(office.getId());
+			// add data baru
+			for (Room room: rooms) {
+				room.setOffice(office);
+				roomDao.save(room);
+			}	
+		} catch(Exception e) {	}
 		
-		// add data baru
-		
-		for (Room room: rooms) {
-			room.setOffice(office);
-			roomDao.save(room);
-		}
+			
 	}
 
 	public List<Office> searchByName(String name) {
 		// TODO Auto-generated method stub
 		return officeDao.searchByName(name);
+	}
+
+
+	public void disableOffice(Long id) {
+		// TODO Auto-generated method stub
+		Office office = officeDao.getOfficeById(id);
+		officeDao.disbleOffice(id);
+		List<Room> rooms = roomDao.getRoomByOfficeId(office);
+		if(!rooms.isEmpty())
+		office.setRooms(rooms);
+		for(Room room : rooms) {
+			roomDao.deactiveRoom(room.getId());
+		}
+		
 	}
 
 	
