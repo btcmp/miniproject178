@@ -32,7 +32,7 @@ public class Bootcamp {
 	@Column(name="modified_on")
 	private Date modifiedOn;
 	@Column(nullable=true)
-	private Boolean active;
+	private boolean active = true;
 	public Long getId() {
 		return id;
 	}
@@ -75,10 +75,10 @@ public class Bootcamp {
 	public void setModifiedOn(Date modifiedOn) {
 		this.modifiedOn = modifiedOn;
 	}
-	public Boolean getActive() {
+	public boolean getActive() {
 		return active;
 	}
-	public void setActive(Boolean active) {
+	public void setActive(boolean active) {
 		this.active = active;
 	}
 	
