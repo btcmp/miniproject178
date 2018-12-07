@@ -10,4 +10,6 @@ public interface TechnologyTrainerDao {
 	public List<TechnologyTrainer> getAll();
 
 	public void save(TechnologyTrainer technology);
+
+	public List<TechnologyTrainer> getTechnologyTrainerByTechnology(Technology technology);
 }

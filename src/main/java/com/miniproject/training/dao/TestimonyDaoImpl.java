@@ -1,8 +1,10 @@
 package com.miniproject.training.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +19,17 @@ public class TestimonyDaoImpl implements TestimonyDao {
 	SessionFactory sessionFactory;
 	public List<Testimony> getAllTestimony() {
 		// TODO Auto-generated method stub
+		String hql="from Testimony where isDelete = '0'";
 		Session session=sessionFactory.getCurrentSession();
-		List<Testimony>testi=session.createCriteria(Testimony.class).list();
-		return testi;
+		Query query=session.createQuery(hql);
+		List<Testimony> testi=query.list();
+		if(!testi.isEmpty()) {
+			return testi;
+		}
+		return new ArrayList<Testimony>();
 	}
 	public void save(Testimony testimony) {
 		// TODO Auto-generated method stub
-		testimony.setCreatedOn(new Date());
 		Session session=sessionFactory.getCurrentSession();
 		session.save(testimony);
 	}
@@ -39,14 +45,12 @@ public class TestimonyDaoImpl implements TestimonyDao {
 	}
 	public void update(Testimony testimony) {
 		// TODO Auto-generated method stub
-		testimony.setModifiedOn(new Date());
 		Session session=sessionFactory.getCurrentSession();
 		session.update(testimony);
 	}
 	public void delete(long id) {
 		// TODO Auto-generated method stub
 		Testimony testi=new Testimony();
-		testi.setDeletedOn(new Date());
 		testi.setId(id);
 		Session session=sessionFactory.getCurrentSession();
 		session.delete(session.get(Testimony.class, id));

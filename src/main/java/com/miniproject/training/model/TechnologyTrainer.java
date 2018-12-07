@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name="t_technology_trainer")
 
@@ -29,6 +31,7 @@ public class TechnologyTrainer {
 	@Column(nullable=false,name="created_on")
 	private Date createdOn;
 	
+	@JsonBackReference
 	@ManyToOne
 	@JoinColumn(name="technology_id",referencedColumnName="technology_id")
 	private Technology technology;

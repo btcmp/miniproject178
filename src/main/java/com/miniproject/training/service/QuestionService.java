@@ -32,4 +32,14 @@ public class QuestionService {
 		return question;
 	}
 
+	public List<Question> searchQuestion(String search) {
+		// TODO Auto-generated method stub
+		return questionDao.searchQuestion(search);
+	}
+
+	public List<Question> getLastVersionQuestions() {
+		// TODO Auto-generated method stub
+		return questionDao.getLastVersionQuestions();
+	}
+
 }

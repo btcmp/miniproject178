@@ -12,4 +12,8 @@ public interface QuestionDao {
 
 	public Question getQuestionById(Long id);
 
+	public List<Question> searchQuestion(String search);
+
+	public List<Question> getLastVersionQuestions();
+
 }

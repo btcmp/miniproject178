@@ -30,8 +30,11 @@ public class QuestionController {
 	QuestionService questionService;
 	
 	@RequestMapping
-	public String view(Model model) {
+	public String view(Model model, @RequestParam(required=false) String search) {
 		List<Question> questions = questionService.getAllQuestions();
+		if (search!=null) {
+			questions = questionService.searchQuestion(search);
+		}
 		model.addAttribute("questions", questions);
 		return "question";
 	}

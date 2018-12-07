@@ -172,7 +172,7 @@ input.parsley-error {
 										<i class="material-icons">search</i>
 										</button>
 										<div>
-											<button type="button" id="tambahTechnology"
+											<button type="button" id="tambahTestimony"
 											class="btn btn-sm btn-primary">
 												<i class="material-icons">add</i>
 												testimony
@@ -182,7 +182,7 @@ input.parsley-error {
 									
 
 									<div class="table-responsive">
-										<table id="table-user" class="table">
+										<table id="table-testimony" class="table">
 											<thead class="text-warning">
 												<th>Testimony</th>
 												<th>Action</th>
@@ -191,10 +191,13 @@ input.parsley-error {
 												<c:forEach var="dept" items="${testimony}">
 													<tr>
 														<td><c:out value="${dept.title}"></c:out></td>
-														<td><a id="${dept.id }" href="#"
-															class="btn-edit btn btn-primary btn-sm">Edit</a>
-														<a id="${dept.id }" href="#"
-															class="btn-hapus btn btn-danger btn-sm">Delete</a>
+														<td>
+														<button id="${dept.id }" type="button" rel="tooltip" title="Edit ${employee.name }" class="btn btn-success btn-simple btn-xs btn-edit">
+										                    <i class="fa fa-edit"></i>
+										                </button>
+														<button id="${dept.id }" type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs btn-hapus">
+										                    <i class="fa fa-times"></i>
+										                </button>
 														</td>
 													</tr>
 												</c:forEach>
@@ -251,6 +254,7 @@ input.parsley-error {
 						<form action="${pageContext.request.contextPath }/testimony/save" method="POST">
 							<div class="form-group">
 								<label for="name-testimony">Name</label>
+								<input type="hidden" id="active"/>
 								<input data-parsley-required="true" type="text" id="title"
 									class="form-control"
 									aria-describedby="nameHelp" placeholder="Enter Name Testimony" />
@@ -272,6 +276,7 @@ input.parsley-error {
 				</div>
 				</div>
 			</div>
+			
 			<div class="modal fade" id="add-update-testimony" tabindex="-1"
 			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
@@ -305,6 +310,43 @@ input.parsley-error {
 					</div>
 				</div>
 			</div>
+			
+			<div class="modal fade" id="add-delete-testimony" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Testimony</h5>
+					</div>
+					<div class="modal-body">
+						<form action="${pageContext.request.contextPath }/testimony/update" method="POST">
+							<div class="form-group">
+								<label for="name-testimony">Name</label>
+								<input type=hidden id="id-testimony"/>
+								<input type="hidden" name="isDelete" id="actives"/>
+								<input type="hidden" name="created-on"id="created-on"/>
+								<input data-parsley-required="true" type="text" id="titles1"
+									class="form-control"
+									aria-describedby="nameHelp" placeholder="Enter Name Testimony" />
+							</div>
+							<div class="form-group">
+								<label for="content">Note</label>
+								<textarea data-parsley-required="true" 
+								rows="4" cols="50" id="contents1" aria-describedby="nameHelp"
+								class="form-control" placeholder="Enter Content" ></textarea>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									data-dismiss="modal">Close</button>
+								<button type="submit" id="btn-delete-testimony-submit"
+									class="btn btn-danger">Delete</button>
+							</div>
+						</form>
+					</div>
+					</div>
+				</div>
+			</div>
+		
 							
 							
 </body>
@@ -358,7 +400,11 @@ input.parsley-error {
 							});
 						}
 
-						/* $('#table-user').DataTable(); */
+						 $('#table-testimony').DataTable({
+							 searching:false,
+							 paging:false,
+							 bSort:false
+						 }); 
 
 						/* $('.btn-hapus').on('click',function() {var conf = confirm("Are you sure delete this data ?");
 											if (conf == true) {
@@ -396,7 +442,6 @@ input.parsley-error {
 				    				 $('#id-testimony').val(data.id);
 				    				 $('#titles').val(data.title);
 				    				 $('#contents').val(data.content);
-				    				 /* $('#edit-department').val(data.department.id); */
 				    			 },
 				    			 dataType: 'json'
 				    		 })
@@ -404,32 +449,19 @@ input.parsley-error {
 				    		$('#add-update-testimony').modal();
 				    		 
 				    	 });
-						 $('.btn-hapus').on('click', function(){
-				    		 var id = $(this).attr('id');
-				    		 $.ajax({
-				    			 url : '${pageContext.request.contextPath}/testimony/delete/'+ id,
-				    			 type: 'DELETE',
-				    			 success : function(data){
-				    				 window.location = "${pageContext.request.contextPath}/testimony";
-				    			 },
-				    			
-				    		 })
-				    		 
-				    		 
-				    	 });
-						 //update technology
+						 
 						 var button = jQuery('#btn-update-testimony-submit').click(function(event){
 								event.preventDefault();
 								var name = jQuery('#titles').val();
-						/* 		var createdBy =jQuery('#createdBy').val();
-								var active=jQuery('#active').val(); */
 							    var note = jQuery('#contents').val();
 								var id = jQuery('#id-testimony').val();
+								var date=new Date();
 								
 								var testimony = {
 										title:name,
 										content:note,
-										id:id
+										id:id,
+										modifiedOn:date
 								}
 								jQuery.ajax({
 									url : '${pageContext.request.contextPath}/testimony/update',
@@ -449,23 +481,23 @@ input.parsley-error {
 								});
 								
 							});
-
-						
-						//modal tambah trainer
+						  
 						$('#tambahTestimony').click(function(event) {
 							event.preventDefault();
 							$('#add-testimony-modal').modal();
 						});
 						
-						//add trainer
-						var button = jQuery('#btn-save-testimony-submit').click(function(event){
+						jQuery('#btn-save-testimony-submit').click(function(event){
 							event.preventDefault();
 							var name = jQuery('#title').val();
 						    var content = jQuery('#content').val();
-							
+							var date = new Date();
+						 	var isd = jQuery('#active').val(); 
 							var testimony = {
 									title:name,
-									content:content
+									content:content,
+									createdOn:date,
+						 			isDelete:isd 
 							}
 							
 							jQuery.ajax({
@@ -476,6 +508,7 @@ input.parsley-error {
 										console.log('mau contact server');
 									},
 								contentType: 'application/json',
+								dataType: "json",
 								data: JSON.stringify(testimony),
 								success : function(data){
 									
@@ -486,8 +519,61 @@ input.parsley-error {
 							});
 							
 						});
-				});				    	
 						
+						 $('.btn-hapus').on('click', function(){
+			    		 var id = $(this).attr('id');
+			    		 $.ajax({
+			    			 url : '${pageContext.request.contextPath}/testimony/get/'+ id,
+			    			 type: 'GET',
+			    			 success : function(data){
+			    			 	$("#id-testimony").val(data.id);
+			    			 	$('#titles1').val(data.title);
+				    			$('#contents1').val(data.content);
+				    			$('#created-on').val(data.createdOn);
+				    			$('input[name="isDelete"]').val(data.isDelete=true)
+				    			console.log(data)
+			    			 },
+			    			
+			    		 })
+			    		 $('#add-delete-testimony').modal()
+			    		 
+			    	 });
+						 
+					jQuery('#btn-delete-testimony-submit').click(function(event){
+								event.preventDefault();
+								var name = jQuery('#titles').val();
+							    var note = jQuery('#contents').val();
+								var id = jQuery('#id-testimony').val();
+								var date=new Date();
+								
+								var testimony = {
+										title:name,
+										content:note,
+										id:id,
+										isDelete:$('#actives').val(),
+										createdOn : $('#created-on').val(),
+										deletedOn:date
+								}
+								jQuery.ajax({
+									url : '${pageContext.request.contextPath}/testimony/update',
+									type:'POST',
+										beforeSend:function(){
+											console.log(testimony);
+											console.log('mau contact server');
+										},
+									contentType: 'application/json',
+									data: JSON.stringify(testimony),
+									success : function(data){
+										
+										console.log('data dari server');
+										console.log(data);
+										window.location='${pageContext.request.contextPath}/testimony'
+									}
+								});
+								
+							});
+	 	
+				});				    							
 </script>
 
 </html>

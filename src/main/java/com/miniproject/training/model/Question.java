@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -37,12 +38,13 @@ public class Question {
 	@Column(name = "DELETED_BY", nullable = true)
 	private Long deletedBy;
 	@Column(name = "DELETED_ON", nullable = true)
-	@Temporal(TemporalType.TIMESTAMP)
+	@Temporal(TemporalType.DATE)
 	private Date deletedOn;
 	@Column(name = "IS_DELETE")
 	@JsonProperty
 	private boolean isDelete = false;
 	@OneToMany(mappedBy = "question")
+	@OrderBy("versionDetail.id")
 	private List<VersionDetail> versionDetail;
 	
 	//Getter and Setter
