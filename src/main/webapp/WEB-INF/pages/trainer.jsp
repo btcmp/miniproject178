@@ -111,12 +111,16 @@ input.parsley-error {
 							<p>Questions</p>
 					</a></li>
 					<li><a href="${pageContext.request.contextPath }/technology">
-							<i class="material-icons">library_books</i>
+							<i class="material-icons">developer_mode</i>
 							<p>Technology</p>
 					</a></li>
 					<li class="active"><a href="${pageContext.request.contextPath }/trainer">
-							<i class="material-icons">library_books</i>
+							<i class="material-icons">supervisor_account</i>
 							<p>Trainer</p>
+					</a></li>
+					<li><a href="${pageContext.request.contextPath }/testimony">
+							<i class="material-icons">list</i>
+							<p>Testimony</p>
 					</a></li>
 					<li><a href="#" id="logout"> <i class="material-icons">block</i>
 							<p>Logout</p>
@@ -156,12 +160,25 @@ input.parsley-error {
 									<h4 class="title">Trainer</h4>
 								</div>
 								<div class="card-content table-responsive">
-									<form action="${pageContext.request.contextPath }/trainer">
-										<input type="search" name="search"
+									<form class="navbar-form navbar-left" role ="search" action="${pageContext.request.contextPath }/trainer">
+										<div class="form-group is-empty">
+											<input class="form-control" type="text" name="search"
 											placeholder="Search by Trainer" />
-										<button type="button" id="tambahTrainer"
-											class="btn btn-sm btn-primary">+Trainer</button>
+										</div>
+										<span class="material-input"></span>
+										<span class="material-input"></span>
+										<button type= "submit" class="btn btn-primary btn-round btn-just-icon">
+										<i class="material-icons">search</i>
+										</button>
+										<div>
+											<button type="button" id="tambahTrainer"
+											class="btn btn-sm btn-primary">
+												<i class="material-icons">add</i>
+												trainer
+											</button>
+										</div>
 									</form>
+									
 
 									<div class="table-responsive">
 										<table id="table-user" class="table">

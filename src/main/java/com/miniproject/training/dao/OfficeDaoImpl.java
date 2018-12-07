@@ -36,8 +36,7 @@ public class OfficeDaoImpl implements OfficeDao{
 		return new ArrayList();
 	}
 
-
-	public Office getOfficeById(int id) {
+	public Office getOfficeById(Long id) {
 		// TODO Auto-generated method stub
 		String hql = "from Office o where o.id = :id";
 		Session session = sessionFactory.getCurrentSession();
@@ -46,9 +45,34 @@ public class OfficeDaoImpl implements OfficeDao{
 		List<Office> offices = query.list();
 		if (!offices.isEmpty()) {
 			return offices.get(0);
-		}		
+		}
 		return new Office();
 	}
+
+	public void update(Office office) {
+		// TODO Auto-generated method stub
+		String hql = "update Office o set o.name = :name, o.phone = :phone, o.email = :email, o.address = :address, o.notes = :description where o.id = :id";
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery(hql);
+		query.setParameter("name", office.getName());
+		query.setParameter("phone", office.getPhone());
+		query.setParameter("email", office.getEmail());
+		query.setParameter("address", office.getAddress());
+		query.setParameter("description", office.getNotes());
+		query.setParameter("id", office.getId());
+		query.executeUpdate();
+	}
+
+	public List<Office> searchByName(String name) {
+		// TODO Auto-generated method stub
+		String hql = "from Office o where lower(o.name) like lower('%"+name+"%')";
+		Session session = sessionFactory.getCurrentSession();
+		List<Office> offices = session.createQuery(hql).list();
+		return offices;
+	}
+
+
+	
 
 	
 

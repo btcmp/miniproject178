@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
@@ -31,6 +32,9 @@ public class Version {
 	private Date createdOn;
 	@Column(name = "MODIFIED_BY", nullable = true)
 	private Long modifiedBy;
+	public void setDelete(boolean isDelete) {
+		this.isDelete = isDelete;
+	}
 	@Column(name = "MODIFIED_ON", nullable = true)
 	@Temporal(TemporalType.DATE)
 	private Date modifiedOn;
@@ -42,8 +46,11 @@ public class Version {
 	@Column(name = "IS_DELETE", nullable = false)
 	@JsonProperty
 	private boolean isDelete = false;
+	@JsonManagedReference
 	@OneToMany(mappedBy = "version")
 	private List<VersionDetail> versionDetail;
+	@OneToMany(mappedBy = "version")
+	private List<Feedback> feedbacks;
 	
 	//Getter and Setter
 	public Long getId() {

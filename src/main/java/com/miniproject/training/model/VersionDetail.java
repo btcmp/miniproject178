@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "T_VERSION_DETAIL")
 public class VersionDetail {
@@ -20,16 +22,17 @@ public class VersionDetail {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
-	@Column(name = "CREATED_BY", nullable = false)
+	@Column(name = "CREATED_BY", nullable = true)
 	private Long createdBy;
-	@Column(name = "CREATED_ON", nullable = false)
+	@Column(name = "CREATED_ON", nullable = true)
 	@Temporal(TemporalType.DATE)
 	private Date createdOn;
 	@ManyToOne
-	@JoinColumn(name="question_id", nullable = false)
+	@JoinColumn(name="question_id", nullable = true)
 	private Question question;
+	@JsonBackReference
 	@ManyToOne
-	@JoinColumn(name="version_id", nullable = false)
+	@JoinColumn(name="version_id", nullable = true)
 	private Version version;
 	
 	//Getter and Setter

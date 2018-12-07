@@ -116,6 +116,10 @@ input.parsley-error {
 							<i class="material-icons">library_books</i>
 							<p>Versions</p>
 					</a></li>
+					<li><a href="${pageContext.request.contextPath }/feedback">
+							<i class="material-icons">library_books</i>
+							<p>Feedback</p>
+					</a></li>
 					<li><a href="${pageContext.request.contextPath }/technology">
 							<i class="material-icons">library_books</i>
 							<p>Technology</p>
@@ -157,20 +161,32 @@ input.parsley-error {
 									<h4 class="title">Questions</h4>
 								</div>
 								<div class="card-content table-responsive">
-									<!-- <input type="search" name="search" placeholder="Search by Question" /> -->
-									<button type="button" id="tambahQuestion" class="btn btn-sm btn-primary">+</button>
+								<form class="navbar-form navbar-left" role ="search" action="${pageContext.request.contextPath }/question">
+									<div class="form-group is-empty">
+										<input class="form-control" type="text" name="search" placeholder="Search by Technology" />
+									</div>
+									<span class="material-input"></span>
+									<span class="material-input"></span>
+									<button type= "submit" class="btn btn-primary btn-round btn-just-icon"> <i class="material-icons">search</i></button>
+									<!-- <button type="button" id="tambahQuestion" class="btn btn-sm btn-primary">+</button> -->
+									<div>
+									<button type="button" id="tambahQuestion" class="btn btn-sm btn-primary">
+									<i class="material-icons">add</i>Question</button>
+									</div>
+									</form>
 									<table id="table-user" class="table table-hover">
                                         <thead class="text-warning">
+                                        <tr>
                                             <th>Question Name</th>
                                             <th>Action</th>
+                                        </tr>
                                         </thead>
                                         <tbody>
                                             <c:forEach var="quest" items="${questions }">
                                             	<tr>
                                             		<td><c:out value="${quest.question }"></c:out></td>
                                             		<td>
-                                            			<button id="${quest.id }" type="button" rel="tooltype"  href="#" class="btn btn-danger btn-simple btn-xs btn-hapus">
-                                            			<i class="fa fa-times"></i>
+                                            			<a id="${quest.id }" href="#" class="btn-hapus btn btn-danger btn-xs">Delete</a>
                                             		</td>
                                             	</tr>
                                             </c:forEach>
@@ -235,7 +251,7 @@ input.parsley-error {
 		<div class="modal-dialog modal-dialog-centered" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalCenterTitle">Question</h5>
+					<h5 class="modal-title" id="exampleModalCenterTitle">Are you sure?</h5>
 				</div>
 				<form id="editForm" action="#" method="POST">
 					<div class="modal-body">
@@ -390,7 +406,7 @@ $(document).ready(function() {
 		});
 	}
 	
-	$('#table-user').DataTable();
+	//$('#table-user').DataTable();
 
 	//logout event button
 	$('#logout').click(function(event) {

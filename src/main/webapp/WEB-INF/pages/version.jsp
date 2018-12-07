@@ -110,6 +110,10 @@ input.parsley-error {
 							<i class="material-icons">library_books</i>
 							<p>Versions</p>
 					</a></li>
+					<li><a href="${pageContext.request.contextPath }/feedback">
+							<i class="material-icons">library_books</i>
+							<p>Feedback</p>
+					</a></li>
 					<li><a href="${pageContext.request.contextPath }/technology">
 							<i class="material-icons">library_books</i>
 							<p>Technology</p>
@@ -216,7 +220,7 @@ input.parsley-error {
 	               			<table id="table-user" class="table table-hover">
 	                   			<thead class="text-warning">
 		                   			<tr>
-				                       <th>Question</th>
+				                       <th>Version</th>
 		                   			</tr>
 	                   			</thead>
 	                   			<tbody id="list-question">
@@ -227,7 +231,7 @@ input.parsley-error {
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="submit" id="saveVersion" class="btn btn-primary">Add</button>
+						<button type="submit" id="saveVersion" value="${question.id }" class="btn btn-primary">Add</button>
 						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 					</div>
 				</form>
@@ -248,7 +252,6 @@ input.parsley-error {
 						<div class="form-group">
 						<label for="version">Version:</label>
 						<select class="form-control" id="selected" name="question.id">
-							<option selected="selected">Pilih Question</option>
 							<c:forEach items="${questions}" var="quest">
 							<option value="${quest.id }">${quest.question }</option>
 							</c:forEach>
@@ -256,8 +259,33 @@ input.parsley-error {
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button type="submit" id="saveQuestion" class="btn btn-primary">Add</button>
+						<button type="submit" id="saveQuestion" value="${question.id }" class="btn btn-primary">Add</button>
 						<button type="button" id="cancelQuestion" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<div class="modal fade" id="editVersion" tabindex="-1" role="dialog"
+		aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalCenterTitle">Version</h5>
+				</div>
+				<form id="editForm" action="#" method="POST">
+					<div class="modal-body">
+						<div class="form-group">
+							<label for="question">Are you sure?</label>
+							<input type="hidden" class="form-control" id="id-version" name="id-version"/>
+							<input type="hidden" class="form-control" id="created-on" name="created-on"/>
+							<input type="hidden" class="form-control" name="isDelete" id="actives" value="true"/>
+							<input id="versions" class="form-control" name="version" rows="5" placeholder="Enter a question" readonly="readonly"/>
+						</div>
+					<div class="modal-footer">
+						<button type="submit" id="deleteVersion" class="btn btn-danger">Delete</button>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 					</div>
 				</form>
 			</div>
@@ -306,10 +334,29 @@ input.parsley-error {
 		$('#saveVersion').click(function(event) {
 			event.preventDefault();
 			var version = jQuery('#version').val();
+			var date = new Date();
 			
 			var versions = {
-					version: version
+				version: version,
+				versionDetail: [],
+				createdOn: date
 			};
+			
+			//list question
+			var oTable = $('#addVersion').find('#list-question tr');
+			var listQuestion = [];
+			$.each(oTable, function(index, value){
+					var questions = $(this).find('.txt-question').val();
+					var date = new Date();
+					
+					var versionDetail = {
+						question : {
+							id : questions
+						},
+						createdOn: date
+					}
+					versions.versionDetail.push(versionDetail);
+			});
 			console.log(versions);
 			
 			jQuery.ajax({
@@ -325,8 +372,8 @@ input.parsley-error {
 				success: function(data) {
 					console.log('dapat data dari server');
 					console.log(data);
-					window.location = '${pageContext.request.contextPath}/version'
-					alert('data berhasil ditambahkan')
+					window.location = '${pageContext.request.contextPath}/version';
+					alert('version berhasil ditambahkan');
 				}
 			});
 		});
@@ -338,13 +385,12 @@ $(document).ready(function() {
 		event.preventDefault();
 		var questiontxt = $('#selected option:selected').text();
 		var questionval = $('#selected option:selected').val();
-		
 		var oTable = $('#table-user');
 		var tbody = oTable.find('tbody');
 		var tr = $("<tr>");
-		tr.append($('<td val="' + questionval + '">' + questiontxt + '</td>'));
-		tr.append($('<td><input type="submit" value="Edit" id="btn_Edit" /></td>'));
-		$('table tbody').append(tr);
+		tr.append($('<td><input type="hidden" class="form-control txt-question" value="' + questionval + '"/>' + questiontxt + '</td>'));
+		tr.append($('<td><button type="button" href="#" id="btn_Edit" class="btn-delete btn-danger btn-simple btn-xs"><i class="fa fa-times"></i></td>'));
+		$('table-user tbody').append(tr);
 		$('#selected').val('');
 			tbody.append(tr);
 			$('#addVersion').modal('show');
@@ -358,82 +404,77 @@ $(document).ready(function() {
 		  $('#selected').val(questionval);
 		  currentTr.remove();
 	});
-
 	
-	/* $("#addQuestion").on("click","#tambahQuestion", function(){
-		$.ajax({
-			url:"${pageContext.request.contextPath}/version/addSelection.html",
-			type: "get",
-			dataType: "html",
-			success: function(result) {
-				$("#addVersion").find(".modal-body").html(result);
-				$("#addVersion").modal("show");
-			}
-		});
-	});
-	
-	$("#addVersion").on("click","#saveQuestion", function(){
-		var selected = $("#addVersion").find("#question option:selected");
-		var idQuestion = selected.val();
-		var textQuestion = selected.text();
-		var items = '<tr><td>'+ textQuestion +'</td>'+
-		'<td><button type="button" class="btn btn-danger btn-xs btn-delete-question"><i class="fa fa-trash"></i></button></td>'+'</tr>';
-		$("#addQuestion").find("#list-question").append(items);
-		$("#addVersion").modal("hide");
-	});
-	
-	$("#addQuestion").on("submit", "#addForm", function() {
-		$.ajax({
-			url: "version/create.json",
-			src: "${pageContext.request.contextPath}/question/create.json/",
-			type: "get",
-			dataType: "json",
-			data:$(this).seriallize(),
-			success: function(result){
-				$("#addQuestion").modal("hide");
-				alert("question successfully added!");
-				listQuestion();
-			}
-		});
-		return false;
-	}); */
-	
-	$('.btn-hapus').on('click', function(){
+	var button1 = jQuery('.btn-hapus').click(function(event){
+		event.preventDefault();
 		var id = $(this).attr('id');
 		 $.ajax({
-			 url : '${pageContext.request.contextPath}/question/get/'+ id,
+			 url : '${pageContext.request.contextPath}/version/get/'+ id,
 			 type: 'GET',
 			 success : function(data){
-				 $('textarea[name="question"]').val(data.question);
+				 $('#id-version').val(data.id);
+				 $('#created-on').val(data.createdOn);
+				 $('input[name="version"]').val(data.version);
 				 $('input[name="isDelete"]').val(data.isDelete = true);
 			 },
 			 dataType: 'json'
 		 })
-		$('#editQuestion').modal();
+		$('#editVersion').modal();
 	 });
 	
-	$('#deleteQuestion').on('click', function(){
-		var validate = $('#addForm').parsley();
-		if(validate.validate()){
-			var questionss = {
-				question : $('#questions').val(),
-				isDelete :  $('#actives').val()
-			}
-			
-			ajaxSetUp();
-			$.ajax({
-				url : '${pageContext.request.contextPath}/question/save',
-				type: 'POST',
-				data: JSON.stringify(questionss),
-				contentType: "application/json",
-				success : function(data){
-					window.location = "${pageContext.request.contextPath}/question";
-				},error: function(){
-					console.log(questionss);
-					alert('update failed');
+	var button = jQuery('#deleteVersion').click(function(event){
+		event.preventDefault();
+		var d = new Date();
+		/* var versionss = {
+			id : $('#id-version').val(),
+			version : $('#versions').val(),
+			isDelete :  $('#actives').val(),
+			createdOn : $('#created-on').val(),
+			deletedOn : d
+		} */
+		
+		var versionss = {
+				id : $('#id-version').val(),
+				version : $('#versions').val(),
+				isDelete :  $('#actives').val(),
+				createdOn : $('#created-on').val(),
+				deletedOn : d,
+				versionDetail: []
+		};
+		
+		var oTable = $('#addVersion').find('#list-question tr');
+		var listQuestion = [];
+		$.each(oTable, function(index, value){
+				var questions = $(this).find('.txt-question').val();
+				var date = new Date();
+				
+				var versionDetail = {
+					question : {
+						id : questions
+					},
+					createdOn: date
 				}
-			});
-		}
+				versions.versionDetail.push(versionDetail);
+		});
+			
+		jQuery.ajax({
+			url : '${pageContext.request.contextPath}/version/update',
+			type: 'POST',
+			beforeSend: function(){
+				console.log(versionss);
+				console.log('contact server');
+			},
+			data: JSON.stringify(versionss),
+			headers: {
+				'Accept' : 'application/json',
+				'Content-Type' : 'application/json'
+			},
+			success : function(data){
+			console.log(data);
+			alert('berhasil dihapus');
+			window.location = "${pageContext.request.contextPath}/version";
+			}
+		});
 	 });
 	
 	//setting up datepicker
@@ -448,8 +489,8 @@ $(document).ready(function() {
 		});
 	}
 	
-	$('#table-version').DataTable();
-	$('#table-question').DataTable();
+	//$('#table-version').DataTable();
+	//$('#table-question').DataTable();
 
 	//logout event button
 	$('#logout').click(function(event) {
@@ -460,6 +501,12 @@ $(document).ready(function() {
 	//modal tambah version
 	$('#tambahVersion').click(function(event) {
 		event.preventDefault();
+		$.ajax({
+			url: "${pageContext.request.contextPath}/version/generatedversion",
+			success: function(data){
+				$('#version').val(data);
+			}
+		})
 		$('#addVersion').modal();
 	});
 	

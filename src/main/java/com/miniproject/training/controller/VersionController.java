@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.miniproject.training.dao.GeneratedVersionDao;
 import com.miniproject.training.model.Question;
 import com.miniproject.training.model.Version;
+import com.miniproject.training.model.VersionDetail;
 import com.miniproject.training.service.QuestionService;
 import com.miniproject.training.service.VersionService;
 
@@ -31,6 +33,9 @@ public class VersionController {
 	@Autowired
 	QuestionService questionService;
 	
+	@Autowired
+	GeneratedVersionDao generated;
+	
 	@RequestMapping
 	public String view(Model model) {
 		List<Version> versions = versionService.getAllVersions();
@@ -40,29 +45,24 @@ public class VersionController {
 		return "version";
 	}
 	
+	@RequestMapping(value="/generatedversion")
+	@ResponseBody
+	public Long getGeneratedVersion() {
+		return generated.nextVersion();
+	}
+	
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	@ResponseBody
-	public Version saving(@RequestBody Version version) {
+	public Version saving(@RequestBody Version version, Model model) {
 		versionService.saving(version);
 		return version;
 	}
 	
-	@RequestMapping(value="/addVersion")
-	public String addVer(Model model) {
-		List<Question> questions = new ArrayList<Question>();
-		questions = this.questionService.getAllQuestions();
-		model.addAttribute("questions", questions);
-		String jsp = "/addVersion";
-		return jsp;
-	}
-	
-	@RequestMapping(value="/addSelection")
-	public String addSelection(Model model) {
-		List<Question> questions = new ArrayList<Question>();
-		questions = this.questionService.getAllQuestions();
-		model.addAttribute("questions", questions);
-		String jsp = "/addSelection";
-		return jsp;
+	@RequestMapping(value="/update", method=RequestMethod.POST)
+	@ResponseBody
+	public Version update(@RequestBody Version version) {
+		versionService.saving(version);
+		return version;
 	}
 	
 	@RequestMapping(value="/get/{id}", method=RequestMethod.GET)

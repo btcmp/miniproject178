@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name="T_technology")
 public class Technology {
@@ -39,7 +41,7 @@ public class Technology {
 	@Column(nullable=true)
 	private boolean active;
 	
-
+	@JsonManagedReference
 	@OneToMany(mappedBy="technology")
 	private List<TechnologyTrainer> TechTran;
 	

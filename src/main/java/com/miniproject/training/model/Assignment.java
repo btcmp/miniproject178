@@ -22,18 +22,18 @@ public class Assignment {
 	private Long id; //1. Long, 11, PK, No
 	
 	@ManyToOne
-	@JoinColumn(name="biodata_id", nullable=false)
+	@JoinColumn(name="biodata_id", nullable=true)
 	private Biodata testId; //2. Long, 11, No
 	
-	@Column(nullable=false)
+	@Column(nullable=true)
 	private String title; //3. VarChar, 255, No
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name="start_date", nullable=false)
+	@Column(name="start_date", nullable=true)
 	private Date startDate; //4. dateTime, No
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name="end_date", nullable=false)
+	@Column(name="end_date", nullable=true)
 	private Date endDate; //5. dateTime, No
 	
 	private String description;//6. Varchar, 255, Allow
@@ -45,16 +45,16 @@ public class Assignment {
 	private String notes; //8. Varchar, 255, Allow
 	
 	@Column(name="is_hold")
-	private Boolean isHold; //9. Boolean, Allow
+	private Boolean isHold=false; //9. Boolean, Allow
 	
 	@Column(name="is_done")
-	private Boolean isDone; //10. Boolean, Allow
+	private Boolean isDone=false; //10. Boolean, Allow
 	
-	@Column(name="created_by", nullable=false)
+	@Column(name="created_by", nullable=true)
 	private Long createdBy; //11. Long, 11, No
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name="created_on", nullable=false)
+	@Column(name="created_on", nullable=true)
 	private Date createdOn; //12. dateTime, No
 	
 	@Column(name="modified_by")
@@ -71,8 +71,8 @@ public class Assignment {
 	@Column(name="deleted_on")
 	private Date deletedOn; //16. dateTime, Allow
 	
-	@Column(name="is_delete", nullable=false)
-	private Boolean isDelete; //17. Boolean, No
+	@Column(name="is_delete", nullable=true)
+	private Boolean isDelete=false; //17. Boolean, No
 
 	public Long getId() {
 		return id;

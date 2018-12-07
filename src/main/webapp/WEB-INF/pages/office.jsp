@@ -93,8 +93,14 @@
 					</a></li>
 					<li class="active">
                         <a href="${pageContext.request.contextPath }/office">
-                            <i class="material-icons">work</i>
+                            <i class="material-icons">meeting_room</i>
                             <p>Office</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="${pageContext.request.contextPath }/bootcamp">
+                            <i class="material-icons">group</i>
+                            <p>Bootcamp Test Type</p>
                         </a>
                     </li>
 					<li><a href="${pageContext.request.contextPath }/question">
@@ -153,8 +159,9 @@
 	                                    <h4 class="title">Office</h4>
 	                                </div>
 	                             	<div class="card-content table-responsive">
-	                             	<form action="${pageContext.request.contextPath }/office">
-									<input type="search" name="name" placeholder="Search by Name"/>
+	                             <form action="${pageContext.request.contextPath }/office/search" method = "GET">
+									<input type="text" id= "searchOffice" name="srcoffice" placeholder="Search by Name"/>
+									<input type="submit" value="Search" id="btn-search" class="btn btn-default btn-sm"/>
 									<button type="button" id="tambahOffice" class="btn btn-sm btn-primary"> + </button>
 								</form>
 	            
@@ -173,10 +180,10 @@
                                             		<td><c:out value="${office.phone }"></c:out></td>
                                             		<td><c:out value="${office.active }"></c:out></td>
 	                                            	<td>
-	                                            		<button id="btn-edit-office" type="button" rel="tooltip" title="Edit" class="btn btn-success btn-simple btn-xs btn-edit">
+	                                            		<button type="button" rel="tooltip" title="Edit" value="${office.id }" class="btn btn-success btn-simple btn-xs btn-edit">
 										                    <i class="fa fa-edit"></i>
 										                </button>
-										                <button id="btn-deactive-office" type="button" rel="tooltip" title="Deactive" class="btn btn-danger btn-simple btn-xs btn-delete">
+										                <button type="button" rel="tooltip" title="Deactive" value="${office.id }" class="btn btn-danger btn-simple btn-xs btn-delete">
 										                    <i class="fa fa-times"></i>
 										                </button>
 														
@@ -240,8 +247,10 @@
 	      </div>
 		      
 		      <div class="modal-body">
-			      <form  action="#" method="POST">
+			      <form  action="#" id = "form-office" method="POST">
 			      <div class="form-group">
+				      <input type="hidden" id="action" value="add" class="form-control" placeholder="Name"/>
+				      <input type="hidden" id="id" />
 			      	<input type="text" id="name" class="form-control" placeholder="Name"/>
 			      </div>
 			      
@@ -258,9 +267,11 @@
 			      </div> 	
 			       	       	
 			      <div class="form-group"> 	
-			       	<input type="textarea" id="notes" class="form-control" placeholder="Description"/>
-			      </div>	
-		       	<button type="button" id="tambahRoom" class="btn btn-warning">+ROOM</button></br></br>
+			       	<textarea id="notes" class="form-control" placeholder="Description"></textarea>
+			      </div>
+			      	
+			      <input type="hidden" id="createdOn" class="form-control" placeholder="Address"/>
+		       		<button type="button" id="tambahRoom" class="btn btn-warning">+ROOM</button></br></br>
 		       
 		       	<div class="card-content table-responsive">
 	               <table id="table-room" class="table table-hover">
@@ -275,13 +286,12 @@
 	                   </tbody>
 	                 </table>
 	             </div>
-		      
-		      </div>
-		      <div class="modal-footer">
+		       <div class="modal-footer">
 		        <button type="submit" id="submitOffice" class="btn btn-primary" data-dismiss="modal">Save</button>
 		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 		      </div>
 		      </form>
+		      </div>
 		    </div>
 		  </div>
 		</div>
@@ -313,8 +323,8 @@
 				      
 				      <div class="form-group"> 	
 				     	Any Projector? &nbsp;
-				     	<input type="radio" id="selection" name="sama" value="Yes">True   &nbsp;
-				       	<input type="radio" id="selection" name="sama" value="No">False</br>
+				     	<input type="radio" id="selection" name="sama" value="yes">True   &nbsp;
+				       	<input type="radio" id="selection1" name="sama" checked value="no">False</br>
 				      </div>
 				      
 				      <div class="form-group"> 	
@@ -329,62 +339,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		
-		<!-- Modal EDIT OFFICE  -->
-		<div class="modal fade" id="modal-edit-office" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-	  aria-hidden="true">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header text-center">
-	        <h3 class="modal-title w-100 font-weight-bold">ADD OFFICE</h3>
-	      </div>
-		      
-		      <div class="modal-body">
-			      <form  action="#" method="POST">
-			      <div class="form-group">
-			      	<input type="text" id="name" class="form-control" placeholder="Name"/>
-			      </div>
-			      
-			      <div class="form-group">
-			      	<input type="text" id="phone" class="form-control" placeholder="Phone"/>       	
-			      </div>
-			       
-			      <div class="form-group"> 	
-			       	<input type="text" id="email" class="form-control" placeholder="Email"/>      	
-			      </div>
-			      
-			      <div class="form-group">
-			       	<input type="text" id="address" class="form-control" placeholder="Address"/>
-			      </div> 	
-			       	       	
-			      <div class="form-group"> 	
-			       	<input type="textarea" id="notes" class="form-control" placeholder="Description"/>
-			      </div>	
-		       	<button type="button" id="tambahRoom" class="btn btn-warning">+ROOM</button></br></br>
-		       
-		       	<div class="card-content table-responsive">
-	               <table id="table-room" class="table table-hover">
-	                   <thead class="text-warning">
-	                       <th>CODE</th>
-	                       <th>NAME</th>
-	                       <th>CAPACITY</th>
-	                       <th> </th>
-	                   </thead>
-	                   <tbody id="list-room">
-	                   	
-	                   </tbody>
-	                 </table>
-	             </div>
-		      
-		      </div>
-		      <div class="modal-footer">
-		        <button type="submit" id="btn-edit-office" class="btn btn-primary" data-dismiss="modal">Save</button>
-		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-		      </div>
-		      </form>
-		    </div>
-		  </div>
 		</div>
 		
 		
@@ -426,8 +380,8 @@
 					code : code,
 					name : name,
 					capacity : capacity,
-					radio : radio,
-					description : description
+					any_projector : radio == 'yes' ? true : false,
+					notes : description
 	
 				};
 			
@@ -438,7 +392,7 @@
 				trItem.find('.txt-code').val(room.code);
 				trItem.find('.txt-name').val(room.name);
 				trItem.find('.txt-capacity').val(room.capacity);
-				trItem.find('.txt-description').val(room.description);
+				trItem.find('.txt-description').val(room.notes);
 			}else{		
 			
 			
@@ -450,9 +404,10 @@
 					"<td><input type='text' name='txtname' class='form-control txt-name' value='"+room.name+"'/></td>" +
 					"<td><input type='text' name='txtcapacity' class='form-control txt-capacity' value='"+room.capacity+"'/></td>"+
 					"<td>"+
-					"<input type='hidden' name='txtdescription' class='form-control txt-description' value='"+room.description+"'/>"+
+					"<input type='hidden' name='txtid' class='form-control txt-id' value=''/>"+
+					"<input type='hidden' name='txtdescription' class='form-control txt-description' value='"+room.notes+"'/>"+
 						"<button type='button' class='btn btn-primary btn-sm btn-edit-room'>Edit </button>"+
-						"<button type='button' class='btn btn-secondary btn-sm btn-deactive-room'>Deactive </button>"+
+		
 					"</td>"+
 				"</tr>";
 	        tbody.append(tr);
@@ -469,55 +424,85 @@
 			$('#submitOffice').click(function(event){
 				event.preventDefault();
 			//event listener on click
+			var action = $('#action').val();
 			var name = jQuery('#name').val();
 			var phone = jQuery('#phone').val();
 			var email = jQuery('#email').val();
 			var address = jQuery('#address').val();
 			var desc = jQuery('#notes').val();
+			var id = jQuery('#id').val();
+			var date = new Date;
 			
 			var office = {
+					id : id,
 					name : name,
 					phone : phone,
 					email : email,
 					address : address,
 					notes : desc,
+					createdOn : date,
 					rooms :[]
-				};
+			};
 			
 			var oTable = $('#table-room');
 			var tbody = oTable.find('tbody');
 			var listRoom = [];
+			var projector = true;
+			/* if (radio == 'yes') {
+				projector = true;
+			}else{
+				projector = false; */
+			//}
 			$.each(tbody.find('tr'), function(index, value){
 					var code = $(this).find('.txt-code').val();
 					var nameRoom = $(this).find('.txt-name').val();
 					var capacity = $(this).find('.txt-capacity').val();
 					var description = $(this).find('.txt-description').val();
+					var idRoom = $(this).find('.txt-id').val();
 					var rms = {
+							id : idRoom,
 							code : code,
 							name : nameRoom,
 							capacity : capacity,
 							notes : description,
-							any_projector : true,
 			};
 					office.rooms.push(rms);
 			});
 			
-			//console.log(office);
+			console.log(office);
 			
-			jQuery.ajax({
-				url: '${pageContext.request.contextPath}/office/save',
-				type : 'POST',
-				contentType : 'application/json',
-				data : JSON.stringify(office),
-				success : function(data){
-					window.location = '${pageContext.request.contextPath}/office'
-				},error: function(){
-					alert('update failed');
-				}
-			})
+			//update office & room dari db
+			
+			if (action == "add") {
+				jQuery.ajax({
+					url: '${pageContext.request.contextPath}/office/save',
+					type : 'POST',
+					contentType : 'application/json',
+					data : JSON.stringify(office),
+					success : function(data){
+						alert('Data Berhasil di Add')
+						window.location = '${pageContext.request.contextPath}/office'
+					},error: function(){
+						alert('Add Data Failed');
+					}
+				})
+			 }else{
+				jQuery.ajax({
+					url: '${pageContext.request.contextPath}/office/editoffice',
+					type : 'POST',
+					contentType : 'application/json',
+					data : JSON.stringify(office),
+					success : function(data){
+						//console.log(data);
+						alert('Data Berhasil di Update')
+						window.location = '${pageContext.request.contextPath}/office'
+					},error: function(){
+						alert('Update Failed');
+					}
+				})   
+			}
+			
 			});
-			
-			
 	    });
 		
 		//edit room sebelum masuk db
@@ -528,6 +513,7 @@
 			var name = trItem.find('.txt-name').val();
 			var capacity = trItem.find('.txt-capacity').val();
 			var description = trItem.find('.txt-description').val();
+			var radio = trItem.find('.txt-radio').val();
 			
 			var dataId= trItem.attr('id');
 			$('#id-add-room').val(dataId);
@@ -535,54 +521,71 @@
 			$('#name-room').val(name);
 			$('#capacity').val(capacity);
 			$('#description').val(description);
+			console.log(radio);
+			if (radio == "true") {
+				$('#selection').prop('checked',true);
+				$('#selection1').prop('checked',false);
+			}
+			else{
+				$('#selection1').prop('checked',true);
+				$('#selection').prop('checked',false);
+			}
+			
 			
 			$('#addRoom').modal('show');
-			
+			$('#addOffice').modal('hide');
 		});
 		
-		/*  //edit office
-		$(".btn-edit").on('click', function(){
-			 var id = $(this).attr('id');
+		//button edit office
+		jQuery(".btn-edit").click(function(event){
+			event.preventDefault();
+			 var id = $(this).val();
+			 //alert('id get');
+			// $('#addOffice').modal();
 			 $.ajax({
-				 url : '${pageContext.request.contextPath}/office/get/'+ id,
+				 url : '${pageContext.request.contextPath}/office/editui/'+ id,
 				 type: 'GET',
+				 dataType: 'json',
 				 success : function(data){
+					 $('#action').val('edit');
 					 $('#name').val(data.name);
 					 $('#phone').val(data.phone);
 					 $('#email').val(data.email);
 					 $('#address').val(data.address);
 					 $('#notes').val(data.notes);
+					 $('#id').val(data.id);
+					 var oTable = $('#table-room'); //id table room
+						var tbody = oTable.find('tbody');
+					 var tr = "";
+					 $.each(data.rooms, function(index, room){
+						
+						  tr += "<tr id='data_"+index +"'>"+
+							"<td><input type='text' name='txtcode' class='form-control txt-code' value='"+room.code+"'/></td>"+
+							"<td><input type='text' name='txtname' class='form-control txt-name' value='"+room.name+"'/></td>" +
+							"<td><input type='text' name='txtcapacity' class='form-control txt-capacity' value='"+room.capacity+"'/></td>"+
+							"<td>"+
+							"<input type='hidden' name='txtdescription' class='form-control txt-description' value='"+room.notes+"'/>"+
+							"<input type='hidden' name='txtid' class='form-control txt-id' value='"+room.id+"'/>"+
+							"<input type='hidden' name='txtradio' class='form-control txt-radio' value='"+room.any_projector+"'/>"+
+								"<button type='button' class='btn btn-primary btn-sm btn-edit-room'>Edit </button>"+
+								"<button type='button' class='btn btn-secondary btn-sm btn-deactive-room'>Deactive </button>"+
+							"</td>"+
+						"</tr>";
+			       		 
+					 });
+					 tbody.html(tr);
+					 $('#addOffice').modal();
 				 },
-				 dataType: 'json'
-			 })
-			 
-			$('#modal-edit-office').modal();
+				
+			 }); 			 
+			//
 		 }); 
 		
-		 $('#btn-edit-office').on('click', function(){
-				var office = {
-					name : $('#name').val(),
-	   				phone :  $('#phone').val(),
-	   				email : $('#email').val(),
-	   				address : $('#address').val(),
-	   				notes :  $('#notes').val(),
-				}
-				
-				ajaxSetUp();
-				$.ajax({
-					url : '${pageContext.request.contextPath}/office/update',
-					type: 'POST',
-					data: JSON.stringify(office),
-					contentType: "application/json",
-					success : function(data){
-						window.location = "${pageContext.request.contextPath}/office";
-					},error: function(){
-						alert('update failed');
-					}
-				});
-		 }); */
-	    });
+		 });
 	
+		function clearAllForm(formId){
+			$(formId).trigger("reset");
+		}
 		
 		 
 	//------------------------------------------------------------	
@@ -629,7 +632,10 @@
     	
     	$('#tambahOffice').click(function(event){
     		event.preventDefault();
+    		clearAllForm('#form-office');
+    		$('#table-room tbody tr').remove();
     		$('#addOffice').modal();
+    		$('#action').val('add');
     	});
     	
     	$('#tambahRoom').click(function(event){

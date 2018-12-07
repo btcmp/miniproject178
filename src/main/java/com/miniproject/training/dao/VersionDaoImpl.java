@@ -32,8 +32,7 @@ public class VersionDaoImpl implements VersionDao {
 	public void save(Version version) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		session.save(version);
-		session.flush();
+		session.saveOrUpdate(version);
 	}
 
 	public Version getVersionById(Long id) {
@@ -45,6 +44,19 @@ public class VersionDaoImpl implements VersionDao {
 			return null;
 		}
 		return versions.get(0);
+	}
+
+	public Version getLastVersion() {
+		// TODO Auto-generated method stub
+		String hql = "from Version where isDelete = '0' order by version.id desc";
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery(hql);
+		query.setMaxResults(0);
+		List<Version> versions = query.list();
+		if (!versions.isEmpty()) {
+			return versions.get(0);
+		}
+		return new Version();
 	}
 
 }

@@ -10,6 +10,10 @@ public interface OfficeDao {
 
 	void save(Office office);
 
-	Office getOfficeById(int id);
+	Office getOfficeById(Long id);
+
+	void update(Office office);
+
+	List<Office> searchByName(String name);
 
 }

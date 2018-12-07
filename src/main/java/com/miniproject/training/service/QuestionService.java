@@ -26,15 +26,20 @@ public class QuestionService {
 		questionDao.save(question);
 	}
 
-	public void delete(Long id) {
-		// TODO Auto-generated method stub
-		questionDao.delete(id);
-	}
-
 	public Question getQuestionById(Long id) {
 		// TODO Auto-generated method stub
 		Question question = questionDao.getQuestionById(id);
 		return question;
+	}
+
+	public List<Question> searchQuestion(String search) {
+		// TODO Auto-generated method stub
+		return questionDao.searchQuestion(search);
+	}
+
+	public List<Question> getLastVersionQuestions() {
+		// TODO Auto-generated method stub
+		return questionDao.getLastVersionQuestions();
 	}
 
 }

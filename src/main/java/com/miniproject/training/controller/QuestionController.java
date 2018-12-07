@@ -29,12 +29,12 @@ public class QuestionController {
 	@Autowired
 	QuestionService questionService;
 	
-	@Autowired
-	private HttpSession httpSession;
-	
 	@RequestMapping
-	public String view(Model model) {
+	public String view(Model model, @RequestParam(required=false) String search) {
 		List<Question> questions = questionService.getAllQuestions();
+		if (search!=null) {
+			questions = questionService.searchQuestion(search);
+		}
 		model.addAttribute("questions", questions);
 		return "question";
 	}
@@ -51,13 +51,6 @@ public class QuestionController {
 	public Question update(@RequestBody Question question) {
 		questionService.saving(question);
 		return question;
-	}
-	
-	//delete
-	@RequestMapping(value="/delete/{id}", method=RequestMethod.DELETE)
-	@ResponseStatus(HttpStatus.OK)
-	public void delete(@PathVariable Long id){
-		questionService.delete(id);
 	}
 	
 	@RequestMapping(value="/get/{id}", method=RequestMethod.GET)
