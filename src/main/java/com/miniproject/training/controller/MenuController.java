@@ -2,6 +2,8 @@ package com.miniproject.training.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.miniproject.training.model.Menu;
+import com.miniproject.training.model.User;
 import com.miniproject.training.service.MenuService;
 
 @Controller
@@ -21,6 +24,9 @@ public class MenuController {
 
 	@Autowired
 	MenuService menuService;
+	
+	@Autowired
+	HttpSession httpSession;
 	
 	@ModelAttribute("menuForm")
 	public Menu getMenuForm()
@@ -40,6 +46,8 @@ public class MenuController {
 	@ResponseBody
 	public Menu saving(@RequestBody Menu menu)
 	{
+		User user = (User) httpSession.getAttribute("application-user");
+		menu.setCreatedBy(user.getId());
 		menuService.saving(menu);
 		return menu;
 	}
