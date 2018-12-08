@@ -12,4 +12,6 @@ public interface TrainerDao {
 
 	public Trainer getAllTrainerById(long id);
 
+	public void delete(long id);
+
 }

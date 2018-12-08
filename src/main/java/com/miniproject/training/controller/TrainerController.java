@@ -3,6 +3,7 @@ package com.miniproject.training.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.miniproject.training.model.Trainer;
 import com.miniproject.training.service.TrainerService;
@@ -43,6 +45,11 @@ public class TrainerController {
 	public Trainer getTrainerById(@PathVariable long id) {
 		Trainer trainer=trainerService.getAllTrainerById(id);
 		return trainer;
+	}
+	@RequestMapping(value="/delete/{id}",method=RequestMethod.DELETE)
+	@ResponseStatus(HttpStatus.OK)
+	public void delete(@PathVariable long id) {
+		trainerService.delete(id);
 	}
 	
 }

@@ -206,7 +206,7 @@ input.parsley-error {
 														<td><a id="${dept.id }" href="#"
 															class="btn-edit btn btn-primary btn-sm">Edit</a>
 														<a id="${dept.id }" href="#"
-															class="btn-hapus btn btn-danger btn-sm">Deactived</a>
+															class="btn-hapus btn btn-danger btn-sm">Delete</a>
 														</td>
 													</tr>
 												</c:forEach>
@@ -338,7 +338,7 @@ input.parsley-error {
 
 						/* $('#table-user').DataTable(); */
 
-						$('.btn-hapus').on('click',function() {var conf = confirm("Are you sure delete this data ?");
+						/* $('.btn-hapus').on('click',function() {var conf = confirm("Are you sure delete this data ?");
 											if (conf == true) {
 												var id = $(this).attr("id");
 
@@ -359,11 +359,22 @@ input.parsley-error {
 											return false;
 										});
 
-						//logout event button
+ */						//logout event button
 						$('#logout').click(function(event) {
 							event.preventDefault();
 							$('#logoutForm').submit();
 						});
+ 						
+ 						$('.btn-hapus').on('click',function(){
+ 							var id=$(this).attr('id')
+ 							$.ajax({
+ 								url:'${pageContext.request.contextPath}/trainer/delete/'+ id,
+ 								type:'DELETE',
+ 								success:function(data){
+ 									window.location='${pageContext.request.contextPath}/trainer/'
+ 								}
+ 							})
+ 						})
 						//edit technology
 						 $('.btn-edit').on('click', function(){
 				    		 var id = $(this).attr('id');

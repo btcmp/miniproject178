@@ -41,10 +41,22 @@ public class Technology {
 	@Column(nullable=true)
 	private boolean active;
 	
+	@OneToMany(mappedBy="technology")
+	private List<Batch> batchTech;
+	
 	@JsonManagedReference
 	@OneToMany(mappedBy="technology")
 	private List<TechnologyTrainer> TechTran;
 	
+	
+	public List<Batch> getBatchTech() {
+		return batchTech;
+	}
+
+	public void setBatchTech(List<Batch> batchTech) {
+		this.batchTech = batchTech;
+	}
+
 	public List<TechnologyTrainer> getTechTran() {
 		return TechTran;
 	}

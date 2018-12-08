@@ -98,6 +98,10 @@ public class TechnologyController {
 		trainerService.saving(trainer);
 		return trainer;
 	}
-	
+	@RequestMapping(value="/delete/{id}",method=RequestMethod.DELETE)
+	@ResponseStatus(HttpStatus.OK)
+	public void delete(@PathVariable long id) {
+		trainerService.delete(id);
+	}
 	
 }
