@@ -469,16 +469,28 @@ input.parsley-error {
 						});
 						
 						//add trainer
-						var button = jQuery('#btn-save-batch-submit').click(function(event){
+						jQuery('#btn-save-batch-submit').click(function(event){
 							event.preventDefault();
-							var technology=$('#technologyId option:selected').text();
-							var trainer=$('trainerId option:selected').text();
+							var date=new Date();
+							var technology=$('#technologyId option:selected').val();
+							var trainer=$('#trainerId option:selected').val();
 							var name = jQuery('#name').val();
 						    var note = jQuery('#note').val();
-							
+						    var startDate=jQuery('#startDate').val();
+						    var endDate=jQuery('#endDate').val();
+							console.log(trainer)
 							var batch = {
+									technology:{
+										id:technology,
+									},
+									trainer:{
+										id:trainer,
+									},
 									name:name,
 									note:note,
+									periodFrom:startDate,
+									periodTo:endDate,
+									createdOn:date
 							}
 							
 							jQuery.ajax({
@@ -491,10 +503,13 @@ input.parsley-error {
 								contentType: 'application/json',
 								data: JSON.stringify(batch),
 								success : function(data){
-									
+									alert("data berhasil disimpan")
 									console.log('data dari server');
 									console.log(data);
 									window.location='${pageContext.request.contextPath}/batch'
+								},
+								error : function(data){
+									alert("data tidak berhasil disimpan")
 								}
 							});
 							

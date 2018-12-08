@@ -8,4 +8,6 @@ public interface BatchDao {
 
 	public List<Batch> getAllBatch();
 
+	public void save(Batch batch);
+
 }

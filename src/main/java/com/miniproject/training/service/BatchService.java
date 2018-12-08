@@ -19,5 +19,9 @@ public class BatchService {
 		// TODO Auto-generated method stub
 		return batchDao.getAllBatch();
 	}
+	public void save(Batch batch) {
+		// TODO Auto-generated method stub
+		batchDao.save(batch);
+	}
 
 }

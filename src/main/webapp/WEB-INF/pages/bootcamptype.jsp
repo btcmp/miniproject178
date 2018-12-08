@@ -110,7 +110,7 @@ input.parsley-error {
 							<i class="material-icons">library_books</i>
 							<p>Questions</p>
 					</a></li>
-					<li class="active"><a href="${pageContext.request.contextPath }/technology">
+					<li><a href="${pageContext.request.contextPath }/technology">
 							<i class="material-icons">developer_mode</i>
 							<p>Technology</p>
 					</a></li>
@@ -118,7 +118,8 @@ input.parsley-error {
 							<i class="material-icons">supervisor_account</i>
 							<p>Trainer</p>
 					</a></li>
-					<li><a href="${pageContext.request.contextPath }/testimony">
+					</a></li>
+					<li class="active"><a href="${pageContext.request.contextPath }/testimony">
 							<i class="material-icons">list</i>
 							<p>Testimony</p>
 					</a></li>
@@ -141,7 +142,7 @@ input.parsley-error {
 								class="icon-bar"></span> <span class="icon-bar"></span> <span
 								class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="#"> Technology Datatable </a>
+						<a class="navbar-brand" href="#"> Testimony Datatable </a>
 					</div>
 				</div>
 			</nav>
@@ -150,20 +151,20 @@ input.parsley-error {
 				<div class="container-fluid">
 					<div class="row">
 						<div class="col-lg-12 col-md-12">
-						<%-- 	<c:if test="${not empty message}">
+							<c:if test="${not empty message}">
 								<div class="alert alert-info">
 									<c:out value="${message }"></c:out>
 								</div>
-							</c:if> --%>
+							</c:if>
 							<div class="card">
 								<div class="card-header" data-background-color="orange">
-									<h4 class="title">Technology</h4>
+									<h4 class="title">Testimony</h4>
 								</div>
 								<div class="card-content table-responsive">
-									<form class="navbar-form navbar-left" role ="search" action="${pageContext.request.contextPath }/technology">
+									<form class="navbar-form navbar-left" role ="search" action="${pageContext.request.contextPath }/testimony">
 										<div class="form-group is-empty">
 											<input class="form-control" type="text" name="search"
-											placeholder="Search by Technology" />
+											placeholder="Search by Testimony" />
 										</div>
 										<span class="material-input"></span>
 										<span class="material-input"></span>
@@ -171,42 +172,30 @@ input.parsley-error {
 										<i class="material-icons">search</i>
 										</button>
 										<div>
-											<button type="button" id="tambahTechnology"
+											<button type="button" id="tambahTestimony"
 											class="btn btn-sm btn-primary">
 												<i class="material-icons">add</i>
-												technology
+												testimony
 											</button>
 										</div>
 									</form>
 									
+
 									<div class="table-responsive">
-										<table id="table-technology" class="table">
+										<table id="table-testimony" class="table">
 											<thead class="text-warning">
-												<th>Technology</th>
-												<th>Created By</th>
-												<th>Status</th>
+												<th>Testimony</th>
 												<th>Action</th>
 											</thead>
 											<tbody>
-												<c:forEach var="dept" items="${technology}">
+												<c:forEach var="dept" items="${testimony}">
 													<tr>
-														<td><c:out value="${dept.name}"></c:out></td>
-														<td><c:out value="${dept.createdby }"></c:out></td>
-														<td>
-															<c:choose>
-																<c:when test="${dept.active==true}">
-																	Active
-																</c:when>
-																<c:otherwise>
-   																	 Not Active
-  																</c:otherwise>
-															</c:choose>
-														</td>
+														<td><c:out value="${dept.title}"></c:out></td>
 														<td>
 														<button id="${dept.id }" type="button" rel="tooltip" title="Edit ${employee.name }" class="btn btn-success btn-simple btn-xs btn-edit">
 										                    <i class="fa fa-edit"></i>
 										                </button>
-														<button id="${dept.id }" type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs btn-deactive">
+														<button id="${dept.id }" type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs btn-hapus">
 										                    <i class="fa fa-times"></i>
 										                </button>
 														</td>
@@ -254,128 +243,112 @@ input.parsley-error {
 			</div>
 		</div>
 		<!--modal-->
-		<div class="modal fade" id="add-technology-modal" tabindex="-1"
+		<div class="modal fade" id="add-testimony-modal" tabindex="-1"
 			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title">Technology</h5>
+						<h5 class="modal-title">Testimony</h5>
 					</div>
 					<div class="modal-body">
-						<form action="${pageContext.request.contextPath }/technology/save" method="POST">
+						<form action="${pageContext.request.contextPath }/testimony/save" method="POST">
 							<div class="form-group">
-								<label for="name-technology">Name</label>
-								<input data-parsley-required="true" type="text" id="name"
+								<label for="name-testimony">Name</label>
+								<input type="hidden" id="active"/>
+								<input data-parsley-required="true" type="text" id="title"
 									class="form-control"
-									aria-describedby="nameHelp" placeholder="Enter Name Technology" />
+									aria-describedby="nameHelp" placeholder="Enter Name Testimony" />
 							</div>
 							<div class="form-group">
-								<label for="note-technology">Note</label>
+								<label for="content">Note</label>
 								<textarea data-parsley-required="true" 
-								rows="4" cols="50" id="note" aria-describedby="nameHelp"
-								class="form-control" placeholder="Enter note technology" ></textarea>
+								rows="4" cols="50" id="content" aria-describedby="nameHelp"
+								class="form-control" placeholder="Enter Content" ></textarea>
 							</div>
-							<button type="button" id="tambahTrainer" class="btn btn-primary bts-sm">+Trainer</button><br>
-									<div class="table-responsive">
-										<table id="table-trainer" class="table">
-											<thead class="text-warning">
-												<th></th>
-												<th>Trainer</th>
-												<th>Created By</th>
-												<th>Status</th>
-												<th>Action</th>
-											</thead>
-											<tbody>
- 				 						 	</tbody>
-										</table>
-									</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary"
 									data-dismiss="modal">Close</button>
-								<button type="submit" id="btn-save-technology-submit"
+								<button type="submit" id="btn-save-testimony-submit"
 									class="btn btn-primary">Save</button>
 							</div>
 						</form>
 					</div>
-
+				</div>
 				</div>
 			</div>
-		</div>
-		<div class="modal fade" id="add-trainer-modal" tabindex="-1"
+			
+			<div class="modal fade" id="add-update-testimony" tabindex="-1"
 			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title">Trainer</h5>
+						<h5 class="modal-title">Testimony</h5>
 					</div>
 					<div class="modal-body">
-						<form
-							action="${pageContext.request.contextPath }/technology/savetrain" method="POST">
+						<form action="${pageContext.request.contextPath }/testimony/update" method="POST">
 							<div class="form-group">
-								<select id="trainerId" name="training" class="form-control">
-									<option>--Trainer--</option>
-									<c:forEach items="${training}" var="train">
-										<option value="${train.id}">${train.name}</option>
-									</c:forEach>
-								</select>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary" id="tambahCancel"
-									data-dismiss="modal">Close</button>
-								<button type="submit" id="btn-save-trainer-submit"
-									class="btn btn-primary">Save</button>
-							</div>
-						</form>
-					</div>
-
-				</div>
-			</div>
-		</div>
-		<div class="modal fade" id="add-update-technology" tabindex="-1"
-			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">Technology</h5>
-					</div>
-					<div class="modal-body">
-						<form
-							action="${pageContext.request.contextPath }/technology/update" method="POST">
-							<div class="form-group">
-								<label for="name-technology">Name</label>
-								<input type="hidden" id="id-technology" />
-								<input type="text" id="name1"
+								<label for="name-testimony">Name</label>
+								<input type=hidden id="id-testimony">
+								<input data-parsley-required="true" type="text" id="titles"
 									class="form-control"
-									aria-describedby="nameHelp" placeholder="Enter Name Technology" />
+									aria-describedby="nameHelp" placeholder="Enter Name Testimony" />
 							</div>
 							<div class="form-group">
-								<label>Note</label>
-								<textarea rows="4" cols="50" id="note1" class="form-control" placeholder="Enter note technology" ></textarea>
+								<label for="content">Note</label>
+								<textarea data-parsley-required="true" 
+								rows="4" cols="50" id="contents" aria-describedby="nameHelp"
+								class="form-control" placeholder="Enter Content" ></textarea>
 							</div>
-							<div class="table-responsive">
-										<table id="table-techtrain" class="table">
-											<thead class="text-warning">
-												<th>Trainer</th>
-												<th>Created By</th>
-												<th>Status</th>
-												<th>Action</th>
-											</thead>
-											<tbody id="list-trainer">
-											</tbody>
-										</table>
-									</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary" id="btn-close-update"
+								<button type="button" class="btn btn-secondary"
 									data-dismiss="modal">Close</button>
-								<button type="submit" id="btn-update-technology"
+								<button type="submit" id="btn-update-testimony-submit"
 									class="btn btn-primary">Update</button>
 							</div>
 						</form>
 					</div>
-
+					</div>
 				</div>
 			</div>
-		</div>
+			
+			<div class="modal fade" id="add-delete-testimony" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Testimony</h5>
+					</div>
+					<div class="modal-body">
+						<form action="${pageContext.request.contextPath }/testimony/update" method="POST">
+							<div class="form-group">
+								<label for="name-testimony">Name</label>
+								<input type=hidden id="id-testimony"/>
+								<input type="hidden" name="isDelete" id="actives"/>
+								<input type="hidden" name="created-on"id="created-on"/>
+								<input data-parsley-required="true" type="text" id="titles1"
+									class="form-control"
+									aria-describedby="nameHelp" placeholder="Enter Name Testimony" />
+							</div>
+							<div class="form-group">
+								<label for="content">Note</label>
+								<textarea data-parsley-required="true" 
+								rows="4" cols="50" id="contents1" aria-describedby="nameHelp"
+								class="form-control" placeholder="Enter Content" ></textarea>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									data-dismiss="modal">Close</button>
+								<button type="submit" id="btn-delete-testimony-submit"
+									class="btn btn-danger">Delete</button>
+							</div>
+						</form>
+					</div>
+					</div>
+				</div>
+			</div>
+		
+							
+							
 </body>
 <!--   Core JS Files   -->
 <script
@@ -427,18 +400,13 @@ input.parsley-error {
 							});
 						}
 
-					 	/*    $('#table-trainer').DataTable({
+						 $('#table-testimony').DataTable({
 							 searching:false,
-							 bSort:false,
-							 paging:false
-						  });   */
-						/*   $('#table-technology').DataTable({
-							searching:false,
-							bSort:false,
-							paging:false
-						});  */ 
+							 paging:false,
+							 bSort:false
+						 }); 
 
-/* 						$('.btn-hapus').on('click',function() {var conf = confirm("Are you sure delete this data ?");
+						/* $('.btn-hapus').on('click',function() {var conf = confirm("Are you sure delete this data ?");
 											if (conf == true) {
 												var id = $(this).attr("id");
 
@@ -457,201 +425,155 @@ input.parsley-error {
 											}
 
 											return false;
-										}); */
-
+										});
+ */
 						//logout event button
 						$('#logout').click(function(event) {
 							event.preventDefault();
 							$('#logoutForm').submit();
 						});
-						$('#list-trainer').on('click','.btn-hapus',function(){
-							var trItem = $(this).parent().parent();
-							var id=trItem.attr('id');
-							console.log(id)
-							  $.ajax({
-								url:'${pageContext.request.contextPath}/technology/delete/'+ id,
-								type:'DELETE',
-								success : function(data){
-									window.location='${pageContext.request.contextPath}/technology',
-									alert('data berhasil dihapus')
-								},
-								error: function(data){
-									alert('data tidak berhasil dihapus');
-								}
-							})  
-						});
 						//edit technology
 						 $('.btn-edit').on('click', function(){
 				    		 var id = $(this).attr('id');
 				    		 $.ajax({
-				    			 url : '${pageContext.request.contextPath}/technology/get/'+ id,
+				    			 url : '${pageContext.request.contextPath}/testimony/get/'+ id,
 				    			 type: 'GET',
 				    			 success : function(data){
-				    				 $('#id-technology').val(data.id);
-				    				 $('#name1').val(data.name);
-				    				 $('#note1').val(data.note);
- 				    				 console.log(data.techTran)
-				    				 
-				    				 var oTable=$('#table-techtrain');
-				    				 var tbody=oTable.find('tbody');
-				    				 $.each(data.techTran,function(key,value){
-				    					 if(value.trainer.active==true){
-				    						 active="Active";
-				    					 }
-				    					 	var tr ="<tr id='"+value.trainer.id+"'>";
-/* 				    					 	tr +="<td><input type='hidden' name='trainer1' id='"+value.trainer.id+"'/></td>";
- */											tr += "<td>"+value.trainer.name+"</td>";
-											tr += "<td>"+value.trainer.createdBy+"</td>";
-											tr += "<td>"+active+"</td>";
-											tr += "<td>"+"<button type='button' href='#'class='btn-hapus btn btn-danger btn-sm'>Delete</button>"+"</td>";
-											tr +="</tr>";
-											tbody.append(tr)
-				    				 });
+				    				 $('#id-testimony').val(data.id);
+				    				 $('#titles').val(data.title);
+				    				 $('#contents').val(data.content);
 				    			 },
 				    			 dataType: 'json'
 				    		 })
 				    		 
-				    		$('#add-update-technology').modal();
+				    		$('#add-update-testimony').modal();
 				    		 
 				    	 });
-						jQuery('#btn-close-update').click(function(event){
-							location.reload();
-						})
-						 //update technology
-						jQuery('#btn-update-technology').click(function(event){
+						 
+						 var button = jQuery('#btn-update-testimony-submit').click(function(event){
 								event.preventDefault();
-								var name = jQuery('#name1').val();
-							    var note = jQuery('#note1').val();
-								var id = jQuery('#id-technology').val();
-								var active=1;
+								var name = jQuery('#titles').val();
+							    var note = jQuery('#contents').val();
+								var id = jQuery('#id-testimony').val();
+								var date=new Date();
 								
-								var technology = {
-										name:name,
-										note:note,
+								var testimony = {
+										title:name,
+										content:note,
 										id:id,
-										active:active
-
+										modifiedOn:date
 								}
 								jQuery.ajax({
-									url : '${pageContext.request.contextPath}/technology/update',
+									url : '${pageContext.request.contextPath}/testimony/update',
 									type:'POST',
 										beforeSend:function(){
-											console.log(technology);
+											console.log(testimony);
 											console.log('mau contact server');
 										},
 									contentType: 'application/json',
-									data: JSON.stringify(technology),
+									data: JSON.stringify(testimony),
 									success : function(data){
 										
 										console.log('data dari server');
 										console.log(data);
-										window.location='${pageContext.request.contextPath}/technology'
+										window.location='${pageContext.request.contextPath}/testimony'
 									}
 								});
 								
 							});
-						 
-
-						
-						//modal tambah technology
-						$('#tambahTechnology').click(function(event) {
+						  
+						$('#tambahTestimony').click(function(event) {
 							event.preventDefault();
-							$('#add-technology-modal').modal();
-						});
-						//modal tambah trainer
-						$('#tambahTrainer').click(function(event) {
-							event.preventDefault();
-							$('#add-technology-modal').modal('hide');
-							$('#add-trainer-modal').modal();
-						});
-						$('#tambahCancel').click(function(event) {
-							event.preventDefault();
-							$('#add-technology-modal').modal('show');
-							$('#add-trainer-modal').modal('hide');
-						});
-						//add trainer
-						jQuery('#btn-save-trainer-submit').click(function(event){
-							event.preventDefault();
-					    		 var id = $('#trainerId option:selected').val(); 
-					    		 console.log(id);
-					    		 $.ajax({
-					    			 url : '${pageContext.request.contextPath}/technology/get1/'+ id,
-					    			 type: 'GET',
-					    			 success : function(data){
-					    				 console.log(data)
-					    				  if(data.active==true){
-				    						 active="Active";
-				    					 }
-					    				 	var oTable=$('#table-trainer');
-				    				 		var tbody=oTable.find('tbody');
-				    				 			var tr = "<tr>";
-					    				 		tr +="<td><input type='hidden' name='trainer' id='"+data.id+"'/></td>";
-												tr += "<td>"+data.name+"</td>";
-/* 												tr += "<td>"+data.createdBy+"</td>";
- */												tr += "<td>"+active+"</td>";
-												tr += "<td><a href='#'class='btn-hapus btn btn-danger btn-sm'>Delete</a></td>";
-												tr +="</tr>";
-												tbody.append(tr);
-				    				 	 	 },
-					    			 dataType: 'json'
-					    		 
-							 });
-
-
-							var active=true;
-							var trainer = {
-									name:name,
-									active:active
-							}
-							
-							$('#add-technology-modal').modal('show');
-							$('#add-trainer-modal').modal('hide'); 
-							
+							$('#add-testimony-modal').modal();
 						});
 						
-						//add technology
-						jQuery('#btn-save-technology-submit').click(function(event){
+						jQuery('#btn-save-testimony-submit').click(function(event){
 							event.preventDefault();
-							var name = jQuery('#name').val();
-						    var note = jQuery('#note').val();
-							var active=1;
-							var technologyTrainers = [];
-				            $.each($("input[name='trainer']:hidden"), function(){
-								var technologyTrainer = {
-										trainer:{
-											id:$(this).attr("id")
-										}
-								}
-								technologyTrainers.push(technologyTrainer);
-				            });
-							
-							var technology = {
-									name:name,
-									note:note,
-									active:active,
-									techTran:technologyTrainers
+							var name = jQuery('#title').val();
+						    var content = jQuery('#content').val();
+							var date = new Date();
+						 	var isd = jQuery('#active').val(); 
+							var testimony = {
+									title:name,
+									content:content,
+									createdOn:date,
+						 			isDelete:isd 
 							}
-							console.log(technology)
-							   jQuery.ajax({
-								url : '${pageContext.request.contextPath}/technology/save',
+							
+							jQuery.ajax({
+								url : '${pageContext.request.contextPath}/testimony/save',
 								type:'POST',
 									beforeSend:function(){
-										console.log(technology);
+										console.log(testimony);
 										console.log('mau contact server');
 									},
 								contentType: 'application/json',
-								data: JSON.stringify(technology),
+								dataType: "json",
+								data: JSON.stringify(testimony),
 								success : function(data){
 									
 									console.log('data dari server');
 									console.log(data);
- 									window.location='${pageContext.request.contextPath}/technology'
- 							}
-							});  
-		 					
-					});
-				});				    	
+									window.location='${pageContext.request.contextPath}/testimony'
+								}
+							});
+							
+						});
 						
+						 $('.btn-hapus').on('click', function(){
+			    		 var id = $(this).attr('id');
+			    		 $.ajax({
+			    			 url : '${pageContext.request.contextPath}/testimony/get/'+ id,
+			    			 type: 'GET',
+			    			 success : function(data){
+			    			 	$("#id-testimony").val(data.id);
+			    			 	$('#titles1').val(data.title);
+				    			$('#contents1').val(data.content);
+				    			$('#created-on').val(data.createdOn);
+				    			$('input[name="isDelete"]').val(data.isDelete=true)
+				    			console.log(data)
+			    			 },
+			    			
+			    		 })
+			    		 $('#add-delete-testimony').modal()
+			    		 
+			    	 });
+						 
+					jQuery('#btn-delete-testimony-submit').click(function(event){
+								event.preventDefault();
+								var name = jQuery('#titles').val();
+							    var note = jQuery('#contents').val();
+								var id = jQuery('#id-testimony').val();
+								var date=new Date();
+								
+								var testimony = {
+										title:name,
+										content:note,
+										id:id,
+										isDelete:$('#actives').val(),
+										createdOn : $('#created-on').val(),
+										deletedOn:date
+								}
+								jQuery.ajax({
+									url : '${pageContext.request.contextPath}/testimony/update',
+									type:'POST',
+										beforeSend:function(){
+											console.log(testimony);
+											console.log('mau contact server');
+										},
+									contentType: 'application/json',
+									data: JSON.stringify(testimony),
+									success : function(data){
+										
+										console.log('data dari server');
+										console.log(data);
+										window.location='${pageContext.request.contextPath}/testimony'
+									}
+								});
+								
+							});
+	 	
+				});				    							
 </script>
 
 </html>

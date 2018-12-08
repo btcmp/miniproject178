@@ -20,5 +20,10 @@ public class BatchDaoImpl implements BatchDao {
 		List<Batch> batch=session.createCriteria(Batch.class).list();
 		return batch;
 	}
+	public void save(Batch batch) {
+		// TODO Auto-generated method stub
+		Session session=sessionFactory.getCurrentSession();
+		session.save(batch);
+	}
 
 }

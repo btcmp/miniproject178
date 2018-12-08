@@ -28,8 +28,8 @@ public class Technology {
 	@Column(nullable=true)
 	private String name;
 	private String note;
-	@Column(name="created_by",nullable=true,length=11)
-	private String createdBy;
+	@Column(name="created_by")
+	private Long createdby;
 	@Column(name="created_on",nullable=true)
 	@Temporal(TemporalType.DATE)
 	private Date createdOn;
@@ -46,9 +46,19 @@ public class Technology {
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy="technology")
+	
+	
 	private List<TechnologyTrainer> TechTran;
 	
 	
+	public Long getCreatedby() {
+		return createdby;
+	}
+
+	public void setCreatedby(Long createdby) {
+		this.createdby = createdby;
+	}
+
 	public List<Batch> getBatchTech() {
 		return batchTech;
 	}
@@ -85,12 +95,7 @@ public class Technology {
 	public void setNote(String note) {
 		this.note = note;
 	}
-	public String getCreatedBy() {
-		return createdBy;
-	}
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
+
 	public Date getCreatedOn() {
 		return createdOn;
 	}

@@ -5,7 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.miniproject.training.model.Batch;
 import com.miniproject.training.model.Technology;
@@ -34,5 +37,11 @@ public class BatchController {
 		model.addAttribute("technology", technology);
 		model.addAttribute("trainer", trainer);
 		return "batch";
+	}
+	@RequestMapping(value="/save",method=RequestMethod.POST)
+	@ResponseBody
+	public Batch save(@RequestBody Batch batch) {
+		batchService.save(batch);
+		return batch;
 	}
 }
