@@ -103,6 +103,12 @@
                             <p>Bootcamp Test Type</p>
                         </a>
                     </li>
+                    <li>
+                        <a href="${pageContext.request.contextPath }/category">
+                            <i class="material-icons">library_books</i>
+                            <p>Category</p>
+                        </a>
+                    </li>
 					<li><a href="${pageContext.request.contextPath }/question">
 							<i class="material-icons">library_books</i>
 							<p>Questions</p>
@@ -159,10 +165,11 @@
 	                                    <h4 class="title">Office</h4>
 	                                </div>
 	                             	<div class="card-content table-responsive">
-	                             <form action="${pageContext.request.contextPath }/office/search" method = "GET">
+	                             <form action="${pageContext.request.contextPath }/office/search" method = "GET" >
 									<input type="text" id= "searchOffice" name="srcoffice" placeholder="Search by Name"/>
-									<input type="submit" value="Search" id="btn-search" class="btn btn-default btn-sm"/>
-									<button type="button" id="tambahOffice" class="btn btn-sm btn-primary"> + </button>
+									<button type="submit" class="btn btn-sm btn-default"/>
+                                		<i class="material-icons">search</i>
+									<button type="button" id="tambahOffice" class="btn btn-sm btn-primary"> +Add </button>
 								</form>
 	            
                                 <div class="card-content table-responsive">
@@ -340,7 +347,27 @@
 				</div>
 			</div>
 		</div>
+		</div>
 		
+		<!-- Modal DEACTIVE Office  -->
+		<div class="modal fade" id="deactive-office" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header text-center">
+						<h3 class="modal-title w-100 font-weight-bold">Deactive Data???</h3>
+					</div>
+
+					<div class="modal-body text-center">
+						<form action="${pageContext.request.contextPath }/office/editoffice" method="POST">
+							
+							<button type="submit" id="deactive-yes" class="btn btn-primary">YES</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+							</form>
+					</div>
+					
+				</div>
+			</div>
+		</div>
 		
 		</body>
 <!--   Core JS Files   -->
@@ -459,12 +486,14 @@
 					var capacity = $(this).find('.txt-capacity').val();
 					var description = $(this).find('.txt-description').val();
 					var idRoom = $(this).find('.txt-id').val();
+					var statusA = $(this).find('.txt-activate').val();
 					var rms = {
 							id : idRoom,
 							code : code,
 							name : nameRoom,
 							capacity : capacity,
 							notes : description,
+							active : statusA
 			};
 					office.rooms.push(rms);
 			});
@@ -487,7 +516,7 @@
 					}
 				})
 			 }else{
-				jQuery.ajax({
+				 jQuery.ajax({
 					url: '${pageContext.request.contextPath}/office/editoffice',
 					type : 'POST',
 					contentType : 'application/json',
@@ -499,7 +528,7 @@
 					},error: function(){
 						alert('Update Failed');
 					}
-				})   
+				})    
 			}
 			
 			});
@@ -565,10 +594,11 @@
 							"<td><input type='text' name='txtcapacity' class='form-control txt-capacity' value='"+room.capacity+"'/></td>"+
 							"<td>"+
 							"<input type='hidden' name='txtdescription' class='form-control txt-description' value='"+room.notes+"'/>"+
+							"<input type='hidden' name='txtactivate' class='form-control txt-activate' value='"+room.active+"'/>"+
 							"<input type='hidden' name='txtid' class='form-control txt-id' value='"+room.id+"'/>"+
 							"<input type='hidden' name='txtradio' class='form-control txt-radio' value='"+room.any_projector+"'/>"+
 								"<button type='button' class='btn btn-primary btn-sm btn-edit-room'>Edit </button>"+
-								"<button type='button' class='btn btn-secondary btn-sm btn-deactive-room'>Deactive </button>"+
+								"<button type='button' data-id = "+room.id+" class='btn btn-secondary btn-sm btn-deactive-room'>Deactive </button>"+
 							"</td>"+
 						"</tr>";
 			       		 
@@ -581,7 +611,71 @@
 			//
 		 }); 
 		
-		 });
+		$(document).on('click', '.btn-deactive-room', function(){
+			var id = $(this).attr('data-id');
+			var tableTr = $(this).parent().parent();
+			tableTr.find('.txt-activate').val(false);
+			alert('Room telah di non active');
+			/* $.ajax({
+				url : "${pageContext.request.contextPath}/office/disable/"+id,
+				type : 'GET',
+				success : function(){
+					window.location = "${pageContext.request.contextPath}/office";
+				}
+			}) */
+		});
+		
+		//deactive office
+		$(".btn-delete").on('click', function(){
+		 var id = $(this).val();
+		 $.ajax({
+			 url : '${pageContext.request.contextPath}/office/delete/'+ id,
+			 type: 'GET',
+			 dataType: 'json',
+			 success : function(data){
+				 $('#id').val(data.id);
+				 $('#name').val(data.name);
+				 $('#phone').val(data.phone);
+				 $('#email').val(data.email);
+				 $('#address').val(data.address);
+				 $('#notes').val(data.notes);
+			 }, 
+		 })
+		$('#deactive-office').modal();
+	 });
+		
+		$('#deactive-yes').click(function(event){
+			event.preventDefault();
+		//event listener on click
+		var id = jQuery('#id').val();
+		var name = jQuery('#name').val();
+		var phone = jQuery('#phone').val();
+		var email = jQuery('#email').val();
+		var address = jQuery('#address').val();
+		var desc = jQuery('#notes').val();
+		
+		var ofc = {
+				id : id,
+				name : name,
+				phone : phone,
+				email : email,
+				address : address,
+				notes : desc
+		};
+		jQuery.ajax({
+			url: '${pageContext.request.contextPath}/office/editoffice',
+			type : 'POST',
+			contentType : 'application/json',
+			data : JSON.stringify(ofc),
+			success : function(data){
+				alert('Deactive Berhasil')
+				window.location = '${pageContext.request.contextPath}/office'
+			},error: function(){
+				alert('Gagal Deactive');
+			}
+		})
+		});
+	});
 	
 		function clearAllForm(formId){
 			$(formId).trigger("reset");
@@ -590,6 +684,7 @@
 		 
 	//------------------------------------------------------------	
     $(document).ready(function() {
+    	
     	//setting up datepicker
     	$('#birthDate123').datepicker();
     	

@@ -131,7 +131,7 @@
 	                           	<div class="card-content table-responsive">
 	                           		<form action="${pageContext.request.contextPath }/biodata">
 	                           			<input type="search" id="search" placeholder="Search by Name"/>
-	                           			<button type="button" id="tambahBiodata" class="btn btn-sm btn-primary"> + </button>
+	                           			<button type="button" id="tambahBiodata" class="btn btn-sm btn-primary"> + Add </button>
                        				</form>
 	                     		</div>
 								
@@ -240,6 +240,7 @@
 		     	<div class="modal-body">
 		     		
 		     		<form action="${pageContext.request.contextPath }/biodata/editbiodata" method="POST">
+		     			<input type="hidden" id="createdBy" name="createdBy"/>
 		     			<input type="hidden" id="id-biodata" name="id-biodata"/>
 		     			<input type="hidden" id="createdOn" name="createdOn"/>
 		     			<input type="hidden" id="active" name="active"/>
@@ -327,7 +328,7 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header text-center">
-					<h3 class="modal-title w-100 font-weight-bold">Deactive Biodata???</h3>
+					<h3 class="modal-title w-100 font-weight-bold">Sure to delete this???</h3>
 				</div>
 		     	
 		     	<div class="modal-body">
@@ -406,8 +407,11 @@
 				data:JSON.stringify(biodata),
 				success: function(data){
 					console.log(data);
-					alert('Biodata berhasil ditambahkan');
+					alert('Data biodata successfully added');
 					window.location='${pageContext.request.contextPath}/biodata'
+				},
+				error: function(){
+					alert('Data biodata failed added')
 				}
 			})
 		});
@@ -421,6 +425,7 @@
 				url : '${pageContext.request.contextPath}/biodata/editui/'+ id,
 				type :'GET',
 				success : function(data){
+					$('#createdBy').val(data.createdBy);
 					$('#id-biodata').val(data.id);
 					$('#name-biodata').val(data.name);
 					$('#lasted-biodata').val(data.lastEducation);
@@ -480,6 +485,7 @@
 					notes:$('#notes').val(),
 					createdOn:$('#createdOn').val(),
 					modifiedOn:datemodif,
+					createdBy:$('#createdBy').val()
 			}
 			jQuery.ajax({
 				url:'${pageContext.request.contextPath}/biodata/editbiodata',
@@ -495,8 +501,11 @@
 			    },
 				success: function(data){
 					console.log(data);
-					alert('Biodata berhasil diedit');
+					alert('Data biodata successfully updated');
 					window.location='${pageContext.request.contextPath}/biodata'
+				},
+				error: function(){
+					alert('Data biodata failed updated')
 				}
 			})
 		})
@@ -574,21 +583,14 @@
 			    },
 				success: function(data){
 					console.log(data);
-					alert('Biodata berhasil dideactivekan');
+					alert('Data biodata successfully deactivated');
 					window.location='${pageContext.request.contextPath}/biodata'
+				},
+				error: function(){
+					alert('Data biodata failed deactivated')
 				}
 			})
 		})
-		
-		//setting up datepicker
-		$('#birthDate123').datepicker();
-		function ajaxSetUp() {
-			var token = $("meta[name='_csrf']").attr("content");
-			var header = $("meta[name='_csrf_header']").attr("content");
-			$(document).ajaxSend(function(e, xhr, options) {
-				xhr.setRequestHeader(header, token);
-			});
-		}
 
 		$('#table-user').DataTable();
 

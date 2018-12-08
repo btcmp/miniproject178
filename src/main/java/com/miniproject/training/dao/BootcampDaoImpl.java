@@ -68,11 +68,12 @@ public class BootcampDaoImpl implements BootcampDao {
 		return bootcamps;
 	}
 
-	public void deactiveBootcamp() {
+	public void deactiveBootcamp(Long id) {
 		// TODO Auto-generated method stub
-		String hql ="update Bootcamp b set b.active = '0'";
+		String hql ="update Bootcamp b set b.active = '0' where b.id = :id";
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery(hql);
+		query.setParameter("id", id);
 		query.executeUpdate();
 	}
 

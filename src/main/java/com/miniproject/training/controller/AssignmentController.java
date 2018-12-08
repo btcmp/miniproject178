@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.miniproject.training.model.Assignment;
@@ -54,5 +55,13 @@ public class AssignmentController {
 	public Assignment edit(@RequestBody Assignment assignment) {
 		assignmentService.save(assignment);
 		return assignment;
+	}
+	
+	//attribute ngirim param: nerima value
+	@RequestMapping(value="/src", method=RequestMethod.GET)
+	public String search(@RequestParam("scrtxt") String name, Model model) {
+		List<Assignment> assignments=assignmentService.searchByName(name);
+		model.addAttribute("assignments", assignments);
+		return "assignment";
 	}
 }
