@@ -97,7 +97,7 @@
                             <p>Office</p>
                         </a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="${pageContext.request.contextPath }/bootcamp">
                             <i class="material-icons">group</i>
                             <p>Bootcamp Test Type</p>
@@ -109,12 +109,13 @@
                             <p>Category</p>
                         </a>
                     </li>
-                      <li>
+                    <li class="active">
                         <a href="${pageContext.request.contextPath }/idlenews">
                             <i class="material-icons">chat</i>
                             <p>Idle News</p>
                         </a>
                     </li>
+                    <li>
 					<li><a href="${pageContext.request.contextPath }/question">
 							<i class="material-icons">library_books</i>
 							<p>Questions</p>
@@ -149,7 +150,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#"> Bootcamp Test Type Datatable </a>
+                        <a class="navbar-brand" href="#"> Idle News Datatable </a>
                     </div>
                     <div class="collapse navbar-collapse">
                     </div>
@@ -168,7 +169,7 @@
 								</c:if> 
 	                            <div class="card">
 	                                <div class="card-header" data-background-color="orange">
-	                                    <h4 class="title">Bootcamp Test Type</h4>
+	                                    <h4 class="title">Idle News</h4>
 	                                </div>
 	                             	<div class="card-content table-responsive">
 	                             	
@@ -183,9 +184,8 @@
                                 <div class="card-content table-responsive">
                                     <table id="table-user" class="table table-hover">
                                         <thead class="text-warning">
-                                            <th>NAME</th>
-                                            <th>CREATED BY</th>
-                                            <th>STATUS</th>
+                                            <th>TITLE</th>
+                                            <th>CATEGORY</th>
                                             <th></th>
                                         </thead>
                                         <tbody id="list-bootcamp">
