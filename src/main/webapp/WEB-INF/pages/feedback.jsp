@@ -163,13 +163,13 @@ input.parsley-error {
 												</c:forEach>
 											</select>
 										</thead>
-										<tbody>
+										<tbody id="list-question">
 												<c:forEach var="vd" items="${versions.versionDetail }">
 														<input type="hidden" value="${versions.id }" id="versionId">
-	                                            		<td><c:out value="${vd.question.question }"></c:out></td>
+	                                            		<td><c:out value="${vd.question.question }"><label class="txt-question">${vd.question.question }</label></c:out></td>
 	                                            	</tr>
 	                                            	<tr>
-	                                            		<td><textarea cols="135" rows="5" id="jsonFeedback" placeholder="Notes"></textarea></td>
+	                                            		<td><textarea cols="135" rows="5" class="answer" id="answer" placeholder="Notes"></textarea></td>
 	                                            	</tr>
 	                                            </c:forEach>
 										</tbody>
@@ -246,6 +246,39 @@ input.parsley-error {
 	src="${pageContext.request.contextPath}/resources/assets/js/demo.js"></script>
 <script type="text/javascript">
 jQuery(document).ready(function() {
+/* 	$("#selected").on("change", function(){
+		alert('test');
+		var testId = $('#selected option:selected').val();
+		var testTxt = $('#selected option:selected').text();
+		var versionId = $('#versionId').val();
+		var date = new Date();
+		var feedback : {
+			test : {
+				id: testId
+			},
+			version : {
+				id: versionId
+			}
+		};
+		
+		jQuery.ajax({
+			url: '${pageContext.request.contextPath}/feedback/save',
+			type: 'post',
+			beforeSend: function(){
+				console.log(feedback);
+				console.log('mau contact server..');
+			},
+			contentType: 'application/json',
+			dataType: "json",
+			data: JSON.stringify(feedback),
+			success: function(data) {
+				console.log('dapat data dari server');
+				console.log(data);
+				window.location = '${pageContext.request.contextPath}/feedback';
+				alert('data berhasil ditambahkan')
+			}
+		});
+	}); */
 	$('#saveFeedback').click(function(event) {
 		event.preventDefault();
 		var testTxt = $('#selected option:selected').text();
@@ -259,14 +292,29 @@ jQuery(document).ready(function() {
 					id: testId
 				},
 				version : {
-					id: versionId,
+					id: versionId
 				},
-				jsonFeedback: jsonFeedback,
 				createdOn: date
 		};
+		
+		/* var oTable = $('#table-user').find('#list-question tr');
+		var listQuestion = [];
+		$.each(oTable, function(index, value){
+				var questions = $(this).find('.txt-question').text();
+				var answer = $(this).find('.answer').val();
+				
+				var questions = {
+					question : {
+						question : questions
+					},
+					answer: answer
+				}
+				feedback.questions.push(feedback);
+		}); */
+		
 		console.log(feedback);
 		
-		jQuery.ajax({
+ 		jQuery.ajax({
 			url: '${pageContext.request.contextPath}/feedback/save',
 			type: 'post',
 			beforeSend: function(){
