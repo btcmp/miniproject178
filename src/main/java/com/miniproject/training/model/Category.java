@@ -21,24 +21,24 @@ public class Category {
 	@Id
 	@GeneratedValue(strategy= GenerationType.AUTO)
 	private Long id;
-	@Column(nullable=false)
+	@Column(nullable=true)
 	private String code;
-	@Column(nullable=false)
+	@Column(nullable=true)
 	private String name;
-	@Column(nullable=false)
+	@Column(nullable=true)
 	private String description;
-	@Column(name="created_by", nullable=false)
+	@Column(name="created_by", nullable=true)
 	private Long createdBy;
 	@Temporal(TemporalType.DATE)
-	@Column(name="created_on", nullable=false)
+	@Column(name="created_on", nullable=true)
 	private Date createdOn;
 	@Column(name="modified_by")
 	private Long modifiedBy;
 	@Temporal(TemporalType.DATE)
 	@Column(name="modified_on")
 	private Date modifiedOn;
-	@Column(nullable=false)
-	private Boolean active;
+	@Column(nullable=true)
+	private Boolean active = true;
 	
 	@OneToMany(mappedBy="category")
 	private List<IdleNews> idleNewss;

@@ -240,6 +240,7 @@
 		     	<div class="modal-body">
 		     		
 		     		<form action="${pageContext.request.contextPath }/biodata/editbiodata" method="POST">
+		     			<input type="hidden" id="createdBy" name="createdBy"/>
 		     			<input type="hidden" id="id-biodata" name="id-biodata"/>
 		     			<input type="hidden" id="createdOn" name="createdOn"/>
 		     			<input type="hidden" id="active" name="active"/>
@@ -424,6 +425,7 @@
 				url : '${pageContext.request.contextPath}/biodata/editui/'+ id,
 				type :'GET',
 				success : function(data){
+					$('#createdBy').val(data.createdBy);
 					$('#id-biodata').val(data.id);
 					$('#name-biodata').val(data.name);
 					$('#lasted-biodata').val(data.lastEducation);
@@ -483,6 +485,7 @@
 					notes:$('#notes').val(),
 					createdOn:$('#createdOn').val(),
 					modifiedOn:datemodif,
+					createdBy:$('#createdBy').val()
 			}
 			jQuery.ajax({
 				url:'${pageContext.request.contextPath}/biodata/editbiodata',

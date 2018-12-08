@@ -14,7 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="BIODATA")
+@Table(name="T_BIODATA")
 public class Biodata {
 
 	@Id
