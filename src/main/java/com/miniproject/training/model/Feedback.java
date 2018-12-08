@@ -7,7 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "T_FEEDBACK")
@@ -15,42 +19,33 @@ public class Feedback {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
-	@Column(name = "TEST_ID", nullable = false)
-	private int testId;
-	@Column(name = "VERSION_ID", nullable = false)
-	private int versionId;
-	@Column(name = "JSON_FEEDBACK")
+	private Long id;
+	@Column(name = "JSON_FEEDBACK", nullable = true)
 	private String jsonFeedback;
-	@Column(name = "CREATED_BY", nullable = false)
-	private String createdBy;
-	@Column(name = "CREATED_ON", nullable = false)
+	@Column(name = "CREATED_BY", nullable = true)
+	private Long createdBy;
+	@Column(name = "CREATED_ON", nullable = true)
+	@Temporal(TemporalType.DATE)
 	private Date createdOn;
-	@Column(name = "DELETED_BY")
-	private String deletedBy;
-	@Column(name = "DELETED_ON")
+	@Column(name = "DELETED_BY", nullable = true)
+	private Long deletedBy;
+	@Column(name = "DELETED_ON", nullable = true)
 	private Date deletedOn;
 	@Column(name = "IS_DELETE", nullable = false)
-	private Boolean isDelete;
+	private boolean isDelete = false;
+	@ManyToOne
+	@JoinColumn(name = "test_id", nullable = true)
+	private Test test;
+	@ManyToOne
+	@JoinColumn(name = "version_id", nullable = true)
+	private Version version;
 	
 	//Getter and Setter
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
-	}
-	public int getTestId() {
-		return testId;
-	}
-	public void setTestId(int testId) {
-		this.testId = testId;
-	}
-	public int getVersionId() {
-		return versionId;
-	}
-	public void setVersionId(int versionId) {
-		this.versionId = versionId;
 	}
 	public String getJsonFeedback() {
 		return jsonFeedback;
@@ -58,10 +53,10 @@ public class Feedback {
 	public void setJsonFeedback(String jsonFeedback) {
 		this.jsonFeedback = jsonFeedback;
 	}
-	public String getCreatedBy() {
+	public Long getCreatedBy() {
 		return createdBy;
 	}
-	public void setCreatedBy(String createdBy) {
+	public void setCreatedBy(Long createdBy) {
 		this.createdBy = createdBy;
 	}
 	public Date getCreatedOn() {
@@ -70,10 +65,10 @@ public class Feedback {
 	public void setCreatedOn(Date createdOn) {
 		this.createdOn = createdOn;
 	}
-	public String getDeletedBy() {
+	public Long getDeletedBy() {
 		return deletedBy;
 	}
-	public void setDeletedBy(String deletedBy) {
+	public void setDeletedBy(Long deletedBy) {
 		this.deletedBy = deletedBy;
 	}
 	public Date getDeletedOn() {
@@ -82,11 +77,23 @@ public class Feedback {
 	public void setDeletedOn(Date deletedOn) {
 		this.deletedOn = deletedOn;
 	}
-	public Boolean getIsDelete() {
+	public boolean isDelete() {
 		return isDelete;
 	}
-	public void setIsDelete(Boolean isDelete) {
+	public void setDelete(boolean isDelete) {
 		this.isDelete = isDelete;
+	}
+	public Test getTest() {
+		return test;
+	}
+	public void setTest(Test test) {
+		this.test = test;
+	}
+	public Version getVersion() {
+		return version;
+	}
+	public void setVersion(Version version) {
+		this.version = version;
 	}
 
 }

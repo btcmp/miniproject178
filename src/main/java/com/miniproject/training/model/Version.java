@@ -49,6 +49,8 @@ public class Version {
 	@JsonManagedReference
 	@OneToMany(mappedBy = "version")
 	private List<VersionDetail> versionDetail;
+	@OneToMany(mappedBy = "version")
+	private List<Feedback> feedbacks;
 	
 	//Getter and Setter
 	public Long getId() {

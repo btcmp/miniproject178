@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.miniproject.training.model.Bootcamp;
 import com.miniproject.training.model.Office;
@@ -26,7 +28,7 @@ public class BootcampController {
 	BootcampService bootcampService;
 //	
 //	//bootcamp list
-	@RequestMapping//(value="/view", method = RequestMethod.GET)
+	@RequestMapping
 	public String view(Model model) {
 		List<Bootcamp> bootcamps = bootcampService.getAllBootcamps();
 		model.addAttribute("bootcamps", bootcamps);
@@ -59,9 +61,17 @@ public class BootcampController {
 	
 	//search bootcamp
 	@RequestMapping(value="/src", method = RequestMethod.GET) //url di web
-	public String search(@RequestParam("srctext") String name, Model model) {
+	public String search(@RequestParam("srctext") String name, Model model) { //mengambil query variable di http
 		List<Bootcamp> bootcamps = bootcampService.searchByName(name);
 		model.addAttribute("bootcamps", bootcamps);
 		return "bootcamp";
+	}
+	
+	@RequestMapping(value="/delete/{id}", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK) //untuk memberikan status request ok atau create
+	public void delete(@PathVariable("id") Long id) {
+		//Bootcamp bootcamp = bootcampService.getById(id);
+		bootcampService.deactiveBootcamp(id);
+		//System.out.println(id);
 	}
 }

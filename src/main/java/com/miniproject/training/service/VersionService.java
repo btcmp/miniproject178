@@ -23,7 +23,12 @@ public class VersionService {
 
 	public List<Version> getAllVersions() {
 		// TODO Auto-generated method stub
-		return versionDao.getAllVersions();
+		List<Version> versions = versionDao.getAllVersions();
+//		for(Version ver: versions) {
+//			List<VersionDetail> versionDetails = versionDetailDao.getVersionDetailByVersion(ver);
+//			ver.setVersionDetail(versionDetails);
+//		}
+		return versions;
 	}
 
 	public void saving(Version version) {
@@ -42,6 +47,16 @@ public class VersionService {
 	public Version getVersionById(Long id) {
 		// TODO Auto-generated method stub
 		Version version = versionDao.getVersionById(id);
+		return version;
+	}
+
+	public Version getLastVersion() {
+		// TODO Auto-generated method stub
+		Version version = versionDao.getLastVersion();
+		Version v1 = new Version();
+		v1.setId(version.getId());
+		List<VersionDetail> versionDetails = versionDetailDao.getVersionDetailByVersion(v1);
+		version.setVersionDetail(versionDetails);
 		return version;
 	}
 	

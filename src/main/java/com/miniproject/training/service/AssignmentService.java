@@ -30,4 +30,9 @@ public class AssignmentService {
 		// TODO Auto-generated method stub
 		return assignmentDao.getAssignmentById(id);
 	}
+
+	public List<Assignment> searchByName(String name) {
+		// TODO Auto-generated method stub
+		return assignmentDao.searchByName(name);
+	}
 }

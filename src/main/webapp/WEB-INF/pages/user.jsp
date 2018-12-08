@@ -87,6 +87,18 @@
                             <p>Role</p>
                         </a>
                     </li>
+                    <li>
+                        <a href="${pageContext.request.contextPath}/menu">
+                            <i class="material-icons">library_books</i>
+                            <p>Menu</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="${pageContext.request.contextPath}/menu_access">
+                            <i class="material-icons">library_books</i>
+                            <p>Menu Access</p>
+                        </a>
+                    </li>
                     <li><a href="${pageContext.request.contextPath }/biodata"> 
 						<i class="material-icons">person</i>
 						<p>Biodata</p>
@@ -309,6 +321,14 @@
 				<form action="${pageContext.request.contextPath }/user/update" method="POST">
 					<div class="modal-body">
 						<div class="form-group">
+							<select id="roles2" name="roles2" class="form-control">
+							  <option>--Select Role--</option>
+							  <c:forEach items="${roles}" var="rol">
+							  			<option value="${rol.id}">${rol.name}</option>
+							  </c:forEach>
+							</select>
+						</div>
+						<div class="form-group">
 							<input type="text" id="name-user2" class="form-control" />
 						</div>	
 						<div class="form-group">
@@ -317,9 +337,24 @@
 						<div class="form-group">
 							<input type="password" id="new-confirm_password" class="form-control" placeholder="Retype new password"/>
 							<span id='new-message'></span>
+						</div>
+						<div class="row">
+							<div class="form-group col-md-6">
+								<label>Mobile Flag</label>
+							</div>
+							<div class="form-group col-md-6">
+								<div class="radio">
+									<label><input type="radio" name="optradio">true</label>
+								</div>
+								<div class="radio">
+									<label><input type="radio" name="optradio">false</label>
+								</div>						
+							</div>
+						</div>
+						<div class="form-group">
+							<input type="text" id="mobileToken" class="form-control" placeholder="Input Mobile Token"/>
 						</div>	
 							<input type="hidden" id="id-user2"/>
-							<input type="hidden" id="role-user2"/>
 							<input type="hidden" id="createdOn-user2"/>
 					</div>
 					<div class="modal-footer">
@@ -509,12 +544,14 @@
    								var password = jQuery('#password').val();
    								var role = jQuery('#roles').val();
    								var active = 1;
+   								var enabled = 1;
    								var user = {
    										username:username,
    										password:password,
    										role:{
    											id:role
-   										}, 
+   										},
+   										enabled:enabled,
    										active:active
    								}
    	
@@ -559,6 +596,7 @@
    	    var button = jQuery('#deactivate-btn').click(function(event){
    								event.preventDefault();
    								var active = 0;
+   								var enabled = 0;
    								var modifiedOn = new Date();
    								var id = jQuery('#id-user').val();
    								var username = jQuery('#name-user').val();
@@ -574,6 +612,7 @@
    										password:password,
    										createdOn:createdOn,
    										modifiedOn:modifiedOn,
+   										enabled:enabled,
    										active:active
    								}
    	
@@ -618,12 +657,13 @@
    	    var button = jQuery('#update-btn').click(function(event){
    								event.preventDefault();
    								var active = 1;
+   								var enabled = 1;
    								var modifiedOn = new Date();
    								var id = jQuery('#id-user2').val();
    								var username = jQuery('#name-user2').val();
    								var password = jQuery('#new-password').val();
    								var createdOn = jQuery('#createdOn-user2').val();
-   								var role = jQuery('#role-user2').val();
+   								var role = jQuery('#roles2').val();
    								var user = {
    										id:id,
    										role:{
@@ -633,6 +673,7 @@
    										password:password,
    										createdOn:createdOn,
    										modifiedOn:modifiedOn,
+   										enabled:enabled,
    										active:active
    								}
    	

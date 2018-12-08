@@ -19,7 +19,7 @@ public class MonitoringDaoImpl implements MonitoringDao{
 
 	public List<Monitoring> getAllMonitorings() {
 		// TODO Auto-generated method stub
-		String hql="from Monitoring m where m.isDelete='1'";
+		String hql="from Monitoring m where m.isDelete='0'";
 		Session session=sessionFactory.getCurrentSession();
 		Query query=session.createQuery(hql);
 		List<Monitoring> monitorings=query.list();

@@ -26,7 +26,7 @@ public class BootcampDaoImpl implements BootcampDao {
 	
 	public List<Bootcamp> getAllBootcamps() {
 		// TODO Auto-generated method stub
-		String hql = "from Bootcamp";
+		String hql = "from Bootcamp b where b.active = '1' ";
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery(hql);
 		List<Bootcamp> bootcamps = query.list();
@@ -60,19 +60,6 @@ public class BootcampDaoImpl implements BootcampDao {
 		return new Bootcamp();
 	}
 
-/*	public List<Bootcamp> search(String keySearch) {
-		// TODO Auto-generated method stub
-		String hql = "from Bootcamp b where b.name like :keySearch ";
-		Session session = sessionFactory.getCurrentSession();
-		Query query = session.createQuery(hql);
-		query.setParameter("keySearch", "%"+keySearch+"%");
-		List<Bootcamp> bootcamps = query.list();
-		if (!bootcamps.isEmpty()) {
-			return bootcamps;
-		}
-		return new ArrayList();
-	}*/
-
 	public List<Bootcamp> searchByName(String name) {
 		// TODO Auto-generated method stub
 		String hql = "from Bootcamp b where lower(b.name) like lower('%"+name+"%')";
@@ -80,5 +67,15 @@ public class BootcampDaoImpl implements BootcampDao {
 		List<Bootcamp> bootcamps = session.createQuery(hql).list();
 		return bootcamps;
 	}
+
+	public void deactiveBootcamp(Long id) {
+		// TODO Auto-generated method stub
+		String hql ="update Bootcamp b set b.active = '0' where b.id = :id";
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createQuery(hql);
+		query.setParameter("id", id);
+		query.executeUpdate();
+	}
+
 
 }

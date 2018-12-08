@@ -131,7 +131,7 @@
 	                           	<div class="card-content table-responsive">
 	                           		<form action="${pageContext.request.contextPath }/biodata">
 	                           			<input type="search" id="search" placeholder="Search by Name"/>
-	                           			<button type="button" id="tambahBiodata" class="btn btn-sm btn-primary"> + </button>
+	                           			<button type="button" id="tambahBiodata" class="btn btn-sm btn-primary"> + Add </button>
                        				</form>
 	                     		</div>
 								
@@ -327,7 +327,7 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header text-center">
-					<h3 class="modal-title w-100 font-weight-bold">Deactive Biodata???</h3>
+					<h3 class="modal-title w-100 font-weight-bold">Sure to delete this???</h3>
 				</div>
 		     	
 		     	<div class="modal-body">
@@ -406,8 +406,11 @@
 				data:JSON.stringify(biodata),
 				success: function(data){
 					console.log(data);
-					alert('Biodata berhasil ditambahkan');
+					alert('Data biodata successfully added');
 					window.location='${pageContext.request.contextPath}/biodata'
+				},
+				error: function(){
+					alert('Data biodata failed added')
 				}
 			})
 		});
@@ -495,8 +498,11 @@
 			    },
 				success: function(data){
 					console.log(data);
-					alert('Biodata berhasil diedit');
+					alert('Data biodata successfully updated');
 					window.location='${pageContext.request.contextPath}/biodata'
+				},
+				error: function(){
+					alert('Data biodata failed updated')
 				}
 			})
 		})
@@ -574,21 +580,14 @@
 			    },
 				success: function(data){
 					console.log(data);
-					alert('Biodata berhasil dideactivekan');
+					alert('Data biodata successfully deactivated');
 					window.location='${pageContext.request.contextPath}/biodata'
+				},
+				error: function(){
+					alert('Data biodata failed deactivated')
 				}
 			})
 		})
-		
-		//setting up datepicker
-		$('#birthDate123').datepicker();
-		function ajaxSetUp() {
-			var token = $("meta[name='_csrf']").attr("content");
-			var header = $("meta[name='_csrf_header']").attr("content");
-			$(document).ajaxSend(function(e, xhr, options) {
-				xhr.setRequestHeader(header, token);
-			});
-		}
 
 		$('#table-user').DataTable();
 

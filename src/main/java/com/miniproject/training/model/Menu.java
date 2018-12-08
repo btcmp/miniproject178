@@ -1,5 +1,6 @@
 package com.miniproject.training.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -8,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -26,17 +29,15 @@ public class Menu {
 	private String title;
 	@Column(name="description")
 	private String description;
-	@Column(name="image_url",nullable=false,length=100)
+	@Column(name="image_url",nullable=true,length=100)
 	private String imageUrl;
-	@Column(name="menu_order",nullable=false)
+	@Column(name="menu_order",nullable=true)
 	private int menuOrder;
-	@Column(name="menu_parent")
-	private Long menuParent;
-	@Column(name="menu_url",nullable=false,length=100)
+	@Column(name="menu_url",nullable=true,length=100)
 	private String menuUrl;
-	@Column(name="created_by",nullable=false)
+	@Column(name="created_by",nullable=true)
 	private Long createdBy;
-	@Column(name="created_on",nullable=false)
+	@Column(name="created_on",nullable=true)
 	@Temporal(TemporalType.DATE)
 	private Date createdOn;
 	@Column(name="modified_by")
@@ -49,7 +50,26 @@ public class Menu {
 	@OneToMany(mappedBy = "menu")
 	private List<Menu_Access> menu_access;
 	
+	@ManyToOne
+	@JoinColumn(name="menu_parent",nullable=true)
+	private Menu menu;
 	
+	@OneToMany(mappedBy="menu")
+	private List<Menu> menuMenu = new ArrayList<Menu>();
+	
+	
+	public Menu getMenu() {
+		return menu;
+	}
+	public void setMenu(Menu menu) {
+		this.menu = menu;
+	}
+	public List<Menu> getMenuMenu() {
+		return menuMenu;
+	}
+	public void setMenuMenu(List<Menu> menuMenu) {
+		this.menuMenu = menuMenu;
+	}
 	public List<Menu_Access> getMenu_access() {
 		return menu_access;
 	}
@@ -91,12 +111,6 @@ public class Menu {
 	}
 	public void setMenuOrder(int menuOrder) {
 		this.menuOrder = menuOrder;
-	}
-	public Long getMenuParent() {
-		return menuParent;
-	}
-	public void setMenuParent(Long menuParent) {
-		this.menuParent = menuParent;
 	}
 	public String getMenuUrl() {
 		return menuUrl;

@@ -63,4 +63,18 @@ public class UserDaoImpl implements UserDao{
 		Session session=sessionFactory.getCurrentSession();
 		session.update(user);
 	}
+
+	public User getUserByUsername(String username) {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		String hql = "from User usr where usr.username = :username";
+		Query query = session.createQuery(hql);
+		query.setParameter("username", username);
+		List<User> listUser = query.list();
+		if(listUser.isEmpty()) {
+			return new User();
+		}
+		
+		return listUser.get(0);
+	}
 }
