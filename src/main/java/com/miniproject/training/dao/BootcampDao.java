@@ -16,6 +16,6 @@ public interface BootcampDao {
 
 	List<Bootcamp> searchByName(String name);
 
-	void deactiveBootcamp();
+	void deactiveBootcamp(Long id);
 
 }

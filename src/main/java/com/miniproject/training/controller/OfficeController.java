@@ -69,4 +69,12 @@ public class OfficeController {
 		model.addAttribute("offices", offices);
 		return "office";
 	}
+	
+	@RequestMapping(value="/delete/{id}", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
+	public void delete(@PathVariable("id") Long id) {
+		officeService.disableOffice(id);
+	}
+	
+	
 }

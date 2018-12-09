@@ -30,4 +30,9 @@ public class BiodataService {
 		// TODO Auto-generated method stub
 		return biodataDao.getBiodataById(id);
 	}
+
+	public List<Biodata> searchByName(String name) {
+		// TODO Auto-generated method stub
+		return biodataDao.searchByName(name);
+	}
 }

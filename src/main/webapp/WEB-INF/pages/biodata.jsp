@@ -129,8 +129,9 @@
 								</div>
 					
 	                           	<div class="card-content table-responsive">
-	                           		<form action="${pageContext.request.contextPath }/biodata">
-	                           			<input type="search" id="search" placeholder="Search by Name"/>
+	                           		<form action="${pageContext.request.contextPath }/biodata/src">
+	                           			<input type="search" id="search" name="srctext" placeholder="Search by Name"/>
+	                           			<button type="submit" class="btn btn-sm btn-default"/><i class="material-icons">search</i>
 	                           			<button type="button" id="tambahBiodata" class="btn btn-sm btn-primary"> + Add </button>
                        				</form>
 	                     		</div>
@@ -240,6 +241,7 @@
 		     	<div class="modal-body">
 		     		
 		     		<form action="${pageContext.request.contextPath }/biodata/editbiodata" method="POST">
+		     			<input type="hidden" id="createdBy" name="createdBy"/>
 		     			<input type="hidden" id="id-biodata" name="id-biodata"/>
 		     			<input type="hidden" id="createdOn" name="createdOn"/>
 		     			<input type="hidden" id="active" name="active"/>
@@ -424,6 +426,7 @@
 				url : '${pageContext.request.contextPath}/biodata/editui/'+ id,
 				type :'GET',
 				success : function(data){
+					$('#createdBy').val(data.createdBy);
 					$('#id-biodata').val(data.id);
 					$('#name-biodata').val(data.name);
 					$('#lasted-biodata').val(data.lastEducation);
@@ -483,6 +486,7 @@
 					notes:$('#notes').val(),
 					createdOn:$('#createdOn').val(),
 					modifiedOn:datemodif,
+					createdBy:$('#createdBy').val()
 			}
 			jQuery.ajax({
 				url:'${pageContext.request.contextPath}/biodata/editbiodata',

@@ -35,5 +35,12 @@ public class TrainerDaoImpl implements TrainerDao{
 		}
 		return trainer.get(0);
 	}
+	public void delete(long id) {
+		// TODO Auto-generated method stub
+		Trainer trainer=new Trainer();
+		trainer.setId(id);
+		Session session=sessionFactory.getCurrentSession();
+		session.delete(session.get(Trainer.class, id));
+	}
 
 }

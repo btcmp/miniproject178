@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.miniproject.training.dao.TechnologyTrainerDao;
 import com.miniproject.training.dao.TrainerDao;
+import com.miniproject.training.model.TechnologyTrainer;
 import com.miniproject.training.model.Trainer;
 
 @Service
@@ -15,6 +17,9 @@ public class TrainerService {
 
 	@Autowired
 	TrainerDao trainerDao;
+	
+	@Autowired
+	TechnologyTrainerDao technologyTrainerDao;
 	public List<Trainer> getAllTrainer() {
 		// TODO Auto-generated method stub
 		return trainerDao.getAllTrainer();
@@ -27,6 +32,10 @@ public class TrainerService {
 		// TODO Auto-generated method stub
 		Trainer trainer=trainerDao.getAllTrainerById(id);
 		return trainer;
+	}
+	public void delete(long id) {
+		// TODO Auto-generated method stub
+		trainerDao.delete(id);
 	}
 
 }

@@ -2,6 +2,8 @@ package com.miniproject.training.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.miniproject.training.model.Biodata;
+import com.miniproject.training.model.User;
 import com.miniproject.training.service.BiodataService;
 
 @Controller
@@ -25,7 +28,10 @@ public class BiodataController {
 
 	@Autowired
 	BiodataService biodataService;
-
+	
+	@Autowired
+	HttpSession httpSession;
+	
 	@RequestMapping
 	public String view(Model model) {
 		List<Biodata> biodatas=biodataService.getAllBiodatas();
@@ -35,7 +41,9 @@ public class BiodataController {
 	
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	@ResponseBody
-	public Biodata save(@RequestBody Biodata biodata, RedirectAttributes redirectAttributes) {
+	public Biodata save(@RequestBody Biodata biodata) {
+		User user=(User) httpSession.getAttribute("application-user");
+		biodata.setCreatedBy(user.getId());
 		biodataService.save(biodata);
 		return biodata;
 	}
@@ -50,8 +58,16 @@ public class BiodataController {
 	@RequestMapping(value="/editbiodata", method=RequestMethod.POST)
 	@ResponseBody
 	public Biodata editBiodata(@RequestBody Biodata biodata) {
+		User user=(User) httpSession.getAttribute("application-user");
+		biodata.setModifiedBy(user.getId());
 		biodataService.save(biodata);
 		return biodata;
 	}
-
+	
+	@RequestMapping(value="/src", method=RequestMethod.GET)
+	public String search(@RequestParam("srctext") String name, Model model) {
+		List<Biodata> biodatas=biodataService.searchByName(name);
+		model.addAttribute("biodatas",biodatas);
+		return "biodata";
+	}
 }

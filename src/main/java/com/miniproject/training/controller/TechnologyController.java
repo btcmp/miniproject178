@@ -2,6 +2,7 @@ package com.miniproject.training.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import com.miniproject.training.model.Employee;
 import com.miniproject.training.model.Technology;
 import com.miniproject.training.model.Trainer;
+import com.miniproject.training.model.User;
 import com.miniproject.training.service.TechnologyService;
 import com.miniproject.training.service.TrainerService;
 
@@ -33,6 +35,9 @@ public class TechnologyController {
 	
 	@Autowired
 	TrainerService trainerService;
+	
+	@Autowired
+	HttpSession httpSession;
 	
 /*	@ModelAttribute("techForm")
 	public Technology techForm() {
@@ -66,6 +71,10 @@ public class TechnologyController {
 	@RequestMapping(value="/save",method=RequestMethod.POST)
 	@ResponseBody
 	public Technology save(@RequestBody Technology technology) {
+		User user=(User) httpSession.getAttribute("application-user");
+		technology.setCreatedby(user.getId());
+/*		System.out.println("id yg dpt:"+user.getId());
+		System.out.println("id yg dpt:"+technology.getCreatedby());*/
 		technologyService.save(technology);
 		return technology;
 	}
@@ -98,6 +107,10 @@ public class TechnologyController {
 		trainerService.saving(trainer);
 		return trainer;
 	}
-	
+	@RequestMapping(value="/delete/{id}",method=RequestMethod.DELETE)
+	@ResponseStatus(HttpStatus.OK)
+	public void delete(@PathVariable long id) {
+		trainerService.delete(id);
+	}
 	
 }

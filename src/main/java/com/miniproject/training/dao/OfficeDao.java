@@ -16,4 +16,6 @@ public interface OfficeDao {
 
 	List<Office> searchByName(String name);
 
+	void disbleOffice(Long id);
+
 }

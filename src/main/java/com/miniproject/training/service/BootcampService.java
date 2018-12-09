@@ -41,9 +41,10 @@ public class BootcampService {
 		return bootcampDao.searchByName(name);
 	}
 
-	public void deactiveBootcamp() {
+	
+	public void deactiveBootcamp(Long id) {
 		// TODO Auto-generated method stub
-		bootcampDao.deactiveBootcamp();
+		bootcampDao.deactiveBootcamp(id);
 	}
 
 }

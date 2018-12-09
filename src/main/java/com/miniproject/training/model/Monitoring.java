@@ -14,7 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name="MONITORING")
+@Table(name="T_MONITORING")
 public class Monitoring {
 
 	@Id

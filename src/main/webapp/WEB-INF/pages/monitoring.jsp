@@ -127,8 +127,9 @@
 								</div>
 					
 	                           	<div class="card-content table-responsive">
-	                           		<form action="${pageContext.request.contextPath }/monitoring">
-	                           			<input type="search" id="search" placeholder="Search by Name"/>
+	                           		<form action="${pageContext.request.contextPath }/monitoring/src">
+	                           			<input type="search" id="search" name="srctext" placeholder="Search by Name"/>
+	                           			<button type="submit" class="btn btn-sm btn-default"/><i class="material-icons">search</i>
 	                           			<button type="button" id="tambahMonitoring" class="btn btn-sm btn-primary"> + add </button>
                        				</form>
 	                     		</div>
@@ -203,6 +204,7 @@
 		     	<div class="modal-body">
 		     		<input type="hidden" id="action" value="add">
 		     		<input type="hidden" name="createdOn" id="createdOn"/>
+		     		<input type="hidden" name="createdBy" id="createdBy"/>
 		     		
 		     		<form action="${pageContext.request.contextPath }/monitoring/save" method="POST">
 				      	<div class="form-group">
@@ -247,6 +249,8 @@
 		     		<form action="${pageContext.request.contextPath }/monitoring/placement" method="POST">
 		     			<input type="hidden" name="id" id="id"/>
 		     			<input type="hidden" name="createdOn" id="createdOn"/>
+		     			<input type="hidden" name="createdBy" id="createdBy"/>
+		     			
 						<div class="form-group">
 							<input type="text" id="placementDate" class="form-control" placeholder="Placement Date"/>
 						</div>
@@ -277,7 +281,9 @@
 				</div>
 		     	
 		     	<div class="modal-body">
-		     		
+		     		<input type="hidden" name="createdBy" id="createdBy"/>
+		     		<input type="hidden" name="modifiedBy" id="modifiedBy"/>
+		     		<input type="hidden" name="modifiedOn" id="modifiedOn"/>
 		     		<form action="${pageContext.request.contextPath }/monitoring/edit" method="POST">
 						<div class="modal-footer text-center">
 							<button type="submit" id="deactive" class="btn btn-primary">Yes</button>
@@ -407,6 +413,7 @@
 						lastProject:$('#lastProject').val(),		
 						idleReason:$('#idleReason').val(),
 						createdOn:$('#createdOn').val(),
+						createdBy:$('#createdBy').val(),
 						modifiedOn:date
 				};
 				
@@ -446,6 +453,7 @@
 					$('#lastProject').val(data.lastProject);
 					$('#idleReason').val(data.idleReason);
 					$('#createdOn').val(data.createdOn);
+					$('#createdBy').val(data.createdBy);
 					$('#placementDate').val(data.placementDate);
 					$('#placementAt').val(data.placementAt);
 					$('#notes').val(data.notes);
@@ -472,6 +480,7 @@
 					lastProject:$('#lastProject').val(),		
 					idleReason:$('#idleReason').val(),
 					createdOn:$('#createdOn').val(),
+					createdBy:$('#createdBy').val(),
 					modifiedOn:date
 			};
 			
@@ -514,6 +523,7 @@
 					$('#lastProject').val(data.lastProject);
 					$('#idleReason').val(data.idleReason);
 					$('#createdOn').val(data.createdOn);
+					$('#createdBy').val(data.createdBy);
 					$('#placementDate').val(data.placementDate);
 					$('#placementAt').val(data.placementAt);
 					$('#notes').val(data.notes);
@@ -537,6 +547,9 @@
 					$('#lastProject').val(data.lastProject);
 					$('#idleReason').val(data.idleReason);
 					$('#createdOn').val(data.createdOn);
+					$('#createdBy').val(data.createdBy);
+					$('#modifiedBy').val(data.modifiedBy);
+					$('#modifiedOn').val(data.modifiedOn);
 					$('#placementDate').val(data.placementDate);
 					$('#placementAt').val(data.placementAt);
 					$('#notes').val(data.notes);
@@ -564,13 +577,14 @@
 					lastProject:$('#lastProject').val(),		
 					idleReason:$('#idleReason').val(),
 					createdOn:$('#createdOn').val(),
+					modifiedBy:$('#modifiedBy').val(),
 					modifiedOn:$('#modifiedOn').val(),
-					createdOn:$('#createdOn').val(),
+					createdBy:$('#createdBy').val(),
 					deleteOn:datemodif,
 					isDelete:isDelete
 			}
 			jQuery.ajax({
-				url:'${pageContext.request.contextPath}/monitoring/edit',
+				url:'${pageContext.request.contextPath}/monitoring/delete',
 				type:'POST',
 				beforeSend: function(){
 					console.log(moni);
