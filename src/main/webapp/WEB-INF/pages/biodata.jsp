@@ -129,8 +129,9 @@
 								</div>
 					
 	                           	<div class="card-content table-responsive">
-	                           		<form action="${pageContext.request.contextPath }/biodata">
-	                           			<input type="search" id="search" placeholder="Search by Name"/>
+	                           		<form action="${pageContext.request.contextPath }/biodata/src">
+	                           			<input type="search" id="search" name="srctext" placeholder="Search by Name"/>
+	                           			<button type="submit" class="btn btn-sm btn-default"/><i class="material-icons">search</i>
 	                           			<button type="button" id="tambahBiodata" class="btn btn-sm btn-primary"> + Add </button>
                        				</form>
 	                     		</div>

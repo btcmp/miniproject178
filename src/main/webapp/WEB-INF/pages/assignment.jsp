@@ -130,7 +130,7 @@
 	                           	<div class="card-content table-responsive">
 	                           		<form action="${pageContext.request.contextPath }/assignment/src" method="GET">
 	                           			<input type="text" id="searchAssignment" name="scrtxt" placeholder="Search by Name"/>
-	                           			<input type="submit" id="btn-search" class="btn btn-default btn-sm"/>
+	                           			<button type="submit" class="btn btn-sm btn-default"/><i class="material-icons">search</i>
 	                           			<button type="button" id="tambahAssignment" class="btn btn-sm btn-primary"> + add </button>
                        				</form>
 	                     		</div>
@@ -283,7 +283,9 @@
 		     	
 		     	<div class="modal-body">
 		     		
-		     		<form action="${pageContext.request.contextPath }/assignment/edit" method="POST">
+		     		<form action="${pageContext.request.contextPath }/assignment/deactive" method="POST">
+		     		<input type="hidden" name="modifiedBy" id="modifiedBy"/>
+		     		<input type="hidden" name="createdBy" id="createdBy"/>
 		     		<input type="hidden" name="modifiedOn" id="modifiedOn"/>
 						<div class="modal-footer text-center">
 							<button type="submit" id="deactive" class="btn btn-primary">Yes</button>
@@ -439,6 +441,7 @@
 						endDate:$('#endDate').val(),
 						description:$('#description').val(),
 						createdOn:$('#createdOn').val(),
+						createdBy:$('#createdBy').val(),
 						modifiedOn:date
 				};
 				
@@ -482,6 +485,7 @@
 					$('#endDate').val(data.endDate);
 					$('#createdOn').val(data.createdOn);
 					$('#description').val(data.description);
+					$('#createdBy').val(data.createdBy);
 				},
 			})
 			$('#addAssignment').modal();
@@ -506,6 +510,8 @@
 					$('#isDone').val(data.isDone);
 					$('#realizationDate').val(data.realizationDate);
 					$('#notes').val(data.notes);
+					$('#createdBy').val(data.createdBy);
+					$('#modifieddBy').val(data.modifiedBy);
 				},
 			})
 			$('#addDone').modal();
@@ -528,6 +534,8 @@
 					endDate:$('#endDate').val(),
 					description:$('#description').val(),
 					createdOn:$('#createdOn').val(),
+					createdBy:$('#createdBy').val(),
+					modifiedOn:$('#modifiedOn').val(),
 					notes:$('#notes').val(),
 					modifiedOn:date,
 					realizationDate:$('#realizationDate').val(),
@@ -571,7 +579,9 @@
 					$('#startDate').val(data.startDate);
 					$('#endDate').val(data.endDate);
 					$('#createdOn').val(data.createdOn);
+					$('#createdBy').val(data.createdBy);
 					$('#modifiedOn').val(data.modifiedOn);
+					$('#modifiedBy').val(data.modifiedBy);
 					$('#description').val(data.description);
 					$('#isDelete').val(data.isDelete);
 					$('#realizationDate').val(data.realizationDate);
@@ -598,14 +608,16 @@
 					endDate:$('#endDate').val(),
 					description:$('#description').val(),
 					createdOn:$('#createdOn').val(),
+					createdBy:$('#createdBy').val(),
 					modifiedOn:$('#modifiedOn').val(),
+					modifiedBy:$('#modifiedBy').val(),
 					notes:$('#notes').val(),
 					realizationDate:$('#realizationDate').val(),
 					isDelete:isDelete,
 					deletedOn:date
 			}
 			jQuery.ajax({
-				url:'${pageContext.request.contextPath}/assignment/edit',
+				url:'${pageContext.request.contextPath}/assignment/deactive',
 				type:'POST',
 				beforeSend: function(){
 					console.log(deac);
