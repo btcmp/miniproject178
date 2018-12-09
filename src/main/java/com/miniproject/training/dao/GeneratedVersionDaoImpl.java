@@ -22,5 +22,12 @@ public class GeneratedVersionDaoImpl implements GeneratedVersionDao {
 		Query query = session.createSQLQuery("select versionSequence2.nextVal as num from dual").addScalar("num", StandardBasicTypes.BIG_INTEGER);
 		return ((BigInteger) query.uniqueResult()).longValue();
 	}
+	
+	public Long nextCat() {
+		// TODO Auto-generated method stub
+		Session session = sessionFactory.getCurrentSession();
+		Query query = session.createSQLQuery("select versionSequence2.nextVal as num from dual").addScalar("num", StandardBasicTypes.BIG_INTEGER);
+		return ((BigInteger) query.uniqueResult()).longValue();
+	}
 
 }

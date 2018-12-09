@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.naming.Binding;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.miniproject.training.model.Office;
+import com.miniproject.training.model.User;
 import com.miniproject.training.service.OfficeService;
 
 @Controller
@@ -29,6 +31,9 @@ public class OfficeController {
 
 	@Autowired
 	OfficeService officeService;
+	
+	@Autowired
+	HttpSession httpSession;
 	
 	//office list
 	@RequestMapping
@@ -41,7 +46,9 @@ public class OfficeController {
 	//office save
 	@RequestMapping(value="/save", method = RequestMethod.POST)
 	@ResponseBody
-	public Office save(@RequestBody Office office) {
+	public Office save(@RequestBody Office office, Model model) {
+		User user = (User) httpSession.getAttribute("application-user");
+		office.setCreatedBy(user.getId());
 		officeService.saveOffice(office);
 		return office;
 	}
@@ -58,6 +65,8 @@ public class OfficeController {
 	@RequestMapping(value="/editoffice", method = RequestMethod.POST)
 	@ResponseBody
 	public Office update(@RequestBody Office office) {
+		User user = (User) httpSession.getAttribute("application-user");
+		office.setModifiedBy(user.getId());
 		officeService.update(office);
 		return office;
 	}

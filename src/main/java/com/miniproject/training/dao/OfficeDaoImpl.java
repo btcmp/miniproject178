@@ -65,7 +65,7 @@ public class OfficeDaoImpl implements OfficeDao{
 
 	public List<Office> searchByName(String name) {
 		// TODO Auto-generated method stub
-		String hql = "from Office o where lower(o.name) like lower('%"+name+"%')";
+		String hql = "from Office o where o.active = '1' and lower(o.name) like lower('%"+name+"%')";
 		Session session = sessionFactory.getCurrentSession();
 		List<Office> offices = session.createQuery(hql).list();
 		return offices;
