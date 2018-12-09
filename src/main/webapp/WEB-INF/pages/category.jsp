@@ -267,7 +267,7 @@
 			      	<input type="hidden" id="id" />
 			      
 			      <div class="form-group">
-			      	<input type="text" id="code" class="form-control" placeholder="Code"/>
+			      	<input type="text" value="C000 " id="code" class="form-control" placeholder="Code"/>
 			      </div>
 			      
 			      <div class="form-group">
@@ -468,6 +468,12 @@
     	
     	$('#tambah-category').click(function(event){
     		event.preventDefault();
+    		$.ajax({
+    			url: "${pageContext.request.contextPath}/category/generatedversion",
+    			success: function(data){
+    				$('#code').val(data);
+    			}
+    		})
     		clearAllForm('#form-category');
     		$('#add-category').modal();
     		$('#action').val('add');

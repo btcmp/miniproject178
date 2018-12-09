@@ -329,6 +329,8 @@ jQuery(document).ready(function() {
 				console.log(data);
 				window.location = '${pageContext.request.contextPath}/feedback'
 				alert('data berhasil ditambahkan')
+			}, error : function(){
+				 alert('Masukkan Jenis Test!');
 			}
 		});
 	});

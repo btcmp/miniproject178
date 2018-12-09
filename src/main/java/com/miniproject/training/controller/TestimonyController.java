@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.miniproject.training.model.Testimony;
+import com.miniproject.training.model.User;
 import com.miniproject.training.service.TestimonyService;
 
 @Controller
@@ -27,7 +28,7 @@ public class TestimonyController {
 	TestimonyService testimonyService;
 	
 	@Autowired
-	private HttpSession httpSession;
+	HttpSession httpSession;
 	
 	@RequestMapping
 	public String index(Model model,@RequestParam(required=false) String search) {
@@ -41,12 +42,16 @@ public class TestimonyController {
 	@RequestMapping(value="/save",method=RequestMethod.POST)
 	@ResponseBody
 	public Testimony save(@RequestBody Testimony testimony) {
+		/*User user=(User) httpSession.getAttribute("application-user");
+		testimony.setCreatedBy(user.getId());*/
 		testimonyService.save(testimony);
 		return testimony;
 	}
 	@RequestMapping(value="/update",method=RequestMethod.POST)
 	@ResponseBody
 	public Testimony update(@RequestBody Testimony testimony) {
+		/*User user=(User) httpSession.getAttribute("application-user");
+		testimony.setCreatedBy(user.getId());*/
 		testimonyService.update(testimony);
 		return testimony;
 	}

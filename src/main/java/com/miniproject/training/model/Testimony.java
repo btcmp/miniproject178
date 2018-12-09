@@ -19,14 +19,15 @@ public class Testimony {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(nullable=false)
 	private long id;
-	@Column(name="title")
+	@Column(name="title",nullable=false)
 	private String title;
 	@Column(name="content")
 	private String content;
-	@Column(name="created_by")
+	@Column(name="created_by",nullable=false)
 	private long createdBy;
-	@Column(name="created_on")
+	@Column(name="created_on",nullable=false)
 	@Temporal(TemporalType.DATE)
 	private Date createdOn;
 	@Column(name="modified_by")

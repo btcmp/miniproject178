@@ -4,4 +4,6 @@ public interface GeneratedVersionDao {
 	
 	Long nextVersion();
 
+	Long nextCat();
+
 }

@@ -173,11 +173,11 @@
 	                                </div>
 	                             	<div class="card-content table-responsive">
 	                             	
-	                             	<form action="${pageContext.request.contextPath }/bootcamp/src" method = "GET">
-										<input type="text" id= "searchBootcamp" name="srctext" placeholder="Search by Name"/>
+	                             	<form action="${pageContext.request.contextPath }/idlenews/src" method = "GET">
+										<input type="text" id= "searchIdlenews" name="srctext" placeholder="Search by Title"/>
 										<button type="submit" class="btn btn-sm btn-default"/>
                                 			<i class="material-icons">search</i>
-										<button type="button" id="tambah-bootcamp" class="btn btn-sm btn-primary"> +Add </button>
+										<button type="button" id="tambah-idle" class="btn btn-sm btn-primary"> +Add </button>
 									 </form>
 									 
 	            				</div>
@@ -189,25 +189,19 @@
                                             <th></th>
                                         </thead>
                                         <tbody id="list-bootcamp">
-                                            <c:forEach items = "${bootcamps }" var="bootcamp">
+                                            <c:forEach items = "${idlenews }" var="idle">
                                             	<tr>
-                                            		<td><c:out value="${bootcamp.name }"></c:out></td>
-                                            		<td><c:out value="${bootcamp.createdBy }"></c:out></td>
-                                            		<td>
-                                            		<c:choose>
-													    <c:when test="${bootcamp.active=='0'}">
-													        non active
-													    </c:when>    
-													    <c:otherwise>
-													        active
-													    </c:otherwise>
-													</c:choose>
-													</td>
+                                            		<td><c:out value="${idle.title }"></c:out></td>
+                                            		<td><c:out value="${idle.category.name }"></c:out></td>
+                                            		
 	                                            	<td>
-	                                            		<button type="button" rel="tooltip" title="Edit" value="${bootcamp.id }" class="btn btn-success btn-simple btn-xs btn-edit">
+	                                            		<button type="button" rel="tooltip" title="Edit" value="${idle.id }" class="btn btn-success btn-simple btn-xs btn-edit">
 										                    <i class="fa fa-edit"></i>
 										                </button>
-										                <button type="button" rel="tooltip" title="Deactive" value="${bootcamp.id }" class="btn btn-danger btn-simple btn-xs btn-delete">
+										                <button type="button" rel="tooltip" title="Publish" value="${idle.id }" class="btn btn-primary btn-simple btn-xs btn-publish">
+										                    <i class="fa fa-check"></i>
+										                </button>
+										                <button type="button" rel="tooltip" title="Deactive" value="${idle.id }" class="btn btn-danger btn-simple btn-xs btn-delete">
 										                    <i class="fa fa-times"></i>
 										                </button>
 														
@@ -262,7 +256,7 @@
     </div>
     
 	<!-- Modal ADD BOOTCAMP  -->
-		<div class="modal fade" id="add-bootcamp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+		<div class="modal fade" id="add-idle" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 	  aria-hidden="true">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
@@ -271,21 +265,32 @@
 	      </div>
 		      
 		      <div class="modal-body">
-			      <form  action="#" id="form-bootcamp" method="POST">
-			      	<input type="hidden" id="action" value="add"/>
+			      <form  action="#" id="form-idle" method="POST">
+			      	<input type="text" id="action" value="add"/>
+			      	<input type="hidden" name="createdOn" id="createdOn"/>
 			      	<input type="hidden" id="id" />
+			      	<input type="hidden" id="publish" name="isPublish" value="false">
 			      
 			      <div class="form-group">
-			      	<input type="text" id="name" class="form-control" placeholder="Name"/>
+			      	<input type="text" id="title" class="form-control" placeholder="Title"/>
 			      </div>
 			      
 			      <div class="form-group">
-			      	<textarea type="text" id="notes" class="form-control" placeholder="Notes"></textarea>      	
+			      	<select class="form-control" id="category" name="category.id">
+			      		<option>-- Select Category --</option>
+							<c:forEach items="${categorys}" var="cat">
+								<option value="${cat.id }">${cat.name }</option>
+							</c:forEach>
+					</select><br>
+			      </div>
+			      			      
+			      <div class="form-group">
+			      	<textarea type="text" id="content" class="form-control" placeholder="Content"></textarea>      	
 			      </div>
 			       
 			       	       	
 		      <div class="modal-footer">
-			        <button type="submit" id="submit-bootcamp" class="btn btn-primary">Save</button>
+			        <button type="submit" id="submit-idle" class="btn btn-primary">Save</button>
 			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 		      </div>
 		      </form>
@@ -294,8 +299,27 @@
 		</div>
 		</div>
 
+		<!-- Modal PUBLISH BOOTCAMP  -->
+		<div class="modal fade" id="publish-idle" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header text-center">
+						<h3 class="modal-title w-100 font-weight-bold">Are you sure Publish Data???</h3>
+					</div>
+					
+					<div class="modal-body text-center">
+						<form action="${pageContext.request.contextPath }/idlenews/update" method="POST">
+							<button type="submit" id="publish-yes" class="btn btn-primary">YES</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+							</form>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+
 		<!-- Modal DEACTIVE BOOTCAMP  -->
-		<div class="modal fade" id="deactive-bootcamp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal fade" id="delete-idle" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header text-center">
@@ -305,7 +329,7 @@
 					<div class="modal-body text-center">
 						<form action="${pageContext.request.contextPath }/bootcamp/update" method="POST">
 							
-							<button type="submit" id="deactive-yes" class="btn btn-primary">YES</button>
+							<button type="submit" id="delete-yes" class="btn btn-primary">YES</button>
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
 							</form>
 					</div>
@@ -338,51 +362,69 @@
 
 		//add data btcmp
 		jQuery(document).ready(function(){
-			$('#submit-bootcamp').click(function(event){
+			$('#submit-idle').click(function(event){
 				event.preventDefault();
 			//event listener on click
 			var action = $('#action').val();
-			var name = jQuery('#name').val();
-			var notes = jQuery('#notes').val();
+			var title = jQuery('#title').val();
+			var content = jQuery('#content').val();
 			var id = jQuery('#id').val();
+			var catId = $('#category option:selected').val();
 			var date = new Date;
 			
-			var bootcamp = {
+			var cat = {
 					id : id,
-					name : name,
-					notes : notes,
+					title : title,
+					content : content,
+					category : {
+						id: catId
+					},
 					createdOn : date
 					
 			};
-			console.log(bootcamp);
+			console.log(cat);
 			
 			
 			if (action == "add") {
 				jQuery.ajax({
-					url: '${pageContext.request.contextPath}/bootcamp/save',
+					url: '${pageContext.request.contextPath}/idlenews/save',
 					type : 'POST',
 					contentType : 'application/json',
-					data : JSON.stringify(bootcamp),
+					data : JSON.stringify(cat),
 					success : function(data){
 						alert('Data Berhasil di Add')
-						window.location = '${pageContext.request.contextPath}/bootcamp'
+						window.location = '${pageContext.request.contextPath}/idlenews'
 					},error: function(){
-						alert('Add Data Failed');
+						alert('Masukkan data lengkap!');
 					}
 				})  
 			}else{
-				jQuery.ajax({
-					url: '${pageContext.request.contextPath}/bootcamp/update',
+				var editCat={
+						id:$('#id').val(),
+						category:{
+							id:catId,
+						},
+						content:$('#content').val(),
+						title:$('#title').val(),
+						createdOn:$('#createdOn').val(),
+						modifiedOn:date
+				};
+			 jQuery.ajax({
+					url: '${pageContext.request.contextPath}/idlenews/update',
 					type : 'POST',
+					beforeSend: function(){
+						console.log(editCat);
+						console.log('contact server');
+					},
 					contentType : 'application/json',
-					data : JSON.stringify(bootcamp),
+					data : JSON.stringify(editCat),
 					success : function(data){
 						alert('Data Berhasil di Add')
-						window.location = '${pageContext.request.contextPath}/bootcamp'
+						window.location = '${pageContext.request.contextPath}/idlenews'
 					},error: function(){
-						alert('Add Data Failed');
+						alert('Edit Data Failed');
 					}
-				})   
+				})    
 			}
 			
 		});
@@ -392,65 +434,129 @@
 	    		 var id = $(this).val();
 	    		 var action = ('edit');
 	    		 $.ajax({
-	    			 url : '${pageContext.request.contextPath}/bootcamp/editui/'+ id,
+	    			 url : '${pageContext.request.contextPath}/idlenews/get/'+ id,
 	    			 type: 'GET',
 	    			 dataType: 'json',
 	    			 success : function(data){
 	    				 $('#action').val(action);
 	    				 $('#id').val(data.id);
-	    				 $('#name').val(data.name);
-	    				 $('#notes').val(data.notes);
+	    				 $('#title').val(data.title);
+	    				 $('#content').val(data.content);
+	    				 $('#createdOn').val(data.createdOn);
+	    				 $('#category').val(data.catId);
 	    			 }, 
 	    		 })
-	    		$('#add-bootcamp').modal();
+	    		$('#add-idle').modal();
 	    	 });
 			
-			//deactive
-			$(".btn-delete").on('click', function(){
+			//publish
+			$(".btn-publish").on('click', function(){
 	    		 var id = $(this).val();
 	    		 $.ajax({
-	    			 url : '${pageContext.request.contextPath}/bootcamp/delete/'+ id,
+	    			 url : '${pageContext.request.contextPath}/idlenews/publish/'+ id,
 	    			 type: 'GET',
 	    			 dataType: 'json',
 	    			 success : function(data){
 	    				 $('#id').val(data.id);
-	    				 $('#name').val(data.name);
-	    				 $('#notes').val(data.notes);
+	    				 $('#title').val(data.title);
+	    				 $('#content').val(data.content);
+	    				 $('#createdOn').val(data.createdOn);
+	    				 $('#category').val(data.catId);
 	    			 }, 
 	    		 })
-	    		$('#deactive-bootcamp').modal();
+	    		$('#publish-idle').modal();
 	    	 });
 			
-			$('#deactive-yes').click(function(event){
+			$('#publish-yes').click(function(event){
 				event.preventDefault();
 			//event listener on click
-			var name = jQuery('#name').val();
-			var notes = jQuery('#notes').val();
+			var title = jQuery('#title').val();
+			var content = jQuery('#content').val();
 			var id = jQuery('#id').val();
+			var catId = $('#category option:selected').val();
 			var date = new Date;
 			
-			var btcmp = {
-					id : id,
-					name : name,
-					notes : notes,
+			var catPub = {
+					id : jQuery('#id').val(),
+					title : jQuery('#title').val(),
+					content : jQuery('#content').val(),
+					category : {
+						id: catId
+					},
 					createdOn : date
 					
 			};
+			console.log(catPub);
 				jQuery.ajax({
-					url: '${pageContext.request.contextPath}/bootcamp/update',
+					url: '${pageContext.request.contextPath}/idlenews/update',
 					type : 'POST',
 					contentType : 'application/json',
-					data : JSON.stringify(btcmp),
+					data : JSON.stringify(catPub),
 					success : function(data){
-						alert('Deactive Berhasil')
-						window.location = '${pageContext.request.contextPath}/bootcamp'
+						alert('Publish Berhasil')
+						window.location = '${pageContext.request.contextPath}/idlenews'
 					},error: function(){
-						alert('Gagal Deactive');
+						alert('Publish Berhasil');
+						window.location = '${pageContext.request.contextPath}/idlenews'
 					}
 				})   
 			
 		});
+			
+			//delete
+			$(".btn-delete").on('click', function(){
+	    		 var id = $(this).val();
+	    		 $.ajax({
+	    			 url : '${pageContext.request.contextPath}/idlenews/delete/'+ id,
+	    			 type: 'GET',
+	    			 dataType: 'json',
+	    			 success : function(data){
+	    				 $('#id').val(data.id);
+	    				 $('#title').val(data.title);
+	    				 $('#content').val(data.content);
+	    				 $('#createdOn').val(data.createdOn);
+	    				 $('#category').val(data.catId);
+	    			 }, 
+	    		 })
+	    		$('#delete-idle').modal();
+	    	 });
+			
+			$('#delete-yes').click(function(event){
+				event.preventDefault();
+			//event listener on click
+			var title = jQuery('#title').val();
+			var content = jQuery('#content').val();
+			var id = jQuery('#id').val();
+			var catId = $('#category option:selected').val();
+			var date = new Date;
+			
+			var catPub = {
+					id : jQuery('#id').val(),
+					title : jQuery('#title').val(),
+					content : jQuery('#content').val(),
+					category : {
+						id: catId
+					},
+					createdOn : date
+					
+			};
+			console.log(catPub);
+				jQuery.ajax({
+					url: '${pageContext.request.contextPath}/idlenews/update',
+					type : 'POST',
+					contentType : 'application/json',
+					data : JSON.stringify(catPub),
+					success : function(data){
+						alert('Deactive Berhasil')
+						window.location = '${pageContext.request.contextPath}/idlenews'
+					},error: function(){
+						alert('Deactive Berhasil');
+						window.location = '${pageContext.request.contextPath}/idlenews'
+					}
+				})   
+			
 		});
+		}); 
 	
 	function clearAllForm(formId){
 		$(formId).trigger("reset");
@@ -466,10 +572,10 @@
     		$('#logoutForm').submit();
     	 });
     	
-    	$('#tambah-bootcamp').click(function(event){
+    	$('#tambah-idle').click(function(event){
     		event.preventDefault();
     		clearAllForm('#form-bootcamp');
-    		$('#add-bootcamp').modal();
+    		$('#add-idle').modal();
     		$('#action').val('add');
     	});
     });

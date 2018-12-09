@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.miniproject.training.model.Question;
+import com.miniproject.training.model.User;
 import com.miniproject.training.service.QuestionService;
 
 @Controller
@@ -28,6 +29,9 @@ public class QuestionController {
 	
 	@Autowired
 	QuestionService questionService;
+	
+	@Autowired
+	HttpSession httpSession;
 	
 	@RequestMapping
 	public String view(Model model, @RequestParam(required=false) String search) {
@@ -41,7 +45,9 @@ public class QuestionController {
 	
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	@ResponseBody
-	public Question saving(@RequestBody Question question) {		
+	public Question saving(@RequestBody Question question) {
+		User user = (User) httpSession.getAttribute("application-user");
+		question.setCreatedBy(user.getId());
 		questionService.saving(question);
 		return question;
 	}
@@ -49,6 +55,9 @@ public class QuestionController {
 	@RequestMapping(value="/update", method=RequestMethod.POST)
 	@ResponseBody
 	public Question update(@RequestBody Question question) {
+		User user = (User) httpSession.getAttribute("application-user");
+		question.setModifiedBy(user.getId());
+		question.setDeletedBy(user.getId());
 		questionService.saving(question);
 		return question;
 	}

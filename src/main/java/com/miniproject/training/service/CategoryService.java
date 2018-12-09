@@ -44,4 +44,5 @@ public class CategoryService {
 		// TODO Auto-generated method stub
 		categoryDao.deactiveCategory(id);
 	}
+
 }

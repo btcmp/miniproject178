@@ -10,4 +10,8 @@ public interface BatchDao {
 
 	public void save(Batch batch);
 
+	public Batch getBatchById(long id);
+
+	public List<Batch> searchBatch(String search);
+
 }

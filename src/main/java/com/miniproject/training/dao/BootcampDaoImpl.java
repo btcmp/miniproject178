@@ -62,7 +62,7 @@ public class BootcampDaoImpl implements BootcampDao {
 
 	public List<Bootcamp> searchByName(String name) {
 		// TODO Auto-generated method stub
-		String hql = "from Bootcamp b where lower(b.name) like lower('%"+name+"%')";
+		String hql = "from Bootcamp b where b.active = '1' and lower(b.name) like lower('%"+name+"%')";
 		Session session = sessionFactory.getCurrentSession();
 		List<Bootcamp> bootcamps = session.createQuery(hql).list();
 		return bootcamps;

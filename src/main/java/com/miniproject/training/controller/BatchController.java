@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.miniproject.training.model.Batch;
@@ -29,10 +31,14 @@ public class BatchController {
 	TrainerService trainerService;
 	
 	@RequestMapping
-	public String index(Model model) {
+	public String index(Model model,@RequestParam(required=false) String search) {
 		List<Batch> batch= batchService.getAllBatch();
 		List<Technology>technology=technologyService.getAllTechnology();
 		List<Trainer> trainer=trainerService.getAllTrainer();
+		if(search!=null) {
+			technology=technologyService.searchTechnology(search);
+			batch=batchService.searchBatch(search);
+		}
 		model.addAttribute("batch",batch);
 		model.addAttribute("technology", technology);
 		model.addAttribute("trainer", trainer);
@@ -42,6 +48,18 @@ public class BatchController {
 	@ResponseBody
 	public Batch save(@RequestBody Batch batch) {
 		batchService.save(batch);
+		return batch;
+	}
+	@RequestMapping(value="/get1/{id}",method=RequestMethod.GET)
+	@ResponseBody
+	public Technology getTechnologyById(@PathVariable long id) {
+		Technology technology=technologyService.getAllTechnologyById(id);
+		return technology;
+	}
+	@RequestMapping(value="/get/{id}",method=RequestMethod.GET)
+	@ResponseBody
+	public Batch getBatchById(@PathVariable long id) {
+		Batch batch=batchService.getBatchById(id);
 		return batch;
 	}
 }
