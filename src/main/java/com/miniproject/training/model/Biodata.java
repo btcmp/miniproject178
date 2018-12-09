@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -40,8 +42,9 @@ public class Biodata {
 	@Column(length=5, nullable=true)
 	private String gpa; //8. Varchar, 5, NotNull
 	
-	@Column(name="boothcamp_test_type")
-	private Long bootcampTestTypeId; //9. Long, 11, AllowNull
+	@ManyToOne
+	@JoinColumn(name="bootcamp_test_type")
+	private Bootcamp bootcampTestTypeId; //9. Long, 11, AllowNull
 	
 	@Column(length=4)
 	private int iq; //10. Int, 4, AllowNull
@@ -154,11 +157,11 @@ public class Biodata {
 		this.gpa = gpa;
 	}
 
-	public Long getBootcampTestTypeId() {
+	public Bootcamp getBootcampTestTypeId() {
 		return bootcampTestTypeId;
 	}
 
-	public void setBootcampTestTypeId(Long bootcampTestTypeId) {
+	public void setBootcampTestTypeId(Bootcamp bootcampTestTypeId) {
 		this.bootcampTestTypeId = bootcampTestTypeId;
 	}
 

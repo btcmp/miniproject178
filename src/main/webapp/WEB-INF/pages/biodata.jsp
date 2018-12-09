@@ -260,7 +260,12 @@
 								<input type="text" id="lasted-biodata" name="lasted-biodata" class="form-control" placeholder="Last Education" />
 							</div>
 							<div class="form-group col-md-6">
-								<input type="text" id="bootcampTestTypeId" class="form-control" placeholder="Bootcamp Test Type" />
+								<select class="form-control" id="bootcampTestTypeId" name="bootcampTestTypeId">
+									<c:forEach items="${bootcamps }" var="bc">
+										<option value="${bc.id }">${bc.name }</option>
+									</c:forEach>
+								</select>
+							
 							</div>
 				      	</div>
 				      	
@@ -461,7 +466,7 @@
 		//edit
 		var button3=jQuery('#edit').click(function(event){
 			event.preventDefault();
-			
+			var bootcampTestTypeId= $('#bootcampTestTypeId option:selected').val();
 			var datemodif=new Date();
 			
 			var bio={
@@ -469,7 +474,9 @@
 					name : $('#name-biodata').val(),
 					gender:radiobtn,
 					lastEducation : $('#lasted-biodata').val(),
-					bootcampTestTypeId:$('#bootcampTestTypeId').val(),
+					bootcampTestTypeId:{
+ 						id:bootcampTestTypeId,
+ 					},
 					educationalLevel : $('#edlev-biodata').val(),
 					iq:$('#iq').val(),
 					du:$('#du').val(),

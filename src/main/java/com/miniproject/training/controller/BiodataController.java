@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.miniproject.training.model.Biodata;
+import com.miniproject.training.model.Bootcamp;
 import com.miniproject.training.model.User;
 import com.miniproject.training.service.BiodataService;
+import com.miniproject.training.service.BootcampService;
 
 @Controller
 @RequestMapping("/biodata")
@@ -30,12 +32,17 @@ public class BiodataController {
 	BiodataService biodataService;
 	
 	@Autowired
+	BootcampService bootcampService;
+	
+	@Autowired
 	HttpSession httpSession;
 	
 	@RequestMapping
 	public String view(Model model) {
 		List<Biodata> biodatas=biodataService.getAllBiodatas();
+		List<Bootcamp> bootcamps=bootcampService.getAllBootcamps();
 		model.addAttribute("biodatas", biodatas);
+		model.addAttribute("bootcamps",bootcamps);
 		return "biodata";
 	}
 	
