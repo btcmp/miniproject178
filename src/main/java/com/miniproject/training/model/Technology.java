@@ -46,8 +46,6 @@ public class Technology {
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy="technology")
-	
-	
 	private List<TechnologyTrainer> TechTran;
 	
 	

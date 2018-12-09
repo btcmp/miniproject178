@@ -182,8 +182,8 @@ input.parsley-error {
 									<div class="table-responsive">
 										<table id="table-user" class="table">
 											<thead class="text-warning">
+												<th>Batch</th>
 												<th>Technology</th>
-												<th>Name</th>
 												<th>Trainer</th>
 												<th>Action</th>
 											</thead>
@@ -250,6 +250,7 @@ input.parsley-error {
 						<h5 class="modal-title">Batch</h5>
 					</div>
 					<div class="modal-body">
+						<input type="hidden" id="id-batch"/>
 						<form action="${pageContext.request.contextPath}/batch/save" method="POST">
 							<div class="form-group">
 								<select id="technologyId" name="technology" class="form-control">
@@ -261,10 +262,7 @@ input.parsley-error {
 							</div>
 							<div class="form-group">
 								<select id="trainerId" name="training" class="form-control">
-									<option>--Trainer--</option>
-									<c:forEach items="${trainer}" var="train">
-										<option value="${train.id}">${train.name}</option>
-									</c:forEach>
+										<option value="select">--Trainer--</option>
 								</select>
 							</div>
 							<div class="form-group">
@@ -415,15 +413,21 @@ input.parsley-error {
 				    			 url : '${pageContext.request.contextPath}/batch/get/'+ id,
 				    			 type: 'GET',
 				    			 success : function(data){
-				    				 $('#id-technology').val(data.id);
-				    				 $('#name1').val(data.name);
-				    				 $('#note1').val(data.note);
-				    				 /* $('#edit-department').val(data.department.id); */
+				    				  console.log(data)
+			    			                 options="<option value="+data.trainer.id+">"+data.trainer.name+"</option>";
+			    			                $(options).appendTo('#trainerId');
+				    				 $('#id-batch').val(data.id);
+				    				 $('#name').val(data.name);
+				    				 $('#note').val(data.note);
+				    				 $('#technologyId').val(data.technology.id);
+				    				 $('#trainerId').val(data.trainer.id);
+				    				 $('#startDate').val(data.periodFrom);
+				    				 $('#endDate').val(data.periodTo);
 				    			 },
 				    			 dataType: 'json'
 				    		 })
 				    		 
-				    		$('#add-update-batch').modal();
+				    		$('#add-batch-modal').modal();
 				    		 
 				    	 });
 						 //update technology
@@ -514,6 +518,26 @@ input.parsley-error {
 							});
 							
 						});
+						
+						$('#technologyId').on('change', function() {
+							  var value = $(this).val();
+							  var id = $('#technologyId option:selected').val(); 
+							  console.log(value);
+							  $.ajax({
+					    			 url : '${pageContext.request.contextPath}/batch/get1/'+ id,
+					    			 type: 'GET',
+					    			 success : function(data){
+					    				 console.log(data.techTran) 
+					    				 $.each(data.techTran,function(key,obj){
+					    			                options="<option value="+obj.trainer.id+">"+obj.trainer.name+"</option>";
+					    			                $(options).appendTo('#trainerId'); 
+					    			       });
+					    			 },
+					    			 dataType: 'json'
+					    		 
+							 });
+
+							});
 				});				    	
 						
 </script>

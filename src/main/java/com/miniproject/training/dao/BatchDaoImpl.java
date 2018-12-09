@@ -23,7 +23,24 @@ public class BatchDaoImpl implements BatchDao {
 	public void save(Batch batch) {
 		// TODO Auto-generated method stub
 		Session session=sessionFactory.getCurrentSession();
-		session.save(batch);
+		session.saveOrUpdate(batch);
+	}
+	public Batch getBatchById(long id) {
+		// TODO Auto-generated method stub
+		Session session=sessionFactory.getCurrentSession();
+		String hql="from Batch bc where bc.id= :data";
+		List<Batch> batch=session.createQuery(hql).setParameter("data", id).list();
+		if (batch.isEmpty()) {
+			return null;
+		}
+		return batch.get(0);
+	}
+	public List<Batch> searchBatch(String search) {
+		// TODO Auto-generated method stub
+		Session session=sessionFactory.getCurrentSession();
+		String hql="from Batch bch where lower(bch.technology.name) like :search or lower(bch.name) like :search";
+		List<Batch> batch=session.createQuery(hql).setParameter("search", "%"+search.toLowerCase()+"%").list();
+		return batch;
 	}
 
 }

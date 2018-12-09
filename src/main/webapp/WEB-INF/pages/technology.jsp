@@ -490,7 +490,7 @@ input.parsley-error {
 				    				 $('#id-technology').val(data.id);
 				    				 $('#name1').val(data.name);
 				    				 $('#note1').val(data.note);
- 				    				 console.log(data.techTran)
+ 				    				 console.log(data)
 				    				 
 				    				 var oTable=$('#table-techtrain');
 				    				 var tbody=oTable.find('tbody');
@@ -587,8 +587,8 @@ input.parsley-error {
 				    				 			var tr = "<tr>";
 					    				 		tr +="<td><input type='hidden' name='trainer' id='"+data.id+"'/></td>";
 												tr += "<td>"+data.name+"</td>";
-/* 												tr += "<td>"+data.createdBy+"</td>";
- */												tr += "<td>"+active+"</td>";
+ 												tr += "<td>"+data.createdBy+"</td>";
+ 												tr += "<td>"+active+"</td>";
 												tr += "<td><a href='#'class='btn-hapus btn btn-danger btn-sm'>Delete</a></td>";
 												tr +="</tr>";
 												tbody.append(tr);

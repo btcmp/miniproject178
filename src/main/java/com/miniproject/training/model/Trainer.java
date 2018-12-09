@@ -36,7 +36,7 @@ public class Trainer {
 	@Column(nullable=true)
 	private boolean active;
 	
-	@OneToMany(mappedBy="trainer")
+	@OneToMany(mappedBy="trainer",cascade=CascadeType.ALL,orphanRemoval=true)
 	private List<Batch> batchTran;
 	
 	@OneToMany(mappedBy="trainer",cascade=CascadeType.ALL,orphanRemoval=true)

@@ -23,5 +23,15 @@ public class BatchService {
 		// TODO Auto-generated method stub
 		batchDao.save(batch);
 	}
+	public Batch getBatchById(long id) {
+		// TODO Auto-generated method stub
+		Batch batch=batchDao.getBatchById(id);
+		return batch;
+	}
+	public List<Batch> searchBatch(String search) {
+		// TODO Auto-generated method stub
+		return batchDao.searchBatch(search);
+	}
+
 
 }

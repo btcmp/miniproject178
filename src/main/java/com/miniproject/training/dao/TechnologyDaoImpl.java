@@ -27,7 +27,7 @@ public class TechnologyDaoImpl implements TechnologyDao{
 		// TODO Auto-generated method stub
 		technology.setCreatedOn(new Date());
 		Session session=sessionFactory.getCurrentSession();
-		session.saveOrUpdate(technology);
+		session.save(technology);
 		
 	}
 	
