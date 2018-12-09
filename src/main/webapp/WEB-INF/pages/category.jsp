@@ -97,23 +97,23 @@
                             <p>Office</p>
                         </a>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="${pageContext.request.contextPath }/bootcamp">
                             <i class="material-icons">group</i>
                             <p>Bootcamp Test Type</p>
                         </a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="${pageContext.request.contextPath }/category">
                             <i class="material-icons">library_books</i>
                             <p>Category</p>
                         </a>
                     </li>
-                      <li>
-                        <a href="${pageContext.request.contextPath }/idlenews">
-                            <i class="material-icons">chat</i>
-                            <p>Idle News</p>
-                        </a>
+                    <li>
+                       <a href="${pageContext.request.contextPath }/idlenews">
+                           <i class="material-icons">chat</i>
+                           <p>Idle News</p>
+                       </a>
                     </li>
 					<li><a href="${pageContext.request.contextPath }/question">
 							<i class="material-icons">library_books</i>
@@ -149,7 +149,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#"> Bootcamp Test Type Datatable </a>
+                        <a class="navbar-brand" href="#"> Category Datatable </a>
                     </div>
                     <div class="collapse navbar-collapse">
                     </div>
@@ -168,46 +168,37 @@
 								</c:if> 
 	                            <div class="card">
 	                                <div class="card-header" data-background-color="orange">
-	                                    <h4 class="title">Bootcamp Test Type</h4>
+	                                    <h4 class="title">Category</h4>
 	                                </div>
 	                             	<div class="card-content table-responsive">
 	                             	
-	                             	<form action="${pageContext.request.contextPath }/bootcamp/src" method = "GET">
-										<input type="text" id= "searchBootcamp" name="srctext" placeholder="Search by Name"/>
+	                             	<form action="${pageContext.request.contextPath }/category/search" method = "GET">
+										<input type="text" id= "searchCategory" name="srctext" placeholder="Search by Code / Name"/>
 										<button type="submit" class="btn btn-sm btn-default"/>
                                 			<i class="material-icons">search</i>
-										<button type="button" id="tambah-bootcamp" class="btn btn-sm btn-primary"> +Add </button>
+										<button type="button" id="tambah-category" class="btn btn-sm btn-primary"> +Add </button>
 									 </form>
 									 
 	            				</div>
                                 <div class="card-content table-responsive">
                                     <table id="table-user" class="table table-hover">
                                         <thead class="text-warning">
+                                            <th>CODE</th>
                                             <th>NAME</th>
-                                            <th>CREATED BY</th>
                                             <th>STATUS</th>
                                             <th></th>
                                         </thead>
-                                        <tbody id="list-bootcamp">
-                                            <c:forEach items = "${bootcamps }" var="bootcamp">
+                                        <tbody id="list-category">
+                                            <c:forEach items = "${categorys }" var="category">
                                             	<tr>
-                                            		<td><c:out value="${bootcamp.name }"></c:out></td>
-                                            		<td><c:out value="${bootcamp.createdBy }"></c:out></td>
-                                            		<td>
-                                            		<c:choose>
-													    <c:when test="${bootcamp.active=='0'}">
-													        non active
-													    </c:when>    
-													    <c:otherwise>
-													        active
-													    </c:otherwise>
-													</c:choose>
-													</td>
+                                            		<td><c:out value="${category.code }"></c:out></td>
+                                            		<td><c:out value="${category.name }"></c:out></td>
+                                            		<td><c:out value="${category.active }"></c:out></td>
 	                                            	<td>
-	                                            		<button type="button" rel="tooltip" title="Edit" value="${bootcamp.id }" class="btn btn-success btn-simple btn-xs btn-edit">
+	                                            		<button type="button" rel="tooltip" title="Edit" value="${category.id }" class="btn btn-success btn-simple btn-xs btn-edit">
 										                    <i class="fa fa-edit"></i>
 										                </button>
-										                <button type="button" rel="tooltip" title="Deactive" value="${bootcamp.id }" class="btn btn-danger btn-simple btn-xs btn-delete">
+										                <button type="button" rel="tooltip" title="Deactive" value="${category.id }" class="btn btn-danger btn-simple btn-xs btn-delete">
 										                    <i class="fa fa-times"></i>
 										                </button>
 														
@@ -261,8 +252,8 @@
         </div>
     </div>
     
-	<!-- Modal ADD BOOTCAMP  -->
-		<div class="modal fade" id="add-bootcamp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	<!-- Modal ADD CATEGORY  -->
+		<div class="modal fade" id="add-category" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 	  aria-hidden="true">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
@@ -271,21 +262,25 @@
 	      </div>
 		      
 		      <div class="modal-body">
-			      <form  action="#" id="form-bootcamp" method="POST">
-			      	<input type="text" id="action" value="add"/>
+			      <form  action="#" id="form-category" method="POST">
+			      <input type="hidden" id="action" value="add"/>
 			      	<input type="hidden" id="id" />
+			      
+			      <div class="form-group">
+			      	<input type="text" value="C000 " id="code" class="form-control" placeholder="Code"/>
+			      </div>
 			      
 			      <div class="form-group">
 			      	<input type="text" id="name" class="form-control" placeholder="Name"/>
 			      </div>
 			      
 			      <div class="form-group">
-			      	<textarea type="text" id="notes" class="form-control" placeholder="Notes"></textarea>      	
+			      	<textarea type="text" id="notes" class="form-control" placeholder="Description"></textarea>      	
 			      </div>
 			       
 			       	       	
 		      <div class="modal-footer">
-			        <button type="submit" id="submit-bootcamp" class="btn btn-primary">Save</button>
+			        <button type="submit" id="submit-category" class="btn btn-primary">Save</button>
 			        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 		      </div>
 		      </form>
@@ -295,7 +290,7 @@
 		</div>
 
 		<!-- Modal DEACTIVE BOOTCAMP  -->
-		<div class="modal fade" id="deactive-bootcamp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal fade" id="deactive-category" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header text-center">
@@ -303,7 +298,7 @@
 					</div>
 
 					<div class="modal-body text-center">
-						<form action="${pageContext.request.contextPath }/bootcamp/update" method="POST">
+						<form action="${pageContext.request.contextPath }/category/update" method="POST">
 							
 							<button type="submit" id="deactive-yes" class="btn btn-primary">YES</button>
 							<button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
@@ -336,120 +331,125 @@
 <script src="${pageContext.request.contextPath}/resources/assets/js/demo.js"></script>
 <script type="text/javascript">
 
-		//add data btcmp
+		//add data category
 		jQuery(document).ready(function(){
-			$('#submit-bootcamp').click(function(event){
+			$('#submit-category').click(function(event){
 				event.preventDefault();
 			//event listener on click
 			var action = $('#action').val();
+			var id = jQuery('#id').val();
+			var code = jQuery('#code').val();
 			var name = jQuery('#name').val();
 			var notes = jQuery('#notes').val();
-			var id = jQuery('#id').val();
-			var date = new Date;
 			
-			var bootcamp = {
+			var category = {
 					id : id,
+					code : code,
 					name : name,
-					notes : notes,
-					createdOn : date
-					
+					description : notes
 			};
-			console.log(bootcamp);
+			console.log(category);
 			
 			
 			if (action == "add") {
 				jQuery.ajax({
-					url: '${pageContext.request.contextPath}/bootcamp/save',
+					url: '${pageContext.request.contextPath}/category/save',
 					type : 'POST',
 					contentType : 'application/json',
-					data : JSON.stringify(bootcamp),
+					data : JSON.stringify(category),
 					success : function(data){
-						alert('Data Berhasil di Add')
-						window.location = '${pageContext.request.contextPath}/bootcamp'
+						alert('Data Successfully Added')
+						window.location = '${pageContext.request.contextPath}/category'
 					},error: function(){
-						alert('Add Data Failed');
+						alert('Failed to Add Data');
 					}
-				})  
-			}else{
-				jQuery.ajax({
-					url: '${pageContext.request.contextPath}/bootcamp/update',
-					type : 'POST',
-					contentType : 'application/json',
-					data : JSON.stringify(bootcamp),
-					success : function(data){
-						alert('Data Berhasil di Add')
-						window.location = '${pageContext.request.contextPath}/bootcamp'
-					},error: function(){
-						alert('Add Data Failed');
-					}
-				})   
-			}
-			
+				})
+				}else{
+					jQuery.ajax({
+						url: '${pageContext.request.contextPath}/category/update',
+						type : 'POST',
+						contentType : 'application/json',
+						data : JSON.stringify(category),
+						success : function(data){
+							alert('Data Successfully Updated!')
+							window.location = '${pageContext.request.contextPath}/category'
+						},error: function(){
+							alert('Failed to Update Data');
+						}
+					}) 
+				}
 		});
 		
-			//button edit data bootcamp
+			//button edit data category
 			$(".btn-edit").on('click', function(){
 	    		 var id = $(this).val();
 	    		 var action = ('edit');
 	    		 $.ajax({
-	    			 url : '${pageContext.request.contextPath}/bootcamp/editui/'+ id,
+	    			 url : '${pageContext.request.contextPath}/category/get/'+ id,
 	    			 type: 'GET',
 	    			 dataType: 'json',
 	    			 success : function(data){
 	    				 $('#action').val(action);
 	    				 $('#id').val(data.id);
+	    				 $('#code').val(data.code);
 	    				 $('#name').val(data.name);
-	    				 $('#notes').val(data.notes);
+	    				 $('#notes').val(data.description);
 	    			 }, 
 	    		 })
-	    		$('#add-bootcamp').modal();
+	    		$('#add-category').modal();
 	    	 });
 			
 			//deactive
 			$(".btn-delete").on('click', function(){
 	    		 var id = $(this).val();
 	    		 $.ajax({
-	    			 url : '${pageContext.request.contextPath}/bootcamp/delete/'+ id,
+	    			 url : '${pageContext.request.contextPath}/category/get/'+ id,
 	    			 type: 'GET',
 	    			 dataType: 'json',
 	    			 success : function(data){
 	    				 $('#id').val(data.id);
 	    				 $('#name').val(data.name);
-	    				 $('#notes').val(data.notes);
+	    				 $('#code').val(data.code);
+	    				 $('#name').val(data.name);
+	    				 $('#notes').val(data.description);
+	    				 $('#active').val(data.active);
 	    			 }, 
 	    		 })
-	    		$('#deactive-bootcamp').modal();
+	    		$('#deactive-category').modal();
 	    	 });
 			
 			$('#deactive-yes').click(function(event){
 				event.preventDefault();
 			//event listener on click
+			var code = jQuery('#code').val();
 			var name = jQuery('#name').val();
 			var notes = jQuery('#notes').val();
 			var id = jQuery('#id').val();
+			var active=false;
 			var date = new Date;
 			
-			var btcmp = {
+			var ctg = {
 					id : id,
+					code : code,
 					name : name,
-					notes : notes,
-					createdOn : date
+					description : notes,
+					active : active
 					
 			};
 				jQuery.ajax({
-					url: '${pageContext.request.contextPath}/bootcamp/update',
+					url: '${pageContext.request.contextPath}/category/update',
 					type : 'POST',
 					contentType : 'application/json',
-					data : JSON.stringify(btcmp),
+					data : JSON.stringify(ctg),
 					success : function(data){
-						alert('Deactive Berhasil')
-						window.location = '${pageContext.request.contextPath}/bootcamp'
+						alert('Data Successfully Deactived')
+						window.location = '${pageContext.request.contextPath}/category'
 					},error: function(){
-						alert('Gagal Deactive');
+						alert('Failed to Deactive');
 					}
 				})   
 			
-		});
+		}); 
 		});
 	
 	function clearAllForm(formId){
@@ -466,10 +466,16 @@
     		$('#logoutForm').submit();
     	 });
     	
-    	$('#tambah-bootcamp').click(function(event){
+    	$('#tambah-category').click(function(event){
     		event.preventDefault();
-    		clearAllForm('#form-bootcamp');
-    		$('#add-bootcamp').modal();
+    		$.ajax({
+    			url: "${pageContext.request.contextPath}/category/generatedversion",
+    			success: function(data){
+    				$('#code').val(data);
+    			}
+    		})
+    		clearAllForm('#form-category');
+    		$('#add-category').modal();
     		$('#action').val('add');
     	});
     });

@@ -44,5 +44,14 @@ public class TechnologyTrainerDaoImpl implements TechnologyTrainerDao{
 		}
 		return listdata;
 	}
+	public void delete(long id) {
+		// TODO Auto-generated method stub
+		String hql="delete from TechnologyTrainer e where e.trainer_id: data";
+		Session session=sessionFactory.getCurrentSession();
+		Query query=session.createQuery(hql);
+		query.setParameter("data",id);
+		query.executeUpdate();
+	}
+	
 
 }

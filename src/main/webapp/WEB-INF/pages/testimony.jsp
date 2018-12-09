@@ -251,7 +251,7 @@ input.parsley-error {
 						<h5 class="modal-title">Testimony</h5>
 					</div>
 					<div class="modal-body">
-						<form action="${pageContext.request.contextPath }/testimony/save" method="POST">
+						<form id="theForm"action="${pageContext.request.contextPath }/testimony/save" method="POST">
 							<div class="form-group">
 								<label for="name-testimony">Name</label>
 								<input type="hidden" id="active"/>
@@ -289,6 +289,7 @@ input.parsley-error {
 							<div class="form-group">
 								<label for="name-testimony">Name</label>
 								<input type=hidden id="id-testimony">
+								<input type=hidden id="created-on1">
 								<input data-parsley-required="true" type="text" id="titles"
 									class="form-control"
 									aria-describedby="nameHelp" placeholder="Enter Name Testimony" />
@@ -388,6 +389,8 @@ input.parsley-error {
 	src="${pageContext.request.contextPath}/resources/assets/js/demo.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
+		
+	
 						//setting up datepicker
 						$('#birthDate123').datepicker();
 
@@ -432,6 +435,8 @@ input.parsley-error {
 							event.preventDefault();
 							$('#logoutForm').submit();
 						});
+ 
+ 
 						//edit technology
 						 $('.btn-edit').on('click', function(){
 				    		 var id = $(this).attr('id');
@@ -442,6 +447,7 @@ input.parsley-error {
 				    				 $('#id-testimony').val(data.id);
 				    				 $('#titles').val(data.title);
 				    				 $('#contents').val(data.content);
+				    				 $('#created-on1').val(data.createdOn);
 				    			 },
 				    			 dataType: 'json'
 				    		 })
@@ -455,13 +461,15 @@ input.parsley-error {
 								var name = jQuery('#titles').val();
 							    var note = jQuery('#contents').val();
 								var id = jQuery('#id-testimony').val();
+								var createdon=$('#created-on1').val()
 								var date=new Date();
 								
 								var testimony = {
 										title:name,
 										content:note,
 										id:id,
-										modifiedOn:date
+										modifiedOn:date,
+										createdOn:createdon
 								}
 								jQuery.ajax({
 									url : '${pageContext.request.contextPath}/testimony/update',
@@ -488,35 +496,45 @@ input.parsley-error {
 						});
 						
 						jQuery('#btn-save-testimony-submit').click(function(event){
-							event.preventDefault();
-							var name = jQuery('#title').val();
-						    var content = jQuery('#content').val();
-							var date = new Date();
-						 	var isd = jQuery('#active').val(); 
-							var testimony = {
-									title:name,
-									content:content,
-									createdOn:date,
-						 			isDelete:isd 
+							validate = $('#theForm').parsley();
+							validate.validate();
+							if(validate.isValid()){
+								event.preventDefault();
+								var name = jQuery('#title').val();
+							    var content = jQuery('#content').val();
+								var date = new Date();
+							 	var isd = jQuery('#active').val(); 
+								var testimony = {
+										title:name,
+										content:content,
+										createdOn:date,
+							 			isDelete:isd 
+								}
+								
+								jQuery.ajax({
+									url : '${pageContext.request.contextPath}/testimony/save',
+									type:'POST',
+										beforeSend:function(){
+											console.log(testimony);
+											console.log('mau contact server');
+										},
+									contentType: 'application/json',
+									dataType: "json",
+									data: JSON.stringify(testimony),
+									success : function(data){
+										alert('data berhasil disimpan');
+										console.log('data dari server');
+										console.log(data);
+										window.location='${pageContext.request.contextPath}/testimony'
+									}
+								});
+							}
+							else{
+								alert('data tidak boleh kosong');
+								return false;
+						
 							}
 							
-							jQuery.ajax({
-								url : '${pageContext.request.contextPath}/testimony/save',
-								type:'POST',
-									beforeSend:function(){
-										console.log(testimony);
-										console.log('mau contact server');
-									},
-								contentType: 'application/json',
-								dataType: "json",
-								data: JSON.stringify(testimony),
-								success : function(data){
-									
-									console.log('data dari server');
-									console.log(data);
-									window.location='${pageContext.request.contextPath}/testimony'
-								}
-							});
 							
 						});
 						
@@ -541,8 +559,8 @@ input.parsley-error {
 						 
 					jQuery('#btn-delete-testimony-submit').click(function(event){
 								event.preventDefault();
-								var name = jQuery('#titles').val();
-							    var note = jQuery('#contents').val();
+								var name = jQuery('#titles1').val();
+							    var note = jQuery('#contents1').val();
 								var id = jQuery('#id-testimony').val();
 								var date=new Date();
 								

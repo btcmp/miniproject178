@@ -150,11 +150,11 @@ input.parsley-error {
 				<div class="container-fluid">
 					<div class="row">
 						<div class="col-lg-12 col-md-12">
-							<c:if test="${not empty message}">
+						<%-- 	<c:if test="${not empty message}">
 								<div class="alert alert-info">
 									<c:out value="${message }"></c:out>
 								</div>
-							</c:if>
+							</c:if> --%>
 							<div class="card">
 								<div class="card-header" data-background-color="orange">
 									<h4 class="title">Technology</h4>
@@ -191,7 +191,7 @@ input.parsley-error {
 												<c:forEach var="dept" items="${technology}">
 													<tr>
 														<td><c:out value="${dept.name}"></c:out></td>
-														<td><c:out value="${dept.createdBy }"></c:out></td>
+														<td><c:out value="${dept.createdby }"></c:out></td>
 														<td>
 															<c:choose>
 																<c:when test="${dept.active==true}">
@@ -206,7 +206,7 @@ input.parsley-error {
 														<button id="${dept.id }" type="button" rel="tooltip" title="Edit ${employee.name }" class="btn btn-success btn-simple btn-xs btn-edit">
 										                    <i class="fa fa-edit"></i>
 										                </button>
-														<button id="${dept.id }" type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs btn-hapus">
+														<button id="${dept.id }" type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs btn-deactive">
 										                    <i class="fa fa-times"></i>
 										                </button>
 														</td>
@@ -331,6 +331,37 @@ input.parsley-error {
 				</div>
 			</div>
 		</div>
+		<div class="modal fade" id="add-trainer1-modal" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Trainer</h5>
+					</div>
+					<div class="modal-body">
+						<form
+							action="${pageContext.request.contextPath }/technology/savetrain" method="POST">
+							<div class="form-group">
+								<select id="trainerId1" name="training" class="form-control">
+									<option>--Trainer--</option>
+									<c:forEach items="${training}" var="train">
+										<option value="${train.id}">${train.name}</option>
+									</c:forEach>
+								</select>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" id="tambahCancel"
+									data-dismiss="modal">Close</button>
+								<button type="submit" id="btn-update-trainer-submit"
+									class="btn btn-primary">Save</button>
+							</div>
+						</form>
+					</div>
+
+				</div>
+			</div>
+		</div>
+		
 		<div class="modal fade" id="add-update-technology" tabindex="-1"
 			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
@@ -352,15 +383,17 @@ input.parsley-error {
 								<label>Note</label>
 								<textarea rows="4" cols="50" id="note1" class="form-control" placeholder="Enter note technology" ></textarea>
 							</div>
+							<button type="button" id="tambahTrainer1" class="btn btn-primary bts-sm">+Trainer</button><br>
 							<div class="table-responsive">
 										<table id="table-techtrain" class="table">
 											<thead class="text-warning">
+												<th></th>
 												<th>Trainer</th>
 												<th>Created By</th>
 												<th>Status</th>
 												<th>Action</th>
 											</thead>
-											<tbody>
+											<tbody id="list-trainer">
 											</tbody>
 										</table>
 									</div>
@@ -438,7 +471,7 @@ input.parsley-error {
 							paging:false
 						});  */ 
 
-						$('.btn-hapus').on('click',function() {var conf = confirm("Are you sure delete this data ?");
+/* 						$('.btn-hapus').on('click',function() {var conf = confirm("Are you sure delete this data ?");
 											if (conf == true) {
 												var id = $(this).attr("id");
 
@@ -457,12 +490,28 @@ input.parsley-error {
 											}
 
 											return false;
-										});
+										}); */
 
 						//logout event button
 						$('#logout').click(function(event) {
 							event.preventDefault();
 							$('#logoutForm').submit();
+						});
+						$('#list-trainer').on('click','.btn-hapus',function(){
+							var trItem = $(this).parent().parent();
+							var id=trItem.attr('id');
+							console.log(id)
+							  $.ajax({
+								url:'${pageContext.request.contextPath}/technology/delete/'+ id,
+								type:'DELETE',
+								success : function(data){
+									window.location='${pageContext.request.contextPath}/technology',
+									alert('data berhasil dihapus')
+								},
+								error: function(data){
+									alert('data tidak berhasil dihapus');
+								}
+							})  
 						});
 						//edit technology
 						 $('.btn-edit').on('click', function(){
@@ -474,7 +523,7 @@ input.parsley-error {
 				    				 $('#id-technology').val(data.id);
 				    				 $('#name1').val(data.name);
 				    				 $('#note1').val(data.note);
- 				    				 console.log(data.techTran)
+ 				    				 console.log(data)
 				    				 
 				    				 var oTable=$('#table-techtrain');
 				    				 var tbody=oTable.find('tbody');
@@ -482,11 +531,13 @@ input.parsley-error {
 				    					 if(value.trainer.active==true){
 				    						 active="Active";
 				    					 }
-				    					 	var tr ="<tr>";
-											tr += "<td>"+value.trainer.name+"</td>";
+				    						var tr ="<tr>";
+				    					 	/* var tr ="<tr id='"+value.trainer.id+"'>"; */
+				    					 	tr +="<td><input type='hidden' name='trainer2' id='"+value.trainer.id+"'/></td>";
+ 											tr += "<td>"+value.trainer.name+"</td>";
 											tr += "<td>"+value.trainer.createdBy+"</td>";
 											tr += "<td>"+active+"</td>";
-											tr += "<td><a href='#'class='btn-hapus btn btn-danger btn-sm'>Delete</a></td>";
+											tr += "<td>"+"<button type='button' href='#'class='btn-hapus btn btn-danger btn-sm'>Delete</button>"+"</td>";
 											tr +="</tr>";
 											tbody.append(tr)
 				    				 });
@@ -503,7 +554,7 @@ input.parsley-error {
 						 //update technology
 						jQuery('#btn-update-technology').click(function(event){
 								event.preventDefault();
-								var name = jQuery('#name1').val();
+							 	var name = jQuery('#name1').val();
 							    var note = jQuery('#note1').val();
 								var id = jQuery('#id-technology').val();
 								var active=1;
@@ -514,7 +565,7 @@ input.parsley-error {
 										id:id,
 										active:active
 
-								}
+								} 
 								jQuery.ajax({
 									url : '${pageContext.request.contextPath}/technology/update',
 									type:'POST',
@@ -547,6 +598,12 @@ input.parsley-error {
 							$('#add-technology-modal').modal('hide');
 							$('#add-trainer-modal').modal();
 						});
+						$('#tambahTrainer1').click(function(event) {
+							event.preventDefault();
+							$('#add-update-technology').modal('hide');
+							$('#add-trainer1-modal').modal();
+						});
+						
 						$('#tambahCancel').click(function(event) {
 							event.preventDefault();
 							$('#add-technology-modal').modal('show');
@@ -570,8 +627,8 @@ input.parsley-error {
 				    				 			var tr = "<tr>";
 					    				 		tr +="<td><input type='hidden' name='trainer' id='"+data.id+"'/></td>";
 												tr += "<td>"+data.name+"</td>";
-												tr += "<td>"+data.createdBy+"</td>";
-												tr += "<td>"+active+"</td>";
+ 												tr += "<td>"+data.createdBy+"</td>";
+ 												tr += "<td>"+active+"</td>";
 												tr += "<td><a href='#'class='btn-hapus btn btn-danger btn-sm'>Delete</a></td>";
 												tr +="</tr>";
 												tbody.append(tr);
@@ -579,24 +636,49 @@ input.parsley-error {
 					    			 dataType: 'json'
 					    		 
 							 });
-
-
-							var active=true;
-							var trainer = {
-									name:name,
-									active:active
-							}
 							
 							$('#add-technology-modal').modal('show');
 							$('#add-trainer-modal').modal('hide'); 
 							
 						});
+						jQuery('#btn-update-trainer-submit').click(function(event){
+							event.preventDefault();
+					    		 var id = $('#trainerId1 option:selected').val(); 
+					    		 console.log(id);
+					    		 $.ajax({
+					    			 url : '${pageContext.request.contextPath}/technology/get1/'+ id,
+					    			 type: 'GET',
+					    			 success : function(data){
+					    				 console.log(data)
+					    				  if(data.active==true){
+				    						 active="Active";
+				    					 }
+					    				 	var oTable=$('#table-techtrain');
+				    				 		var tbody=oTable.find('tbody');
+				    				 			var tr = "<tr>";
+					    				  		tr +="<td><input type='hidden' name='trainer1' id='"+data.id+"'/></td>";
+												tr += "<td>"+data.name+"</td>";
+ 												tr += "<td>"+data.createdBy+"</td>";
+ 												tr += "<td>"+active+"</td>";
+												tr += "<td><a href='#'class='btn-hapus btn btn-danger btn-sm'>Delete</a></td>";
+												tr +="</tr>";
+												tbody.append(tr);
+				    				 	 	 },
+					    			 dataType: 'json'
+					    		 
+							 });
+							
+							$('#add-update-technology').modal('show');
+							$('#add-trainer1-modal').modal('hide'); 
+							
+						});
+						
+						
 						
 						//add technology
 						jQuery('#btn-save-technology-submit').click(function(event){
 							event.preventDefault();
 							var name = jQuery('#name').val();
-							var createdBy =jQuery('#createdBy').val(); 
 						    var note = jQuery('#note').val();
 							var active=1;
 							var technologyTrainers = [];
@@ -615,7 +697,8 @@ input.parsley-error {
 									active:active,
 									techTran:technologyTrainers
 							}
-							  jQuery.ajax({
+							console.log(technology)
+							   jQuery.ajax({
 								url : '${pageContext.request.contextPath}/technology/save',
 								type:'POST',
 									beforeSend:function(){
@@ -631,7 +714,7 @@ input.parsley-error {
  									window.location='${pageContext.request.contextPath}/technology'
  							}
 							});  
-							
+		 					
 					});
 				});				    	
 						

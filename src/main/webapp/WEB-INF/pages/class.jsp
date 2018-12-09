@@ -114,11 +114,12 @@ input.parsley-error {
 							<i class="material-icons">developer_mode</i>
 							<p>Technology</p>
 					</a></li>
-					<li class="active"><a href="${pageContext.request.contextPath }/trainer">
+					<li><a href="${pageContext.request.contextPath }/trainer">
 							<i class="material-icons">supervisor_account</i>
 							<p>Trainer</p>
 					</a></li>
-					<li><a href="${pageContext.request.contextPath }/testimony">
+					</a></li>
+					<li class="active"><a href="${pageContext.request.contextPath }/testimony">
 							<i class="material-icons">list</i>
 							<p>Testimony</p>
 					</a></li>
@@ -141,7 +142,7 @@ input.parsley-error {
 								class="icon-bar"></span> <span class="icon-bar"></span> <span
 								class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="#"> Trainer Datatable </a>
+						<a class="navbar-brand" href="#"> Class Datatable </a>
 					</div>
 				</div>
 			</nav>
@@ -157,13 +158,13 @@ input.parsley-error {
 							</c:if>
 							<div class="card">
 								<div class="card-header" data-background-color="orange">
-									<h4 class="title">Trainer</h4>
+									<h4 class="title">Class</h4>
 								</div>
 								<div class="card-content table-responsive">
-									<form class="navbar-form navbar-left" role ="search" action="${pageContext.request.contextPath }/trainer">
+									<form class="navbar-form navbar-left" role ="search" action="${pageContext.request.contextPath }/class">
 										<div class="form-group is-empty">
 											<input class="form-control" type="text" name="search"
-											placeholder="Search by Trainer" />
+											placeholder="Search by batch" />
 										</div>
 										<span class="material-input"></span>
 										<span class="material-input"></span>
@@ -171,45 +172,33 @@ input.parsley-error {
 										<i class="material-icons">search</i>
 										</button>
 										<div>
-											<button type="button" id="tambahTrainer"
+											<button type="button" id="tambahClass"
 											class="btn btn-sm btn-primary">
 												<i class="material-icons">add</i>
-												trainer
 											</button>
 										</div>
 									</form>
 									
 
 									<div class="table-responsive">
-										<table id="table-user" class="table">
+										<table id="table-testimony" class="table">
 											<thead class="text-warning">
-												<th>Trainer</th>
-												<th>Created By</th>
-												<th>Status</th>
+												<th>Batch</th>
+												<th>Name</th>
 												<th>Action</th>
 											</thead>
 											<tbody>
-												<c:forEach var="dept" items="${training}">
+												 <c:forEach var="dept" items="${class}">
 													<tr>
-														<td><c:out value="${dept.name}"></c:out></td>
-														<td><c:out value="${dept.createdBy }"></c:out></td>
+														<td><c:out value="${dept.batch.name}"></c:out></td>
+														 <td><c:out value="${dept.biodata.name}"></c:out></td>
 														<td>
-															<c:choose>
-																<c:when test="${dept.active==true}">
-																	Active
-																</c:when>
-																<c:otherwise>
-   																	 Not Active
-  																</c:otherwise>
-															</c:choose>
-														</td>
-														<td><a id="${dept.id }" href="#"
-															class="btn-edit btn btn-primary btn-sm">Edit</a>
-														<a id="${dept.id }" href="#"
-															class="btn-hapus btn btn-danger btn-sm">Delete</a>
+														<button id="${dept.id }" type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs btn-hapus">
+										                    <i class="fa fa-times"></i>
+										                </button>
 														</td>
 													</tr>
-												</c:forEach>
+												</c:forEach> 
 											</tbody>
 										</table>
 									</div>
@@ -250,33 +239,38 @@ input.parsley-error {
 					</div>
 				</footer>
 			</div>
-		</div>
-		<!--modal-->
-		<div class="modal fade" id="add-trainer-modal" tabindex="-1"
+		</div>		
+		
+		<div class="modal fade" id="add-class-modal" tabindex="-1"
 			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title">Trainer</h5>
+						<h5 class="modal-title">Batch</h5>
 					</div>
 					<div class="modal-body">
-						<form action="${pageContext.request.contextPath }/trainer/save" method="POST">
+						<input type="hidden" id="id-class"/>
+						<form action="${pageContext.request.contextPath}/class/save" method="POST">
 							<div class="form-group">
-								<label for="name-trainer">Name</label>
-								<input data-parsley-required="true" type="text" id="name"
-									class="form-control"
-									aria-describedby="nameHelp" placeholder="Enter Name Trainer" />
+								<select id="batchId" name="batch" class="form-control">
+									<option>--batch--</option>
+									<c:forEach items="${batch}" var="tech">
+										<option value="${tech.id}">${tech.name}</option>
+									</c:forEach>
+								</select>
 							</div>
 							<div class="form-group">
-								<label for="note-trainer">Note</label>
-								<textarea data-parsley-required="true" 
-								rows="4" cols="50" id="note" aria-describedby="nameHelp"
-								class="form-control" placeholder="Enter note trainer" ></textarea>
+								 <select id="biodataId" name="biodata" class="form-control">
+										<option value="select">--Name--</option>
+										<c:forEach items="${biodata}" var="tech">
+										<option value="${tech.id}">${tech.name}</option>
+									</c:forEach>
+								</select>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary"
 									data-dismiss="modal">Close</button>
-								<button type="submit" id="btn-save-trainer-submit"
+								<button type="submit" id="btn-save-class-submit"
 									class="btn btn-primary">Save</button>
 							</div>
 						</form>
@@ -284,7 +278,8 @@ input.parsley-error {
 
 				</div>
 			</div>
-							
+			</div>
+			
 </body>
 <!--   Core JS Files   -->
 <script
@@ -336,7 +331,11 @@ input.parsley-error {
 							});
 						}
 
-						/* $('#table-user').DataTable(); */
+						 $('#table-testimony').DataTable({
+							 searching:false,
+							 paging:false,
+							 bSort:false
+						 }); 
 
 						/* $('.btn-hapus').on('click',function() {var conf = confirm("Are you sure delete this data ?");
 											if (conf == true) {
@@ -358,120 +357,69 @@ input.parsley-error {
 
 											return false;
 										});
-
- */						//logout event button
+ */
+						//logout event button
 						$('#logout').click(function(event) {
 							event.preventDefault();
 							$('#logoutForm').submit();
 						});
+						   
+								 $('#tambahClass').click(function(event) {
+										event.preventDefault();
+										$('#add-class-modal').modal();
+									});
+ 							
  						
- 						$('.btn-hapus').on('click',function(){
- 							var id=$(this).attr('id')
- 							$.ajax({
- 								url:'${pageContext.request.contextPath}/trainer/delete/'+ id,
- 								type:'DELETE',
- 								success:function(data){
- 									window.location='${pageContext.request.contextPath}/trainer/'
- 								}
- 							})
- 						})
-						//edit technology
-						 $('.btn-edit').on('click', function(){
-				    		 var id = $(this).attr('id');
-				    		 $.ajax({
-				    			 url : '${pageContext.request.contextPath}/technology/get/'+ id,
-				    			 type: 'GET',
-				    			 success : function(data){
-				    				 $('#id-technology').val(data.id);
-				    				 $('#name1').val(data.name);
-				    				 $('#note1').val(data.note);
-				    				 /* $('#edit-department').val(data.department.id); */
-				    			 },
-				    			 dataType: 'json'
-				    		 })
-				    		 
-				    		$('#add-update-technology').modal();
-				    		 
-				    	 });
-						 //update technology
-						 var button = jQuery('#btn-update-technology').click(function(event){
-								event.preventDefault();
-								var name = jQuery('#name1').val();
-						/* 		var createdBy =jQuery('#createdBy').val();
-								var active=jQuery('#active').val(); */
-							    var note = jQuery('#note1').val();
-								var id = jQuery('#id-technology').val();
-								var active=1;
-								
-								var technology = {
-										name:name,
-										note:note,
-										id:id,
-										active:active
-
-								}
-								jQuery.ajax({
-									url : '${pageContext.request.contextPath}/technology/update',
-									type:'POST',
-										beforeSend:function(){
-											console.log(technology);
-											console.log('mau contact server');
-										},
-									contentType: 'application/json',
-									data: JSON.stringify(technology),
-									success : function(data){
-										
-										console.log('data dari server');
-										console.log(data);
-										window.location='${pageContext.request.contextPath}/technology'
+						jQuery('#btn-save-class-submit').click(function(event){
+							event.preventDefault();
+							var batch=$('#batchId option:selected').val();
+							var trainer=$('#biodataId option:selected').val();
+		
+							var classes = {
+									batch:{
+										id:batch,
 									}
-								});
-								
-							});
-
-						
-						//modal tambah trainer
-						$('#tambahTrainer').click(function(event) {
-							event.preventDefault();
-							$('#add-trainer-modal').modal();
-						});
-						
-						//add trainer
-						var button = jQuery('#btn-save-trainer-submit').click(function(event){
-							event.preventDefault();
-							var name = jQuery('#name').val();
-							var createdBy =jQuery('#createdBy').val();
-							/* var active=jQuery('#active').val(); */ 
-						    var note = jQuery('#note').val();
-							var active=1;
-							
-							var trainer = {
-									name:name,
-									note:note,
-									createdBy:createdBy,
-									active:active,
+								/* 	trainer:{
+										id:trainer,
+									} */
 							}
 							
+							
 							jQuery.ajax({
-								url : '${pageContext.request.contextPath}/trainer/save',
+								url : '${pageContext.request.contextPath}/class/save',
 								type:'POST',
 									beforeSend:function(){
-										console.log(trainer);
+										console.log(classes);
 										console.log('mau contact server');
 									},
 								contentType: 'application/json',
-								data: JSON.stringify(trainer),
+								dataType: "json",
+								data: JSON.stringify(classes),
 								success : function(data){
 									
 									console.log('data dari server');
 									console.log(data);
-									window.location='${pageContext.request.contextPath}/trainer'
+									window.location='${pageContext.request.contextPath}/class'
 								}
 							});
 							
 						});
-				});				    	
 						
+						 $('.btn-hapus').on('click', function(){
+			    		 var id = $(this).attr('id');
+			    		 $.ajax({
+			    			 url : '${pageContext.request.contextPath}/class/delete/'+ id,
+			    			 type: 'DELETE',
+			    			 success : function(data){
+			    			 	window.location='${pageContext.request.contextPath}/class'
+			    			 }
+			    			
+			    		 })
+			    		 
+			    	 });
+
+	 	
+				});				    							
 </script>
 
 </html>

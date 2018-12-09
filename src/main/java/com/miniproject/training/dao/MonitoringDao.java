@@ -12,4 +12,6 @@ public interface MonitoringDao {
 
 	Monitoring getMonitoringById(Long id);
 
+	List<Monitoring> getSearchByName(String name);
+
 }

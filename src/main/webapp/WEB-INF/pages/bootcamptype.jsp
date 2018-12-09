@@ -114,11 +114,12 @@ input.parsley-error {
 							<i class="material-icons">developer_mode</i>
 							<p>Technology</p>
 					</a></li>
-					<li class="active"><a href="${pageContext.request.contextPath }/trainer">
+					<li><a href="${pageContext.request.contextPath }/trainer">
 							<i class="material-icons">supervisor_account</i>
 							<p>Trainer</p>
 					</a></li>
-					<li><a href="${pageContext.request.contextPath }/testimony">
+					</a></li>
+					<li class="active"><a href="${pageContext.request.contextPath }/testimony">
 							<i class="material-icons">list</i>
 							<p>Testimony</p>
 					</a></li>
@@ -141,7 +142,7 @@ input.parsley-error {
 								class="icon-bar"></span> <span class="icon-bar"></span> <span
 								class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="#"> Trainer Datatable </a>
+						<a class="navbar-brand" href="#"> Testimony Datatable </a>
 					</div>
 				</div>
 			</nav>
@@ -157,13 +158,13 @@ input.parsley-error {
 							</c:if>
 							<div class="card">
 								<div class="card-header" data-background-color="orange">
-									<h4 class="title">Trainer</h4>
+									<h4 class="title">Testimony</h4>
 								</div>
 								<div class="card-content table-responsive">
-									<form class="navbar-form navbar-left" role ="search" action="${pageContext.request.contextPath }/trainer">
+									<form class="navbar-form navbar-left" role ="search" action="${pageContext.request.contextPath }/testimony">
 										<div class="form-group is-empty">
 											<input class="form-control" type="text" name="search"
-											placeholder="Search by Trainer" />
+											placeholder="Search by Testimony" />
 										</div>
 										<span class="material-input"></span>
 										<span class="material-input"></span>
@@ -171,42 +172,32 @@ input.parsley-error {
 										<i class="material-icons">search</i>
 										</button>
 										<div>
-											<button type="button" id="tambahTrainer"
+											<button type="button" id="tambahTestimony"
 											class="btn btn-sm btn-primary">
 												<i class="material-icons">add</i>
-												trainer
+												testimony
 											</button>
 										</div>
 									</form>
 									
 
 									<div class="table-responsive">
-										<table id="table-user" class="table">
+										<table id="table-testimony" class="table">
 											<thead class="text-warning">
-												<th>Trainer</th>
-												<th>Created By</th>
-												<th>Status</th>
+												<th>Testimony</th>
 												<th>Action</th>
 											</thead>
 											<tbody>
-												<c:forEach var="dept" items="${training}">
+												<c:forEach var="dept" items="${testimony}">
 													<tr>
-														<td><c:out value="${dept.name}"></c:out></td>
-														<td><c:out value="${dept.createdBy }"></c:out></td>
+														<td><c:out value="${dept.title}"></c:out></td>
 														<td>
-															<c:choose>
-																<c:when test="${dept.active==true}">
-																	Active
-																</c:when>
-																<c:otherwise>
-   																	 Not Active
-  																</c:otherwise>
-															</c:choose>
-														</td>
-														<td><a id="${dept.id }" href="#"
-															class="btn-edit btn btn-primary btn-sm">Edit</a>
-														<a id="${dept.id }" href="#"
-															class="btn-hapus btn btn-danger btn-sm">Delete</a>
+														<button id="${dept.id }" type="button" rel="tooltip" title="Edit ${employee.name }" class="btn btn-success btn-simple btn-xs btn-edit">
+										                    <i class="fa fa-edit"></i>
+										                </button>
+														<button id="${dept.id }" type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs btn-hapus">
+										                    <i class="fa fa-times"></i>
+										                </button>
 														</td>
 													</tr>
 												</c:forEach>
@@ -252,38 +243,111 @@ input.parsley-error {
 			</div>
 		</div>
 		<!--modal-->
-		<div class="modal fade" id="add-trainer-modal" tabindex="-1"
+		<div class="modal fade" id="add-testimony-modal" tabindex="-1"
 			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title">Trainer</h5>
+						<h5 class="modal-title">Testimony</h5>
 					</div>
 					<div class="modal-body">
-						<form action="${pageContext.request.contextPath }/trainer/save" method="POST">
+						<form action="${pageContext.request.contextPath }/testimony/save" method="POST">
 							<div class="form-group">
-								<label for="name-trainer">Name</label>
-								<input data-parsley-required="true" type="text" id="name"
+								<label for="name-testimony">Name</label>
+								<input type="hidden" id="active"/>
+								<input data-parsley-required="true" type="text" id="title"
 									class="form-control"
-									aria-describedby="nameHelp" placeholder="Enter Name Trainer" />
+									aria-describedby="nameHelp" placeholder="Enter Name Testimony" />
 							</div>
 							<div class="form-group">
-								<label for="note-trainer">Note</label>
+								<label for="content">Note</label>
 								<textarea data-parsley-required="true" 
-								rows="4" cols="50" id="note" aria-describedby="nameHelp"
-								class="form-control" placeholder="Enter note trainer" ></textarea>
+								rows="4" cols="50" id="content" aria-describedby="nameHelp"
+								class="form-control" placeholder="Enter Content" ></textarea>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary"
 									data-dismiss="modal">Close</button>
-								<button type="submit" id="btn-save-trainer-submit"
+								<button type="submit" id="btn-save-testimony-submit"
 									class="btn btn-primary">Save</button>
 							</div>
 						</form>
 					</div>
-
+				</div>
 				</div>
 			</div>
+			
+			<div class="modal fade" id="add-update-testimony" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Testimony</h5>
+					</div>
+					<div class="modal-body">
+						<form action="${pageContext.request.contextPath }/testimony/update" method="POST">
+							<div class="form-group">
+								<label for="name-testimony">Name</label>
+								<input type=hidden id="id-testimony">
+								<input data-parsley-required="true" type="text" id="titles"
+									class="form-control"
+									aria-describedby="nameHelp" placeholder="Enter Name Testimony" />
+							</div>
+							<div class="form-group">
+								<label for="content">Note</label>
+								<textarea data-parsley-required="true" 
+								rows="4" cols="50" id="contents" aria-describedby="nameHelp"
+								class="form-control" placeholder="Enter Content" ></textarea>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									data-dismiss="modal">Close</button>
+								<button type="submit" id="btn-update-testimony-submit"
+									class="btn btn-primary">Update</button>
+							</div>
+						</form>
+					</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="modal fade" id="add-delete-testimony" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Testimony</h5>
+					</div>
+					<div class="modal-body">
+						<form action="${pageContext.request.contextPath }/testimony/update" method="POST">
+							<div class="form-group">
+								<label for="name-testimony">Name</label>
+								<input type=hidden id="id-testimony"/>
+								<input type="hidden" name="isDelete" id="actives"/>
+								<input type="hidden" name="created-on"id="created-on"/>
+								<input data-parsley-required="true" type="text" id="titles1"
+									class="form-control"
+									aria-describedby="nameHelp" placeholder="Enter Name Testimony" />
+							</div>
+							<div class="form-group">
+								<label for="content">Note</label>
+								<textarea data-parsley-required="true" 
+								rows="4" cols="50" id="contents1" aria-describedby="nameHelp"
+								class="form-control" placeholder="Enter Content" ></textarea>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									data-dismiss="modal">Close</button>
+								<button type="submit" id="btn-delete-testimony-submit"
+									class="btn btn-danger">Delete</button>
+							</div>
+						</form>
+					</div>
+					</div>
+				</div>
+			</div>
+		
+							
 							
 </body>
 <!--   Core JS Files   -->
@@ -336,7 +400,11 @@ input.parsley-error {
 							});
 						}
 
-						/* $('#table-user').DataTable(); */
+						 $('#table-testimony').DataTable({
+							 searching:false,
+							 paging:false,
+							 bSort:false
+						 }); 
 
 						/* $('.btn-hapus').on('click',function() {var conf = confirm("Are you sure delete this data ?");
 											if (conf == true) {
@@ -358,120 +426,154 @@ input.parsley-error {
 
 											return false;
 										});
-
- */						//logout event button
+ */
+						//logout event button
 						$('#logout').click(function(event) {
 							event.preventDefault();
 							$('#logoutForm').submit();
 						});
- 						
- 						$('.btn-hapus').on('click',function(){
- 							var id=$(this).attr('id')
- 							$.ajax({
- 								url:'${pageContext.request.contextPath}/trainer/delete/'+ id,
- 								type:'DELETE',
- 								success:function(data){
- 									window.location='${pageContext.request.contextPath}/trainer/'
- 								}
- 							})
- 						})
 						//edit technology
 						 $('.btn-edit').on('click', function(){
 				    		 var id = $(this).attr('id');
 				    		 $.ajax({
-				    			 url : '${pageContext.request.contextPath}/technology/get/'+ id,
+				    			 url : '${pageContext.request.contextPath}/testimony/get/'+ id,
 				    			 type: 'GET',
 				    			 success : function(data){
-				    				 $('#id-technology').val(data.id);
-				    				 $('#name1').val(data.name);
-				    				 $('#note1').val(data.note);
-				    				 /* $('#edit-department').val(data.department.id); */
+				    				 $('#id-testimony').val(data.id);
+				    				 $('#titles').val(data.title);
+				    				 $('#contents').val(data.content);
 				    			 },
 				    			 dataType: 'json'
 				    		 })
 				    		 
-				    		$('#add-update-technology').modal();
+				    		$('#add-update-testimony').modal();
 				    		 
 				    	 });
-						 //update technology
-						 var button = jQuery('#btn-update-technology').click(function(event){
+						 
+						 var button = jQuery('#btn-update-testimony-submit').click(function(event){
 								event.preventDefault();
-								var name = jQuery('#name1').val();
-						/* 		var createdBy =jQuery('#createdBy').val();
-								var active=jQuery('#active').val(); */
-							    var note = jQuery('#note1').val();
-								var id = jQuery('#id-technology').val();
-								var active=1;
+								var name = jQuery('#titles').val();
+							    var note = jQuery('#contents').val();
+								var id = jQuery('#id-testimony').val();
+								var date=new Date();
 								
-								var technology = {
-										name:name,
-										note:note,
+								var testimony = {
+										title:name,
+										content:note,
 										id:id,
-										active:active
-
+										modifiedOn:date
 								}
 								jQuery.ajax({
-									url : '${pageContext.request.contextPath}/technology/update',
+									url : '${pageContext.request.contextPath}/testimony/update',
 									type:'POST',
 										beforeSend:function(){
-											console.log(technology);
+											console.log(testimony);
 											console.log('mau contact server');
 										},
 									contentType: 'application/json',
-									data: JSON.stringify(technology),
+									data: JSON.stringify(testimony),
 									success : function(data){
 										
 										console.log('data dari server');
 										console.log(data);
-										window.location='${pageContext.request.contextPath}/technology'
+										window.location='${pageContext.request.contextPath}/testimony'
 									}
 								});
 								
 							});
-
-						
-						//modal tambah trainer
-						$('#tambahTrainer').click(function(event) {
+						  
+						$('#tambahTestimony').click(function(event) {
 							event.preventDefault();
-							$('#add-trainer-modal').modal();
+							$('#add-testimony-modal').modal();
 						});
 						
-						//add trainer
-						var button = jQuery('#btn-save-trainer-submit').click(function(event){
+						jQuery('#btn-save-testimony-submit').click(function(event){
 							event.preventDefault();
-							var name = jQuery('#name').val();
-							var createdBy =jQuery('#createdBy').val();
-							/* var active=jQuery('#active').val(); */ 
-						    var note = jQuery('#note').val();
-							var active=1;
-							
-							var trainer = {
-									name:name,
-									note:note,
-									createdBy:createdBy,
-									active:active,
+							var name = jQuery('#title').val();
+						    var content = jQuery('#content').val();
+							var date = new Date();
+						 	var isd = jQuery('#active').val(); 
+							var testimony = {
+									title:name,
+									content:content,
+									createdOn:date,
+						 			isDelete:isd 
 							}
 							
 							jQuery.ajax({
-								url : '${pageContext.request.contextPath}/trainer/save',
+								url : '${pageContext.request.contextPath}/testimony/save',
 								type:'POST',
 									beforeSend:function(){
-										console.log(trainer);
+										console.log(testimony);
 										console.log('mau contact server');
 									},
 								contentType: 'application/json',
-								data: JSON.stringify(trainer),
+								dataType: "json",
+								data: JSON.stringify(testimony),
 								success : function(data){
 									
 									console.log('data dari server');
 									console.log(data);
-									window.location='${pageContext.request.contextPath}/trainer'
+									window.location='${pageContext.request.contextPath}/testimony'
 								}
 							});
 							
 						});
-				});				    	
 						
+						 $('.btn-hapus').on('click', function(){
+			    		 var id = $(this).attr('id');
+			    		 $.ajax({
+			    			 url : '${pageContext.request.contextPath}/testimony/get/'+ id,
+			    			 type: 'GET',
+			    			 success : function(data){
+			    			 	$("#id-testimony").val(data.id);
+			    			 	$('#titles1').val(data.title);
+				    			$('#contents1').val(data.content);
+				    			$('#created-on').val(data.createdOn);
+				    			$('input[name="isDelete"]').val(data.isDelete=true)
+				    			console.log(data)
+			    			 },
+			    			
+			    		 })
+			    		 $('#add-delete-testimony').modal()
+			    		 
+			    	 });
+						 
+					jQuery('#btn-delete-testimony-submit').click(function(event){
+								event.preventDefault();
+								var name = jQuery('#titles').val();
+							    var note = jQuery('#contents').val();
+								var id = jQuery('#id-testimony').val();
+								var date=new Date();
+								
+								var testimony = {
+										title:name,
+										content:note,
+										id:id,
+										isDelete:$('#actives').val(),
+										createdOn : $('#created-on').val(),
+										deletedOn:date
+								}
+								jQuery.ajax({
+									url : '${pageContext.request.contextPath}/testimony/update',
+									type:'POST',
+										beforeSend:function(){
+											console.log(testimony);
+											console.log('mau contact server');
+										},
+									contentType: 'application/json',
+									data: JSON.stringify(testimony),
+									success : function(data){
+										
+										console.log('data dari server');
+										console.log(data);
+										window.location='${pageContext.request.contextPath}/testimony'
+									}
+								});
+								
+							});
+	 	
+				});				    							
 </script>
 
 </html>

@@ -33,9 +33,8 @@
 <link
 	href="${pageContext.request.contextPath}/resources/assets/css/demo.css"
 	rel="stylesheet" />
-<link
-	href="${pageContext.request.contextPath}/resources/assets/datepicker/dist/datepicker.min.css"
-	rel="stylesheet" />
+	<link href="${pageContext.request.contextPath}/resources/assets/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+	
 <!--     Fonts and icons     -->
 <link
 	href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css"
@@ -141,7 +140,7 @@ input.parsley-error {
 								class="icon-bar"></span> <span class="icon-bar"></span> <span
 								class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="#"> Trainer Datatable </a>
+						<a class="navbar-brand" href="#"> Batch Datatable </a>
 					</div>
 				</div>
 			</nav>
@@ -157,24 +156,25 @@ input.parsley-error {
 							</c:if>
 							<div class="card">
 								<div class="card-header" data-background-color="orange">
-									<h4 class="title">Trainer</h4>
+									<h4 class="title">Batch</h4>
 								</div>
 								<div class="card-content table-responsive">
-									<form class="navbar-form navbar-left" role ="search" action="${pageContext.request.contextPath }/trainer">
+									<form class="navbar-form navbar-left" role ="search" action="${pageContext.request.contextPath }/batch">
 										<div class="form-group is-empty">
 											<input class="form-control" type="text" name="search"
-											placeholder="Search by Trainer" />
+											placeholder="Search by batch/technology" />
 										</div>
+										<span class="material-input"></span>
 										<span class="material-input"></span>
 										<span class="material-input"></span>
 										<button type= "submit" class="btn btn-primary btn-round btn-just-icon">
 										<i class="material-icons">search</i>
 										</button>
 										<div>
-											<button type="button" id="tambahTrainer"
+											<button type="button" id="tambahBatch"
 											class="btn btn-sm btn-primary">
 												<i class="material-icons">add</i>
-												trainer
+												batch
 											</button>
 										</div>
 									</form>
@@ -183,30 +183,21 @@ input.parsley-error {
 									<div class="table-responsive">
 										<table id="table-user" class="table">
 											<thead class="text-warning">
+												<th>Batch</th>
+												<th>Technology</th>
 												<th>Trainer</th>
-												<th>Created By</th>
-												<th>Status</th>
 												<th>Action</th>
 											</thead>
 											<tbody>
-												<c:forEach var="dept" items="${training}">
+												<c:forEach var="dept" items="${batch}">
 													<tr>
 														<td><c:out value="${dept.name}"></c:out></td>
-														<td><c:out value="${dept.createdBy }"></c:out></td>
-														<td>
-															<c:choose>
-																<c:when test="${dept.active==true}">
-																	Active
-																</c:when>
-																<c:otherwise>
-   																	 Not Active
-  																</c:otherwise>
-															</c:choose>
-														</td>
+														<td><c:out value="${dept.technology.name }"></c:out></td>
+														<td><c:out value="${dept.trainer.name }"></c:out></td>
 														<td><a id="${dept.id }" href="#"
 															class="btn-edit btn btn-primary btn-sm">Edit</a>
 														<a id="${dept.id }" href="#"
-															class="btn-hapus btn btn-danger btn-sm">Delete</a>
+															class="btn-hapus btn btn-danger btn-sm">Add Participant</a>
 														</td>
 													</tr>
 												</c:forEach>
@@ -252,20 +243,51 @@ input.parsley-error {
 			</div>
 		</div>
 		<!--modal-->
-		<div class="modal fade" id="add-trainer-modal" tabindex="-1"
+		<div class="modal fade" id="add-batch-modal" tabindex="-1"
 			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title">Trainer</h5>
+						<h5 class="modal-title">Batch</h5>
 					</div>
 					<div class="modal-body">
-						<form action="${pageContext.request.contextPath }/trainer/save" method="POST">
+						<input type="hidden" id="id-batch"/>
+						<form action="${pageContext.request.contextPath}/batch/save" method="POST">
 							<div class="form-group">
-								<label for="name-trainer">Name</label>
+								<select id="technologyId" name="technology" class="form-control">
+									<option>--Technology--</option>
+									<c:forEach items="${technology}" var="tech">
+										<option value="${tech.id}">${tech.name}</option>
+									</c:forEach>
+								</select>
+							</div>
+							<div class="form-group">
+								<select id="trainerId" name="training" class="form-control">
+										<option value="select">--Trainer--</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="name-batch">Name</label>
 								<input data-parsley-required="true" type="text" id="name"
 									class="form-control"
-									aria-describedby="nameHelp" placeholder="Enter Name Trainer" />
+									aria-describedby="nameHelp" placeholder="Enter Name Batch" />
+							</div>
+						<div class="form-group">
+							<input type="text" id="startDate" class="form-control" placeholder="Start Date">
+						</div>
+							<div class="form-group">
+								<label for="name-batch">End Date</label>
+								<input data-parsley-required="true" type="text" id="endDate"
+									class="form-control"
+									aria-describedby="nameHelp" placeholder="Enter End Date" />
+							</div>
+							<div class="form-group">
+								<select id="trainerId" name="training" class="form-control">
+									<option>--Room--</option>
+									<c:forEach items="${room}" var="room">
+										<option value="${room.id}">${room.name}</option>
+									</c:forEach>
+								</select>
 							</div>
 							<div class="form-group">
 								<label for="note-trainer">Note</label>
@@ -276,7 +298,7 @@ input.parsley-error {
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary"
 									data-dismiss="modal">Close</button>
-								<button type="submit" id="btn-save-trainer-submit"
+								<button type="submit" id="btn-save-batch-submit"
 									class="btn btn-primary">Save</button>
 							</div>
 						</form>
@@ -284,6 +306,71 @@ input.parsley-error {
 
 				</div>
 			</div>
+		</div>
+		<div class="modal fade" id="update-batch-modal" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Batch</h5>
+					</div>
+					<div class="modal-body">
+						<input type="hidden" id="id-batch1"/>
+						<form action="${pageContext.request.contextPath}/batch/save" method="POST">
+							<div class="form-group">
+								<select id="technologyId1" name="technology" class="form-control">
+									<option>--Technology--</option>
+									<c:forEach items="${technology}" var="tech">
+										<option value="${tech.id}">${tech.name}</option>
+									</c:forEach>
+								</select>
+							</div>
+							<div class="form-group">
+								<select id="trainerId1" name="training" class="form-control">
+										<option value="select">--Trainer--</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="name-batch">Name</label>
+								<input data-parsley-required="true" type="text" id="name1"
+									class="form-control"
+									aria-describedby="nameHelp" placeholder="Enter Name Batch" />
+							</div>
+						<div class="form-group">
+							<input type="text" id="startDate1" class="form-control" placeholder="Start Date">
+						</div>
+							<div class="form-group">
+								<label for="name-batch">End Date</label>
+								<input data-parsley-required="true" type="text" id="endDate1"
+									class="form-control"
+									aria-describedby="nameHelp" placeholder="Enter End Date" />
+							</div>
+							<div class="form-group">
+								<select id="roomId1" name="training" class="form-control">
+									<option>--Room--</option>
+									<c:forEach items="${room}" var="room">
+										<option value="${room.id}">${room.name}</option>
+									</c:forEach>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="note-trainer">Note</label>
+								<textarea data-parsley-required="true" 
+								rows="4" cols="50" id="note1" aria-describedby="nameHelp"
+								class="form-control" placeholder="Enter note trainer" ></textarea>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									data-dismiss="modal">Close</button>
+								<button type="submit" id="btn-update-batch-submit"
+									class="btn btn-primary">update</button>
+							</div>
+						</form>
+					</div>
+
+				</div>
+			</div>
+		</div>
 							
 </body>
 <!--   Core JS Files   -->
@@ -305,8 +392,9 @@ input.parsley-error {
 <!--  PerfectScrollbar Library -->
 <script
 	src="${pageContext.request.contextPath}/resources/assets/js/perfect-scrollbar.jquery.min.js"></script>
-<script
+<%-- <script
 	src="${pageContext.request.contextPath}/resources/assets/datepicker/dist/datepicker.js"></script>
+ --%><script	src="${pageContext.request.contextPath}/resources/assets/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>	
 <!--  Notifications Plugin    -->
 <script
 	src="${pageContext.request.contextPath}/resources/assets/js/bootstrap-notify.js"></script>
@@ -325,7 +413,15 @@ input.parsley-error {
 <script type="text/javascript">
 	$(document).ready(function() {
 						//setting up datepicker
-						$('#birthDate123').datepicker();
+								$('#startDate').datepicker({
+	   							format: 'yyyy-mm-dd',
+	    						autoclose: true
+								});
+						//setting up datepicker
+								$('#endDate').datepicker({
+	   							format: 'yyyy-mm-dd',
+	    						autoclose: true
+								});
 
 						function ajaxSetUp() {
 							var token = $("meta[name='_csrf']").attr("content");
@@ -379,97 +475,141 @@ input.parsley-error {
 						 $('.btn-edit').on('click', function(){
 				    		 var id = $(this).attr('id');
 				    		 $.ajax({
-				    			 url : '${pageContext.request.contextPath}/technology/get/'+ id,
+				    			 url : '${pageContext.request.contextPath}/batch/get/'+ id,
 				    			 type: 'GET',
 				    			 success : function(data){
-				    				 $('#id-technology').val(data.id);
+				    				  console.log(data)
+			    			                 options="<option value="+data.trainer.id+">"+data.trainer.name+"</option>";
+			    			                $(options).appendTo('#trainerId1');
+				    				 $('#id-batch1').val(data.id);
 				    				 $('#name1').val(data.name);
 				    				 $('#note1').val(data.note);
-				    				 /* $('#edit-department').val(data.department.id); */
+				    				 $('#technologyId1').val(data.technology.id);
+				    				 $('#trainerId1').val(data.trainer.id);
+				    				 $('#startDate1').val(data.periodFrom);
+				    				 $('#endDate1').val(data.periodTo);
 				    			 },
 				    			 dataType: 'json'
 				    		 })
 				    		 
-				    		$('#add-update-technology').modal();
+				    		$('#update-batch-modal').modal();
 				    		 
 				    	 });
 						 //update technology
-						 var button = jQuery('#btn-update-technology').click(function(event){
+						 jQuery('#btn-update-batch-submit').click(function(event){
 								event.preventDefault();
+								var date=new Date();
+								var technology=$('#technologyId1 option:selected').val();
+								var trainer=$('#trainerId1 option:selected').val();
 								var name = jQuery('#name1').val();
-						/* 		var createdBy =jQuery('#createdBy').val();
-								var active=jQuery('#active').val(); */
 							    var note = jQuery('#note1').val();
-								var id = jQuery('#id-technology').val();
-								var active=1;
-								
-								var technology = {
+							    var startDate=jQuery('#startDate1').val();
+							    var endDate=jQuery('#endDate1').val();
+								var batch = {
+										technology:{
+											id:technology,
+										},
+										trainer:{
+											id:trainer,
+										},
 										name:name,
 										note:note,
-										id:id,
-										active:active
-
+										periodFrom:startDate,
+										periodTo:endDate,
+										createdOn:date
 								}
+								
 								jQuery.ajax({
-									url : '${pageContext.request.contextPath}/technology/update',
+									url : '${pageContext.request.contextPath}/batch/save',
 									type:'POST',
 										beforeSend:function(){
-											console.log(technology);
+											console.log(batch);
 											console.log('mau contact server');
 										},
 									contentType: 'application/json',
-									data: JSON.stringify(technology),
+									data: JSON.stringify(batch),
 									success : function(data){
 										
 										console.log('data dari server');
 										console.log(data);
-										window.location='${pageContext.request.contextPath}/technology'
+										window.location='${pageContext.request.contextPath}/batch'
 									}
 								});
 								
 							});
 
 						
-						//modal tambah trainer
-						$('#tambahTrainer').click(function(event) {
+						$('#tambahBatch').click(function(event) {
 							event.preventDefault();
-							$('#add-trainer-modal').modal();
+							$('#add-batch-modal').modal();
 						});
 						
 						//add trainer
-						var button = jQuery('#btn-save-trainer-submit').click(function(event){
+						jQuery('#btn-save-batch-submit').click(function(event){
 							event.preventDefault();
+							var date=new Date();
+							var technology=$('#technologyId option:selected').val();
+							var trainer=$('#trainerId option:selected').val();
 							var name = jQuery('#name').val();
-							var createdBy =jQuery('#createdBy').val();
-							/* var active=jQuery('#active').val(); */ 
 						    var note = jQuery('#note').val();
-							var active=1;
-							
-							var trainer = {
+						    var startDate=jQuery('#startDate').val();
+						    var endDate=jQuery('#endDate').val();
+							console.log(trainer)
+							var batch = {
+									technology:{
+										id:technology,
+									},
+									trainer:{
+										id:trainer,
+									},
 									name:name,
 									note:note,
-									createdBy:createdBy,
-									active:active,
+									periodFrom:startDate,
+									periodTo:endDate,
+									createdOn:date
 							}
 							
 							jQuery.ajax({
-								url : '${pageContext.request.contextPath}/trainer/save',
+								url : '${pageContext.request.contextPath}/batch/save',
 								type:'POST',
 									beforeSend:function(){
-										console.log(trainer);
+										console.log(batch);
 										console.log('mau contact server');
 									},
 								contentType: 'application/json',
-								data: JSON.stringify(trainer),
+								data: JSON.stringify(batch),
 								success : function(data){
-									
+									alert("data berhasil disimpan")
 									console.log('data dari server');
 									console.log(data);
-									window.location='${pageContext.request.contextPath}/trainer'
+									window.location='${pageContext.request.contextPath}/batch'
+								},
+								error : function(data){
+									alert("data tidak berhasil disimpan")
 								}
 							});
 							
 						});
+						
+						$('#technologyId').on('change', function() {
+							  var value = $(this).val();
+							  var id = $('#technologyId option:selected').val(); 
+							  console.log(value);
+							  $.ajax({
+					    			 url : '${pageContext.request.contextPath}/batch/get1/'+ id,
+					    			 type: 'GET',
+					    			 success : function(data){
+					    				 console.log(data.techTran) 
+					    				 $.each(data.techTran,function(key,obj){
+					    			                options="<option value="+obj.trainer.id+">"+obj.trainer.name+"</option>";
+					    			                $(options).appendTo('#trainerId'); 
+					    			       });
+					    			 },
+					    			 dataType: 'json'
+					    		 
+							 });
+
+							});
 				});				    	
 						
 </script>

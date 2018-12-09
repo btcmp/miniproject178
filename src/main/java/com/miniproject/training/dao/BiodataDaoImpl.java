@@ -49,4 +49,12 @@ public class BiodataDaoImpl implements BiodataDao{
 		return new Biodata();
 	}
 
+	public List<Biodata> searchByName(String name) {
+		// TODO Auto-generated method stub
+		String hql="from Biodata b where lower(b.name) like lower('%"+name+"%')";
+		Session session=sessionFactory.getCurrentSession();
+		List<Biodata> biodatas=session.createQuery(hql).list();
+		return biodatas;
+	}
+
 }

@@ -33,6 +33,7 @@ public class TechnologyService {
 		tech.setName(technology.getName());
 		tech.setNote(technology.getNote());
 		tech.setActive(technology.isActive());
+		tech.setCreatedby(technology.getCreatedby());
 		technologyDao.save(tech);
 		if (!technology.getTechTran().isEmpty()) {
 			for (TechnologyTrainer techTrain : technology.getTechTran()) {

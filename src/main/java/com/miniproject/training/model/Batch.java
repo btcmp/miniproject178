@@ -1,13 +1,19 @@
 package com.miniproject.training.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="T_Batch")
@@ -17,13 +23,16 @@ public class Batch {
 @GeneratedValue(strategy=GenerationType.AUTO)
  private long id;
  private String name;
+ @Temporal(TemporalType.DATE)
  @Column(name="period_from")
  private Date periodFrom;
+ @Temporal(TemporalType.DATE)
  @Column(name="period_to")
  private Date periodTo;
  private String note;
  @Column(name="created_by")
  private long createdBy;
+ @Temporal(TemporalType.DATE)
  @Column(name="created_on")
  private Date createdOn;
  @Column(name="modified_by")
@@ -35,9 +44,46 @@ public class Batch {
  @Column(name="deleted_on")
  private Date deletedOn;
  
+ @OneToMany(mappedBy="batch")
+ private List<Class> classBatch;
  
+ @ManyToOne
+ @JoinColumn(name="technology_id")
+ private Technology technology;
+ @ManyToOne
+ @JoinColumn(name="trainer_id")
+ private Trainer trainer;
+ @ManyToOne
+ @JoinColumn(name="room_id")
+ private Room romm;
+ 
+ 
+public List<Class> getClassBatch() {
+	return classBatch;
+}
+public void setClassBatch(List<Class> classBatch) {
+	this.classBatch = classBatch;
+}
 public Date getPeriodFrom() {
 	return periodFrom;
+}
+public Technology getTechnology() {
+	return technology;
+}
+public void setTechnology(Technology technology) {
+	this.technology = technology;
+}
+public Trainer getTrainer() {
+	return trainer;
+}
+public void setTrainer(Trainer trainer) {
+	this.trainer = trainer;
+}
+public Room getRomm() {
+	return romm;
+}
+public void setRomm(Room romm) {
+	this.romm = romm;
 }
 public void setPeriodFrom(Date periodFrom) {
 	this.periodFrom = periodFrom;
