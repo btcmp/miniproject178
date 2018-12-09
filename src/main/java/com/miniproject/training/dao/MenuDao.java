@@ -16,4 +16,6 @@ public interface MenuDao {
 
 	public void update(Menu menu);
 
+	public List<Menu> searchByName(String name);
+
 }

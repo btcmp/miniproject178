@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.miniproject.training.model.Menu;
@@ -65,6 +66,8 @@ public class MenuController {
 	@ResponseBody
 	public Menu deactivate(@RequestBody Menu menu)
 	{
+		User user = (User) httpSession.getAttribute("application-user");
+		menu.setModifiedBy(user.getId());
 		menuService.deactivate(menu);
 		return menu;
 	}
@@ -73,7 +76,18 @@ public class MenuController {
 	@ResponseBody
 	public Menu update(@RequestBody Menu menu)
 	{
+		User user = (User) httpSession.getAttribute("application-user");
+		menu.setModifiedBy(user.getId());
 		menuService.update(menu);
 		return menu;
+	}
+	
+	//Search menu for title
+	@RequestMapping(value="/search",method = RequestMethod.GET)
+	public String search(@RequestParam("srcmenu") String name, Model model )
+	{
+		List<Menu> menus = menuService.searchByName(name);
+		model.addAttribute("menus",menus);
+		return "menu";
 	}
 }

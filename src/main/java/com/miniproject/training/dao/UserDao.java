@@ -18,4 +18,6 @@ public interface UserDao {
 
 	public User getUserByUsername(String username);
 
+	public List<User> searchByName(String name);
+
 }

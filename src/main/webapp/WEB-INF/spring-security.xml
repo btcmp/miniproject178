@@ -8,17 +8,21 @@
 	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 		
 	<http auto-config="true" use-expressions="true">
+		<intercept-url pattern="/" access="hasRole('ROLE_USER')"/>
 		<intercept-url pattern="/department**" access="hasRole('ROLE_USER')" />
 		<intercept-url pattern="/employee**" access="hasRole('ROLE_USER')"/>
 		<intercept-url pattern="/account**" access="hasRole('ROLE_USER')"/>
 		<intercept-url pattern="/user**" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/role**" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/menu**" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/menu_access**" access="hasRole('ROLE_USER')"/>
 		<intercept-url pattern="/biodata**" access="hasRole('ROLE_USER')"/>
 		<intercept-url pattern="/office**" access="hasRole('ROLE_USER')"/>
 		<intercept-url pattern="/technology**" access="hasRole('ROLE_USER')"/>
 		<intercept-url pattern="/question**" access="hasRole('ROLE_USER')"/>
 		<form-login
 		    login-page="/login"
-		    default-target-url="/dashboard"
+		    default-target-url="/user"
 			authentication-failure-url="/login?error"
 			username-parameter="username"
 			password-parameter="password" />

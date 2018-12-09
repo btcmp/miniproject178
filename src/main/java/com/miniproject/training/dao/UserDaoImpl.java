@@ -23,7 +23,7 @@ public class UserDaoImpl implements UserDao{
 
 	public List<User> getAllUser() {
 		// TODO Auto-generated method stub
-		String hql = "from User where active='1'";
+		String hql = "from User u where u.active='1' and u.role.active='1'";
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery(hql);
 		List<User> users = query.list();
@@ -76,5 +76,13 @@ public class UserDaoImpl implements UserDao{
 		}
 		
 		return listUser.get(0);
+	}
+
+	public List<User> searchByName(String name) {
+		// TODO Auto-generated method stub
+		String hql = "from User u where lower(u.username) like lower('%"+name+"%')";
+		Session session = sessionFactory.getCurrentSession();
+		List<User> user = session.createQuery(hql).list();
+		return user;
 	}
 }

@@ -179,8 +179,13 @@ String RndmCode = new String(pattern);
                                     <h4 class="title">Role</h4>
                                 </div>
                                 <div class="card-content table-responsive">
-                                <input type="search" name="search" placeholder="Search by Role" />
-                                <button type="button" id="tambahRole" class="btn btn-sm btn-primary">+</button>
+                                <form action="${pageContext.request.contextPath}/role/search" method="GET">
+	                                <input type="search" id="searchRole" name="srcrole" placeholder="Search by name" />
+	                                <button type="submit" class="btn btn-sm btn-default">
+	                                		<i class="material-icons"></i>Search
+	                               	</button>
+	                                <button type="button" id="tambahRole" class="btn btn-sm btn-primary">+</button>
+                                </form>
                                     <table id="table-role" class="table table-hover">
                                         <thead class="text-warning">
                                             <th>Code</th>
@@ -516,6 +521,9 @@ String RndmCode = new String(pattern);
    										console.log(data);
    										window.location='${pageContext.request.contextPath}/role'
    										alert("Berhasil menambahkan Role")
+   									},
+   									error : function(data){
+   										alert("data tidak boleh kosong")
    									}
    								});
    								
@@ -636,6 +644,9 @@ String RndmCode = new String(pattern);
    										console.log(data);
    										window.location='${pageContext.request.contextPath}/role'
    										alert("Role berhasil update")
+   									},
+   									error : function(data){
+   										alert("data tidak boleh kosong")
    									}
    								});
    								

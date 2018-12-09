@@ -168,14 +168,13 @@
                                     <h4 class="title">Menu Access</h4>
                                 </div>
                                 <div class="card-content table-responsive">
-                                <select id='filterText' style='display:inline-block;width:300px;height:25px;'>
-									<option value='all'>--Select Role--</option>
-									<c:forEach items="${role}" var="rol">
-										<option value="${rol.name }">${rol.name }</option>
-									</c:forEach>
-										
-								</select>
-                                <button type="button" id="tambahMenu_Access" class="btn btn-sm btn-primary">+</button>
+	                                <select id='filterText' style='display:inline-block;width:300px;height:25px;'>
+										<option value='all'>--Select Role--</option>
+										<c:forEach items="${role}" var="rol">
+											<option value="${rol.name }">${rol.name }</option>
+										</c:forEach>
+									</select>
+	                                <button type="button" id="tambahMenu_Access" class="btn btn-sm btn-primary">+</button>
                                     <table id="table-menu_access" class="table table-hover">
                                         <thead class="text-warning">
                                             <th>Role</th>
@@ -445,7 +444,7 @@
     		$('#logoutForm').submit();
     	 });
     	
-    	//modal tambah menu
+    	//modal tambah menu access
  	    $('#tambahMenu_Access').click(function(event) {
  			event.preventDefault();
  			$('#addMenu_Access').modal();
@@ -467,7 +466,7 @@
 			}
  		});
     	
- 		//tambah menu
+ 		//tambah menu access
    	    var button = jQuery('#add-menu_access').click(function(event){
    								event.preventDefault();
    								var role = jQuery('#roles').val();
@@ -497,101 +496,15 @@
    										console.log(data);
    										window.location='${pageContext.request.contextPath}/menu_access'
    										alert("Berhasil menambahkan Menu Access")
-   									}
+   									},
+   								    error : function(data){
+   								    	alert("Data tidak boleh kosong")
+   								    }
    								});
    								
    			});
  		
-   		//deactivate-confirm
- 		$(".btn-deactivate").on('click', function(){
-    		 var id = $(this).attr('id');
-    		 $.ajax({
-    			 url : '${pageContext.request.contextPath}/menu/get/'+ id,
-    			 type: 'GET',
-    			 success : function(data){
-    				 $('#id-menu').val(data.id);
-    				 $('#title-menu').val(data.title);
-    				 $('#code-menu').val(data.code);
-    				 $('#createdOn-menu').val(data.createdOn);
-    				 $('#description-menu').val(data.description);
-    				 $('#menuOrder-menu').val(data.menuOrder);
-    				 $('#menuUrl-menu').val(data.menuUrl);
-    				 $('#imageUrl-menu').val(data.imageUrl);
-    				 $('#menuParent-menu').val(data.menu.id);
-    			 },
-    			 dataType: 'json'
-    		 })
-    		 
-    		$('#deactivate-menu').modal();
-    	 });
-   	
-   		//deactivate menu
-   	    var button = jQuery('#deactivate-btn').click(function(event){
-   								event.preventDefault();
-   								var active = 0;
-   								var modifiedOn = new Date();
-   								var id = jQuery('#id-menu').val();
-   								var title = jQuery('#title-menu').val();
-   								var code = jQuery('#code-menu').val();
-   								var createdOn = jQuery('#createdOn-menu').val();
-   								var description = jQuery('#description-menu').val();
-   								var menuOrder = jQuery('#menuOrder-menu').val();
-   								var menuUrl = jQuery('#menuUrl-menu').val();
-   								var imageUrl = jQuery('#imageUrl-menu').val();
-   								var menuParent = jQuery('#menuParent-menu').val();
-   								if (menuParent == null) {
-									menuParent = 0;
-								}
-   								if (menuParent == 0) {
-   									var menu = {
-   	   										id:id,
-   	   										code:code,
-   	   										title:title,
-   	   										description:description,
-   	   										modifiedOn:modifiedOn,
-   	   										createdOn:createdOn,
-   	   										menuOrder:menuOrder,
-   	   										menuUrl:menuUrl,
-   	   										imageUrl:imageUrl,
-   	   										active:active
-   	   								}
-								}
-   								else{
-   									var menu = {
-   	   										id:id,
-   	   										code:code,
-   	   										title:title,
-   	   										description:description,
-   	   										modifiedOn:modifiedOn,
-   	   										createdOn:createdOn,
-   	   										menuOrder:menuOrder,
-   	   										menuUrl:menuUrl,
-   	   										menu:{
-   	   											id:menuParent
-   	   										},
-   	   										imageUrl:imageUrl,
-   	   										active:active
-   	   								}
-   								} 
-   								
-   								jQuery.ajax({
-   									url : '${pageContext.request.contextPath}/menu/deactivate',
-   									type:'POST',
-   										beforeSend:function(){
-   											console.log(menu);
-   											console.log('mau contact server');
-   										},
-   									contentType: 'application/json',
-   									data: JSON.stringify(menu),
-   									success : function(data){
-   										console.log('data dari server');
-   										console.log(data);
-   										window.location='${pageContext.request.contextPath}/menu'
-   										alert("Menu berhasil deactivate")
-   									}
-   								});
-   								
-   			});
+   		
    		
    		$('.btn-hapus').on('click', function(){
    			var conf = confirm("are you sure to permanent delete this data ?");

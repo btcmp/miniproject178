@@ -18,4 +18,6 @@ public interface RoleDao {
 
 	public void update(Role role);
 
+	public List<Role> searchByName(String name);
+
 }

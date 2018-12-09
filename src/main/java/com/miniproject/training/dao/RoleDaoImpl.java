@@ -69,5 +69,13 @@ public class RoleDaoImpl implements RoleDao{
 		Session session=sessionFactory.getCurrentSession();
 		session.update(role);
 	}
+
+	public List<Role> searchByName(String name) {
+		// TODO Auto-generated method stub
+		String hql = "from Role r where lower(r.name) like lower('%"+name+"%')";
+		Session session = sessionFactory.getCurrentSession();
+		List<Role> role = session.createQuery(hql).list();
+		return role;
+	}
 	
 }

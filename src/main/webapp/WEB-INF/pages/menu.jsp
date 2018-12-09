@@ -177,9 +177,17 @@ String RndmCode = new String(pattern);
                                 <div class="card-header" data-background-color="orange">
                                     <h4 class="title">Menu</h4>
                                 </div>
+                                
                                 <div class="card-content table-responsive">
-                                <input type="search" name="search" placeholder="Search by Menu" />
-                                <button type="button" id="tambahMenu" class="btn btn-sm btn-primary">+</button>
+	                                <form action="${pageContext.request.contextPath}/menu/search" method="GET">
+	                                	<input type="search" id="searchMenu" name="srcmenu" placeholder="Search by title" />
+	                                	<button type="submit" class="btn btn-sm btn-default">
+	                                		<i class="material-icons"></i>Search
+	                                	</button>
+	                                	<button type="button" id="tambahMenu" class="btn btn-sm btn-primary">+</button>
+	                                </form>
+                                </div>
+                                <div class="card-content table-responsive">                
                                     <table id="table-menu" class="table table-hover">
                                         <thead class="text-warning">
                                             <th>Code</th>
@@ -190,7 +198,7 @@ String RndmCode = new String(pattern);
                                         </thead>
                                         <tbody>
                                             <c:forEach var="menu" items="${menus}">
-                                            	<tr>
+                                            	<tr class="content">
                                             		<td><c:out value="${menu.code }"></c:out></td>
                                             		<td><c:out value="${menu.title }"></c:out></td>
                                             		<td>
@@ -332,6 +340,7 @@ String RndmCode = new String(pattern);
 						<input type="hidden" id="code-menu"/>
 						<input type="hidden" id="description-menu"/>
 						<input type="hidden" id="createdOn-menu"/>
+						<input type="hidden" id="createdBy-menu"/>
 						<input type="hidden" id="menuUrl-menu"/>
 						<input type="hidden" id="menuOrder-menu"/>
 						<input type="hidden" id="imageUrl-menu"/>
@@ -358,6 +367,7 @@ String RndmCode = new String(pattern);
 					<div class="modal-body">
 						<input type="hidden" id="id-menu2"/>
 						<input type="hidden" id="createdOn-menu2"/>
+						<input type="hidden" id="createdBy-menu2"/>
 						<div class="row">
 							<div class="form-group col-md-6">
 								<input type="text" id="code-menu2" class="form-control" style="background-color: #bcbcbc" readonly/>
@@ -605,6 +615,9 @@ String RndmCode = new String(pattern);
    										console.log(data);
    										window.location='${pageContext.request.contextPath}/menu'
    										alert("Berhasil menambahkan Menu")
+   									},
+   									error : function(data){
+   										alert("data tidak boleh kosong")
    									}
    								});
    								
@@ -621,6 +634,7 @@ String RndmCode = new String(pattern);
     				 $('#title-menu').val(data.title);
     				 $('#code-menu').val(data.code);
     				 $('#createdOn-menu').val(data.createdOn);
+    				 $('#createdBy-menu').val(data.createdBy);
     				 $('#description-menu').val(data.description);
     				 $('#menuOrder-menu').val(data.menuOrder);
     				 $('#menuUrl-menu').val(data.menuUrl);
@@ -642,6 +656,7 @@ String RndmCode = new String(pattern);
    								var title = jQuery('#title-menu').val();
    								var code = jQuery('#code-menu').val();
    								var createdOn = jQuery('#createdOn-menu').val();
+   								var createdBy = jQuery('#createdBy-menu').val();
    								var description = jQuery('#description-menu').val();
    								var menuOrder = jQuery('#menuOrder-menu').val();
    								var menuUrl = jQuery('#menuUrl-menu').val();
@@ -658,6 +673,7 @@ String RndmCode = new String(pattern);
    	   										description:description,
    	   										modifiedOn:modifiedOn,
    	   										createdOn:createdOn,
+   	   										createdBy:createdBy,
    	   										menuOrder:menuOrder,
    	   										menuUrl:menuUrl,
    	   										imageUrl:imageUrl,
@@ -671,6 +687,7 @@ String RndmCode = new String(pattern);
    	   										title:title,
    	   										description:description,
    	   										modifiedOn:modifiedOn,
+   	   										createdBy:createdBy,
    	   										createdOn:createdOn,
    	   										menuOrder:menuOrder,
    	   										menuUrl:menuUrl,
@@ -712,6 +729,7 @@ String RndmCode = new String(pattern);
     				 $('#title-menu2').val(data.title);
     				 $('#code-menu2').val(data.code);
     				 $('#createdOn-menu2').val(data.createdOn);
+    				 $('#createdBy-menu2').val(data.createdBy);
     				 $('#description-menu2').val(data.description);
     				 $('#menuOrder-menu2').val(data.menuOrder);
     				 $('#menuUrl-menu2').val(data.menuUrl);
@@ -733,6 +751,7 @@ String RndmCode = new String(pattern);
    								var title = jQuery('#title-menu2').val();
    								var code = jQuery('#code-menu2').val();
    								var createdOn = jQuery('#createdOn-menu2').val();
+   								var createdBy = jQuery('#createdBy-menu2').val();
    								var description = jQuery('#description-menu2').val();
    								var menuOrder = jQuery('#menuOrder-menu2').val();
    								var menuUrl = jQuery('#menuUrl-menu2').val();
@@ -749,6 +768,7 @@ String RndmCode = new String(pattern);
    	   										description:description,
    	   										modifiedOn:modifiedOn,
    	   										createdOn:createdOn,
+   	   										createdBy:createdBy,
    	   										menuOrder:menuOrder,
    	   										menuUrl:menuUrl,
    	   										imageUrl:imageUrl,
@@ -763,6 +783,7 @@ String RndmCode = new String(pattern);
    	   										description:description,
    	   										modifiedOn:modifiedOn,
    	   										createdOn:createdOn,
+   	   										createdBy:createdBy,
    	   										menuOrder:menuOrder,
    	   										menuUrl:menuUrl,
    	   										menu:{
@@ -787,6 +808,9 @@ String RndmCode = new String(pattern);
    										console.log(data);
    										window.location='${pageContext.request.contextPath}/menu'
    										alert("Menu berhasil update")
+   									},
+   									error : function(data){
+   										alert("data tidak boleh kosong")
    									}
    								});
    								

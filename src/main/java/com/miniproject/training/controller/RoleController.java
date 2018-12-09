@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.miniproject.training.model.Role;
@@ -83,5 +84,14 @@ public class RoleController{
 		role.setModifiedBy(user.getId());
 		roleService.update(role);
 		return role;
+	}
+	
+	//search role for name
+	@RequestMapping(value="/search",method = RequestMethod.GET)
+	public String search(@RequestParam("srcrole") String name,Model model)
+	{
+		List<Role> roles = roleService.searchByName(name);
+		model.addAttribute("roles",roles);
+		return "role";
 	}
 }

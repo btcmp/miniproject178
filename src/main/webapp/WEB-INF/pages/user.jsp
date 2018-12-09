@@ -167,8 +167,13 @@
                                     <h4 class="title">List User</h4>
                                 </div>
                                 <div class="card-content table-responsive">
-                                <input type="search" name="search" placeholder="Search by User" />
-                                <button type="button" id="tambahUser" class="btn btn-sm btn-primary">+</button>
+                                <form action="${pageContext.request.contextPath}/user/search" method="GET">
+	                                <input type="search" id="searchUser" name="srcuser" placeholder="Search by Username" />
+	                                <button type="submit" class="btn btn-sm btn-default">
+	                                		<i class="material-icons"></i>Search
+	                               	</button>
+	                                <button type="button" id="tambahUser" class="btn btn-sm btn-primary">+</button>
+                                </form>
                                     <table id="table-user" class="table table-hover">
                                         <thead class="text-warning">
                                             <th>Username</th>
@@ -295,6 +300,7 @@
 							<input type="hidden" id="id-user"/>
 							<input type="hidden" id="password-user"/>
 							<input type="hidden" id="createdOn-user"/>
+							<input type="hidden" id="createdBy-user"/>
 							<input type="hidden" id="role-user"/>
 							<input type="hidden" id="name-user"/>
 						</div>
@@ -356,6 +362,7 @@
 						</div>	
 							<input type="hidden" id="id-user2"/>
 							<input type="hidden" id="createdOn-user2"/>
+							<input type="hidden" id="createdBy-user2"/>
 					</div>
 					<div class="modal-footer">
 						<button type="submit" id="update-btn" class="btn btn-primary">Update</button>
@@ -569,6 +576,9 @@
    										console.log(data);
    										window.location='${pageContext.request.contextPath}/user'
    										alert("Data User berhasil ditambahkan")
+   									},
+   									error : function(data){
+   										alert("data tidak boleh kosong")
    									}
    								});
    								
@@ -585,6 +595,7 @@
     				 $('#password-user').val(data.password);
     				 $('#createdOn-user').val(data.createdOn);
     				 $('#role-user').val(data.role.id);
+    				 $('#createdBy-user').val(data.createdBy);
     			 },
     			 dataType: 'json'
     		 })
@@ -602,6 +613,7 @@
    								var username = jQuery('#name-user').val();
    								var password = jQuery('#password-user').val();
    								var createdOn = jQuery('#createdOn-user').val();
+   								var createdBy = jQuery('#createdBy-user').val();
    								var role = jQuery('#role-user').val();
    								var user = {
    										id:id,
@@ -611,6 +623,7 @@
    										username:username,
    										password:password,
    										createdOn:createdOn,
+   										createdBy:createdBy,
    										modifiedOn:modifiedOn,
    										enabled:enabled,
    										active:active
@@ -646,6 +659,7 @@
     				 $('#password-user2').val(data.password);
     				 $('#createdOn-user2').val(data.createdOn);
     				 $('#role-user2').val(data.role.id);
+    				 $('#createdBy-user2').val(data.createdBy);
     			 },
     			 dataType: 'json'
     		 })
@@ -663,6 +677,7 @@
    								var username = jQuery('#name-user2').val();
    								var password = jQuery('#new-password').val();
    								var createdOn = jQuery('#createdOn-user2').val();
+   								var createdBy = jQuery('#createdBy-user2').val();
    								var role = jQuery('#roles2').val();
    								var user = {
    										id:id,
@@ -672,6 +687,7 @@
    										username:username,
    										password:password,
    										createdOn:createdOn,
+   										createdBy:createdBy,
    										modifiedOn:modifiedOn,
    										enabled:enabled,
    										active:active
@@ -691,6 +707,9 @@
    										console.log(data);
    										window.location='${pageContext.request.contextPath}/user'
    										alert("User berhasil update")
+   									},
+   									error : function(data){
+   										alert("data tidak boleh kosong")
    									}
    								});
    								

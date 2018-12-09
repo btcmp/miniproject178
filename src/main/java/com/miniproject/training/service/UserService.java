@@ -47,4 +47,9 @@ public class UserService {
 		return userDao.getUserByUsername(username);
 	}
 
+	public List<User> searchByName(String name) {
+		// TODO Auto-generated method stub
+		return userDao.searchByName(name);
+	}
+
 }
