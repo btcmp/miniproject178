@@ -19,7 +19,7 @@ public class Menu_AccessDaoImpl implements Menu_AccessDao{
 
 	public List<Menu_Access> getAllMenu_Access() {
 		// TODO Auto-generated method stub
-		String hql = "from Menu_Access";
+		String hql = "from Menu_Access ma where ma.role.active='1'";
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery(hql);
 		List<Menu_Access> menu_access = query.list();

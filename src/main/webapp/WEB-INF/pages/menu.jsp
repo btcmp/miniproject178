@@ -435,120 +435,8 @@ String RndmCode = new String(pattern);
 <script src="${pageContext.request.contextPath}/resources/assets/js/demo.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-    	
-    	 function ajaxSetUp(){
-    		 var token = $("meta[name='_csrf']").attr("content");
-    		  var header = $("meta[name='_csrf_header']").attr("content");
-    		  $(document).ajaxSend(function(e, xhr, options) {
-    		    xhr.setRequestHeader(header, token);
-    		  });
-    	 }
     	 
     	 $('#table-menu').DataTable();
-     
-    	 // Javascript method's body can be found in assets/js/demos.js
-    	 $('.view-detail').on('click', function(){
-    		 var id = $(this).attr('id');
-    		 $(this).removeAttr("checked");	 
-    		 $.ajax({
-    			 url: 'account/user/'+id,
-    			 type: 'GET',
-    			 beforeSend: function(){
-    				ajaxSetUp(); 
-    			 },
-    			 success: function(data){
-    				 console.log(data);
-    				 $("select[name='roles'] option:selected").prop("selected", false)
-    				 $('#idEdit').val(data.id);
-    				 $('input[name="user.username"]').val(data.username);
-    				 $('input[name="user.email"]').val(data.email);
-    				 
-    				 if(data.enabled == 1){
-    					$('#statusUser').attr("checked","");	 
-    				 } 
-    				 
-    				 $.each(data.roles, function(index, value){ 
-    					  $("select[name='roles'] option[value='" + value.id + "']").prop("selected", true);
-    				 });
-    			 }
-    		 });
-         	$('#modal-edit-account-view-detail').modal();
-         });
-    	 
-    	 $("#statusUser").on("click", function(){
-    		 var attr = $(this).attr('checked');
-    		 if (typeof attr !== typeof undefined && attr !== false) {
-    			 $(this).removeAttr("checked");	    
-    		 } else {
-    			 $(this).attr("checked", "");
-    		 }
-    	 });
-    	 
-    	 $("#add-statusUser").on("click", function(){
-    		 var attr = $(this).attr('checked');
-    		 if (typeof attr !== typeof undefined && attr !== false) {
-    			 $(this).removeAttr("checked");	    
-    		 } else {
-    			 $(this).attr("checked", "");
-    		 }
-    	 });
-    	 
-    	 $('#btn-edit').on('click', function(){
-    		 var attr = $("#statusUser").attr('checked');
-    		 var enable = 0;
-    		 if (typeof attr !== typeof undefined && attr !== false) {
-    			 enable = 1;
-    		 }
-    		 var user = {
-    				id : $('#idEdit').val(),
-    				username : $('input[name="user.username"]').val(),
-    				email : $('input[name="user.email"]').val(),
-    				enabled : enable,
-    				roles : []
-    		 }
-    		 
-    		 $.each($('#listRoles').val(), function(index, val){
-    			 var role = {
-    				id : val
-    			 }
-    			 user.roles.push(role);
-    		 });
-    		
-			$.ajax({
-				 url : 'account/updaterole',
-				 type: 'PUT', 
-				 contentType: 'application/json',
-				 data : JSON.stringify(user),
-				 success: function(data){
-					 window.location = "account";
-				 }
-			 });
-    	 });
-    	 
-    	 
-    	 
-    	 $('#btn-add-role').on('click', function(){
-    		 $('#add-role-modal').modal();
-    	 });
-    	 
-    	 $('#btn-add-role-submit').on('click', function(){
-    		 var validate = $('#form-add-role').parsley();
-    		 if(validate.validate()){
-    			var role = {
-    				roleName : $('#role-name').val(),
-    			}
-    			ajaxSetUp();
-    			$.ajax({
-    				url: 'account/addrole',
-    				type: 'POST',
-    				data: JSON.stringify(role),
-    				contentType: 'application/json',
-    				success: function(data){
-    					console.log(data);
-    				}
-    			});
-    		 }	 
-    	 });
     	 
     	//logout event button
     	 $('#logout').click(function(event){
@@ -760,7 +648,7 @@ String RndmCode = new String(pattern);
    								if (menuParent == null) {
 									menuParent = 0;
 								}
-   								if (menuParent == 0) {
+   								if (menuParent == 0 || menuParent == id) {
    									var menu = {
    	   										id:id,
    	   										code:code,
