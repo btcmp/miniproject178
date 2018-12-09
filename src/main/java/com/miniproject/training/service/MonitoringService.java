@@ -33,4 +33,9 @@ public class MonitoringService {
 		return monitoringDao.getMonitoringById(id);
 	}
 
+	public List<Monitoring> getSearchByName(String name) {
+		// TODO Auto-generated method stub
+		return monitoringDao.getSearchByName(name);
+	}
+
 }

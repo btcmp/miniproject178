@@ -41,7 +41,7 @@ public class BiodataController {
 	
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	@ResponseBody
-	public Biodata save(@RequestBody Biodata biodata, RedirectAttributes redirectAttributes) {
+	public Biodata save(@RequestBody Biodata biodata) {
 		User user=(User) httpSession.getAttribute("application-user");
 		biodata.setCreatedBy(user.getId());
 		biodataService.save(biodata);
@@ -63,5 +63,11 @@ public class BiodataController {
 		biodataService.save(biodata);
 		return biodata;
 	}
-
+	
+	@RequestMapping(value="/src", method=RequestMethod.GET)
+	public String search(@RequestParam("srctext") String name, Model model) {
+		List<Biodata> biodatas=biodataService.searchByName(name);
+		model.addAttribute("biodatas",biodatas);
+		return "biodata";
+	}
 }

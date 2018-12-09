@@ -2,6 +2,8 @@ package com.miniproject.training.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.miniproject.training.model.Assignment;
 import com.miniproject.training.model.Biodata;
+import com.miniproject.training.model.User;
 import com.miniproject.training.service.AssignmentService;
 import com.miniproject.training.service.BiodataService;
 
@@ -27,6 +30,9 @@ public class AssignmentController {
 	@Autowired
 	BiodataService biodataService;
 	
+	@Autowired
+	HttpSession httpSession;
+	
 	@RequestMapping
 	public String view(Model model){
 		List<Assignment> assignments=assignmentService.getAllAssignments();
@@ -39,6 +45,8 @@ public class AssignmentController {
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	@ResponseBody
 	public Assignment save(@RequestBody Assignment assignment) {
+		User user=(User) httpSession.getAttribute("application-user");
+		assignment.setCreatedBy(user.getId());
 		assignmentService.save(assignment);
 		return assignment;
 	}
@@ -53,6 +61,17 @@ public class AssignmentController {
 	@RequestMapping(value="/edit", method=RequestMethod.POST)
 	@ResponseBody
 	public Assignment edit(@RequestBody Assignment assignment) {
+		User user=(User) httpSession.getAttribute("application-user");
+		assignment.setModifiedBy(user.getId());
+		assignmentService.save(assignment);
+		return assignment;
+	}
+	
+	@RequestMapping(value="deactive", method=RequestMethod.POST)
+	@ResponseBody
+	public Assignment deactive(@RequestBody Assignment assignment) {
+		User user=(User) httpSession.getAttribute("application-user");
+		assignment.setDeletedBy(user.getId());
 		assignmentService.save(assignment);
 		return assignment;
 	}

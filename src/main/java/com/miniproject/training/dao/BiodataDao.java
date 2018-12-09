@@ -12,4 +12,6 @@ public interface BiodataDao {
 
 	Biodata getBiodataById(Long id);
 
+	List<Biodata> searchByName(String name);
+
 }
