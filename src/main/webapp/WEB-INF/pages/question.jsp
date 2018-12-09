@@ -161,18 +161,13 @@ input.parsley-error {
 									<h4 class="title">Questions</h4>
 								</div>
 								<div class="card-content table-responsive">
-								<form class="navbar-form navbar-left" role ="search" action="${pageContext.request.contextPath }/question">
-									<div class="form-group is-empty">
-										<input class="form-control" type="text" name="search" placeholder="Search by Technology" />
-									</div>
-									<span class="material-input"></span>
-									<span class="material-input"></span>
-									<button type= "submit" class="btn btn-primary btn-round btn-just-icon"> <i class="material-icons">search</i></button>
-									<!-- <button type="button" id="tambahQuestion" class="btn btn-sm btn-primary">+</button> -->
-									<div>
-									<button type="button" id="tambahQuestion" class="btn btn-sm btn-primary">
-									<i class="material-icons">add</i>Question</button>
-									</div>
+									<form role ="search" action="${pageContext.request.contextPath }/question">
+											<input type="text" name="search" placeholder="Search by Technology" />
+											<input type="submit" value="Search" id="btn-search" class="btn btn-default btn-sm"/>
+											<button type="button" id="tambahQuestion" class="btn btn-sm btn-primary">
+											<i class="material-icons">add</i></button>
+										<!-- <button type= "submit" class="btn btn-primary btn-round btn-just-icon"> <i class="material-icons">search</i></button> -->
+										<!-- <button type="button" id="tambahQuestion" class="btn btn-sm btn-primary">+</button> -->
 									</form>
 									<table id="table-user" class="table table-hover">
                                         <thead class="text-warning">
@@ -233,8 +228,9 @@ input.parsley-error {
 					<div class="modal-body">
 						<div class="form-group">
 						<input type="hidden" class="form-control" id="active"/>
+						<input type="hidden" class="form-control" id="createdBy" name="createdBy"/>
 						<label for="question">Question:</label>
-						<textarea id="question" class="form-control" rows="5" placeholder="Enter a question"></textarea>
+						<textarea id="question" class="form-control" rows="5" placeholder="Enter a question" required="required"></textarea>
 						</div>
 					</div>
 					<div class="modal-footer">
@@ -315,11 +311,13 @@ input.parsley-error {
 			event.preventDefault();
 			var question = jQuery('#question').val();
 			var asd = jQuery('#active').val();
+			var createdBy = jQuery('#createdBy').val();
 			var date = new Date();
 			
 			var questions = {
 					question: question,
 					isDelete: asd,
+					createdBy: createdBy,
 					createdOn: date
 			};
 			console.log(questions);
@@ -339,6 +337,8 @@ input.parsley-error {
 					console.log(data);
 					window.location = '${pageContext.request.contextPath}/question'
 					alert('data berhasil ditambahkan')
+				}, error : function(){
+					 alert('Masukkan pertanyaan anda!');
 				}
 			});
 		});
@@ -354,7 +354,8 @@ $(document).ready(function() {
 			 type: 'GET',
 			 success : function(data){
 				 $('#id-question').val(data.id);
-				 $('#created-on').val(data.createdOn)
+				 $('#created-on').val(data.createdOn);
+				 $('#createdBy').val(data.createdBy);
 				 $('textarea[name="question"]').val(data.question);
 				 $('input[name="isDelete"]').val(data.isDelete = true);
 			 },
@@ -370,8 +371,10 @@ $(document).ready(function() {
 			id : $('#id-question').val(),
 			question : $('#questions').val(),
 			isDelete :  $('#actives').val(),
+			createdBy: $('#createdBy').val(),
 			createdOn : $('#created-on').val(),
-			deletedOn : d
+			deletedOn : d,
+			modifiedOn: d,
 		}
 			
 		jQuery.ajax({
@@ -390,6 +393,8 @@ $(document).ready(function() {
 			console.log(data);
 			alert('berhasil dihapus');
 			window.location = "${pageContext.request.contextPath}/question";
+			}, error : function(){
+				 alert('delete data failed..!!');
 			}
 		});
 	 });

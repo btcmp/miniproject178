@@ -220,7 +220,7 @@ input.parsley-error {
 	               			<table id="table-user" class="table table-hover">
 	                   			<thead class="text-warning">
 		                   			<tr>
-				                       <th>Version</th>
+				                       <th>Question</th>
 		                   			</tr>
 	                   			</thead>
 	                   			<tbody id="list-question">
@@ -250,7 +250,7 @@ input.parsley-error {
 				<form id="addForm" action="#" method="POST">
 					<div class="modal-body">
 						<div class="form-group">
-						<label for="version">Version:</label>
+						<label for="version">Question:</label>
 						<select class="form-control" id="selected" name="question.id">
 							<c:forEach items="${questions}" var="quest">
 							<option value="${quest.id }">${quest.question }</option>
@@ -374,6 +374,8 @@ input.parsley-error {
 					console.log(data);
 					window.location = '${pageContext.request.contextPath}/version';
 					alert('version berhasil ditambahkan');
+				}, error : function(){
+					 alert('Masukkan pertanyaan anda!');
 				}
 			});
 		});

@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name="T_Batch")
@@ -21,13 +23,16 @@ public class Batch {
 @GeneratedValue(strategy=GenerationType.AUTO)
  private long id;
  private String name;
+ @Temporal(TemporalType.DATE)
  @Column(name="period_from")
  private Date periodFrom;
+ @Temporal(TemporalType.DATE)
  @Column(name="period_to")
  private Date periodTo;
  private String note;
  @Column(name="created_by")
  private long createdBy;
+ @Temporal(TemporalType.DATE)
  @Column(name="created_on")
  private Date createdOn;
  @Column(name="modified_by")
