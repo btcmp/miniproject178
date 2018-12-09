@@ -142,7 +142,7 @@ input.parsley-error {
 								class="icon-bar"></span> <span class="icon-bar"></span> <span
 								class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="#"> Testimony Datatable </a>
+						<a class="navbar-brand" href="#"> Class Datatable </a>
 					</div>
 				</div>
 			</nav>
@@ -158,13 +158,13 @@ input.parsley-error {
 							</c:if>
 							<div class="card">
 								<div class="card-header" data-background-color="orange">
-									<h4 class="title">Testimony</h4>
+									<h4 class="title">Class</h4>
 								</div>
 								<div class="card-content table-responsive">
-									<form class="navbar-form navbar-left" role ="search" action="${pageContext.request.contextPath }/testimony">
+									<form class="navbar-form navbar-left" role ="search" action="${pageContext.request.contextPath }/class">
 										<div class="form-group is-empty">
 											<input class="form-control" type="text" name="search"
-											placeholder="Search by Testimony" />
+											placeholder="Search by batch" />
 										</div>
 										<span class="material-input"></span>
 										<span class="material-input"></span>
@@ -172,10 +172,9 @@ input.parsley-error {
 										<i class="material-icons">search</i>
 										</button>
 										<div>
-											<button type="button" id="tambahTestimony"
+											<button type="button" id="tambahClass"
 											class="btn btn-sm btn-primary">
 												<i class="material-icons">add</i>
-												testimony
 											</button>
 										</div>
 									</form>
@@ -184,23 +183,22 @@ input.parsley-error {
 									<div class="table-responsive">
 										<table id="table-testimony" class="table">
 											<thead class="text-warning">
-												<th>Testimony</th>
+												<th>Batch</th>
+												<th>Name</th>
 												<th>Action</th>
 											</thead>
 											<tbody>
-												<c:forEach var="dept" items="${testimony}">
+												 <c:forEach var="dept" items="${class}">
 													<tr>
-														<td><c:out value="${dept.title}"></c:out></td>
+														<td><c:out value="${dept.batch.name}"></c:out></td>
+														 <td><c:out value="${dept.biodata.name}"></c:out></td>
 														<td>
-														<button id="${dept.id }" type="button" rel="tooltip" title="Edit ${employee.name }" class="btn btn-success btn-simple btn-xs btn-edit">
-										                    <i class="fa fa-edit"></i>
-										                </button>
 														<button id="${dept.id }" type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs btn-hapus">
 										                    <i class="fa fa-times"></i>
 										                </button>
 														</td>
 													</tr>
-												</c:forEach>
+												</c:forEach> 
 											</tbody>
 										</table>
 									</div>
@@ -241,114 +239,47 @@ input.parsley-error {
 					</div>
 				</footer>
 			</div>
-		</div>
-		<!--modal-->
-		<div class="modal fade" id="add-testimony-modal" tabindex="-1"
+		</div>		
+		
+		<div class="modal fade" id="add-class-modal" tabindex="-1"
 			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title">Testimony</h5>
+						<h5 class="modal-title">Batch</h5>
 					</div>
 					<div class="modal-body">
-						<form action="${pageContext.request.contextPath }/testimony/save" method="POST">
+						<input type="hidden" id="id-class"/>
+						<form action="${pageContext.request.contextPath}/class/save" method="POST">
 							<div class="form-group">
-								<label for="name-testimony">Name</label>
-								<input type="hidden" id="active"/>
-								<input data-parsley-required="true" type="text" id="title"
-									class="form-control"
-									aria-describedby="nameHelp" placeholder="Enter Name Testimony" />
+								<select id="batchId" name="batch" class="form-control">
+									<option>--batch--</option>
+									<c:forEach items="${batch}" var="tech">
+										<option value="${tech.id}">${tech.name}</option>
+									</c:forEach>
+								</select>
 							</div>
 							<div class="form-group">
-								<label for="content">Note</label>
-								<textarea data-parsley-required="true" 
-								rows="4" cols="50" id="content" aria-describedby="nameHelp"
-								class="form-control" placeholder="Enter Content" ></textarea>
+								 <select id="biodataId" name="biodata" class="form-control">
+										<option value="select">--Name--</option>
+										<c:forEach items="${biodata}" var="tech">
+										<option value="${tech.id}">${tech.name}</option>
+									</c:forEach>
+								</select>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary"
 									data-dismiss="modal">Close</button>
-								<button type="submit" id="btn-save-testimony-submit"
+								<button type="submit" id="btn-save-class-submit"
 									class="btn btn-primary">Save</button>
 							</div>
 						</form>
 					</div>
+
 				</div>
-				</div>
+			</div>
 			</div>
 			
-			<div class="modal fade" id="add-update-testimony" tabindex="-1"
-			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">Testimony</h5>
-					</div>
-					<div class="modal-body">
-						<form action="${pageContext.request.contextPath }/testimony/update" method="POST">
-							<div class="form-group">
-								<label for="name-testimony">Name</label>
-								<input type=hidden id="id-testimony">
-								<input data-parsley-required="true" type="text" id="titles"
-									class="form-control"
-									aria-describedby="nameHelp" placeholder="Enter Name Testimony" />
-							</div>
-							<div class="form-group">
-								<label for="content">Note</label>
-								<textarea data-parsley-required="true" 
-								rows="4" cols="50" id="contents" aria-describedby="nameHelp"
-								class="form-control" placeholder="Enter Content" ></textarea>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary"
-									data-dismiss="modal">Close</button>
-								<button type="submit" id="btn-update-testimony-submit"
-									class="btn btn-primary">Update</button>
-							</div>
-						</form>
-					</div>
-					</div>
-				</div>
-			</div>
-			
-			<div class="modal fade" id="add-delete-testimony" tabindex="-1"
-			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">Testimony</h5>
-					</div>
-					<div class="modal-body">
-						<form action="${pageContext.request.contextPath }/testimony/update" method="POST">
-							<div class="form-group">
-								<label for="name-testimony">Name</label>
-								<input type=hidden id="id-testimony"/>
-								<input type="hidden" name="isDelete" id="actives"/>
-								<input type="hidden" name="created-on"id="created-on"/>
-								<input data-parsley-required="true" type="text" id="titles1"
-									class="form-control"
-									aria-describedby="nameHelp" placeholder="Enter Name Testimony" />
-							</div>
-							<div class="form-group">
-								<label for="content">Note</label>
-								<textarea data-parsley-required="true" 
-								rows="4" cols="50" id="contents1" aria-describedby="nameHelp"
-								class="form-control" placeholder="Enter Content" ></textarea>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary"
-									data-dismiss="modal">Close</button>
-								<button type="submit" id="btn-delete-testimony-submit"
-									class="btn btn-danger">Delete</button>
-							</div>
-						</form>
-					</div>
-					</div>
-				</div>
-			</div>
-		
-							
-							
 </body>
 <!--   Core JS Files   -->
 <script
@@ -432,89 +363,43 @@ input.parsley-error {
 							event.preventDefault();
 							$('#logoutForm').submit();
 						});
-						//edit technology
-						 $('.btn-edit').on('click', function(){
-				    		 var id = $(this).attr('id');
-				    		 $.ajax({
-				    			 url : '${pageContext.request.contextPath}/testimony/get/'+ id,
-				    			 type: 'GET',
-				    			 success : function(data){
-				    				 $('#id-testimony').val(data.id);
-				    				 $('#titles').val(data.title);
-				    				 $('#contents').val(data.content);
-				    			 },
-				    			 dataType: 'json'
-				    		 })
-				    		 
-				    		$('#add-update-testimony').modal();
-				    		 
-				    	 });
-						 
-						 var button = jQuery('#btn-update-testimony-submit').click(function(event){
-								event.preventDefault();
-								var name = jQuery('#titles').val();
-							    var note = jQuery('#contents').val();
-								var id = jQuery('#id-testimony').val();
-								var date=new Date();
-								
-								var testimony = {
-										title:name,
-										content:note,
-										id:id,
-										modifiedOn:date
-								}
-								jQuery.ajax({
-									url : '${pageContext.request.contextPath}/testimony/update',
-									type:'POST',
-										beforeSend:function(){
-											console.log(testimony);
-											console.log('mau contact server');
-										},
-									contentType: 'application/json',
-									data: JSON.stringify(testimony),
-									success : function(data){
-										
-										console.log('data dari server');
-										console.log(data);
-										window.location='${pageContext.request.contextPath}/testimony'
+						   
+								 $('#tambahClass').click(function(event) {
+										event.preventDefault();
+										$('#add-class-modal').modal();
+									});
+ 							
+ 						
+						jQuery('#btn-save-class-submit').click(function(event){
+							event.preventDefault();
+							var batch=$('#batchId option:selected').val();
+							var trainer=$('#biodataId option:selected').val();
+		
+							var classes = {
+									batch:{
+										id:batch,
 									}
-								});
-								
-							});
-						  
-						$('#tambahTestimony').click(function(event) {
-							event.preventDefault();
-							$('#add-testimony-modal').modal();
-						});
-						
-						jQuery('#btn-save-testimony-submit').click(function(event){
-							event.preventDefault();
-							var name = jQuery('#title').val();
-						    var content = jQuery('#content').val();
-							var date = new Date();
-						 	var isd = jQuery('#active').val(); 
-							var testimony = {
-									title:name,
-									content:content,
-									createdOn:date,
-						 			isDelete:isd 
+								/* 	trainer:{
+										id:trainer,
+									} */
 							}
 							
+							
 							jQuery.ajax({
-								url : '${pageContext.request.contextPath}/testimony/save',
+								url : '${pageContext.request.contextPath}/class/save',
 								type:'POST',
 									beforeSend:function(){
-										console.log(testimony);
+										console.log(classes);
 										console.log('mau contact server');
 									},
 								contentType: 'application/json',
 								dataType: "json",
-								data: JSON.stringify(testimony),
+								data: JSON.stringify(classes),
 								success : function(data){
 									
 									console.log('data dari server');
 									console.log(data);
-									window.location='${pageContext.request.contextPath}/testimony'
+									window.location='${pageContext.request.contextPath}/class'
 								}
 							});
 							
@@ -523,55 +408,16 @@ input.parsley-error {
 						 $('.btn-hapus').on('click', function(){
 			    		 var id = $(this).attr('id');
 			    		 $.ajax({
-			    			 url : '${pageContext.request.contextPath}/testimony/get/'+ id,
-			    			 type: 'GET',
+			    			 url : '${pageContext.request.contextPath}/class/delete/'+ id,
+			    			 type: 'DELETE',
 			    			 success : function(data){
-			    			 	$("#id-testimony").val(data.id);
-			    			 	$('#titles1').val(data.title);
-				    			$('#contents1').val(data.content);
-				    			$('#created-on').val(data.createdOn);
-				    			$('input[name="isDelete"]').val(data.isDelete=true)
-				    			console.log(data)
-			    			 },
+			    			 	window.location='${pageContext.request.contextPath}/class'
+			    			 }
 			    			
 			    		 })
-			    		 $('#add-delete-testimony').modal()
 			    		 
 			    	 });
-						 
-					jQuery('#btn-delete-testimony-submit').click(function(event){
-								event.preventDefault();
-								var name = jQuery('#titles').val();
-							    var note = jQuery('#contents').val();
-								var id = jQuery('#id-testimony').val();
-								var date=new Date();
-								
-								var testimony = {
-										title:name,
-										content:note,
-										id:id,
-										isDelete:$('#actives').val(),
-										createdOn : $('#created-on').val(),
-										deletedOn:date
-								}
-								jQuery.ajax({
-									url : '${pageContext.request.contextPath}/testimony/update',
-									type:'POST',
-										beforeSend:function(){
-											console.log(testimony);
-											console.log('mau contact server');
-										},
-									contentType: 'application/json',
-									data: JSON.stringify(testimony),
-									success : function(data){
-										
-										console.log('data dari server');
-										console.log(data);
-										window.location='${pageContext.request.contextPath}/testimony'
-									}
-								});
-								
-							});
+
 	 	
 				});				    							
 </script>
