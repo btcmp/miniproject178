@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.miniproject.training.dao.GeneratedVersionDao;
 import com.miniproject.training.model.Question;
+import com.miniproject.training.model.User;
 import com.miniproject.training.model.Version;
 import com.miniproject.training.model.VersionDetail;
 import com.miniproject.training.service.QuestionService;
@@ -35,6 +36,9 @@ public class VersionController {
 	
 	@Autowired
 	GeneratedVersionDao generated;
+	
+	@Autowired
+	HttpSession httpSession;
 	
 	@RequestMapping
 	public String view(Model model) {
@@ -54,6 +58,8 @@ public class VersionController {
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	@ResponseBody
 	public Version saving(@RequestBody Version version, Model model) {
+		User user = (User) httpSession.getAttribute("application-user");
+		version.setCreatedBy(user.getId());
 		versionService.saving(version);
 		return version;
 	}
@@ -61,6 +67,9 @@ public class VersionController {
 	@RequestMapping(value="/update", method=RequestMethod.POST)
 	@ResponseBody
 	public Version update(@RequestBody Version version) {
+		User user = (User) httpSession.getAttribute("application-user");
+		version.setDeletedBy(user.getId());
+		version.setModifiedBy(user.getId());
 		versionService.saving(version);
 		return version;
 	}
