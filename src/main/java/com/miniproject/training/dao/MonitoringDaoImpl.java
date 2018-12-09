@@ -50,7 +50,7 @@ public class MonitoringDaoImpl implements MonitoringDao{
 
 	public List<Monitoring> getSearchByName(String name) {
 		// TODO Auto-generated method stub
-		String hql="from Monitoring m where lower(m.testId.name) like lower('%"+name+"%')";
+		String hql="from Monitoring m where m.isDelete='0' and lower(m.testId.name) like lower('%"+name+"%')";
 		Session session=sessionFactory.getCurrentSession();
 		List<Monitoring> monitorings=session.createQuery(hql).list();
 		return monitorings;

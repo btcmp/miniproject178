@@ -227,7 +227,7 @@
 							<input type="text" id="endDate" class="form-control" placeholder="End Date" />
 						</div>
 						<div class="form-group">
-							<input type="text" id="description" class="form-control" placeholder="Description" />
+							<textarea id="description" class="form-control" rows="5" placeholder="Description" ></textarea>
 						</div>	
 
 						<div class="modal-footer">
@@ -258,7 +258,7 @@
 							<input type="text" id="realizationDate" class="form-control" placeholder="Realization Date"/>
 						</div>
 						<div class="form-group">
-							<input type="text" id="notes" class="form-control" placeholder="Notes" />
+							<textarea id="notes" class="form-control" rows="5" placeholder="Notes" ></textarea>
 						</div>
 						
 						<div class="modal-footer">

@@ -258,7 +258,7 @@
 							<input type="text" id="placementAt" class="form-control" placeholder="Placement At" />
 						</div>
 						<div class="form-group">
-							<input type="text" id="notes" class="form-control" placeholder="Notes" />
+							<textarea id="notes" class="form-control" rows="5" placeholder="Notes" ></textarea>
 						</div>	
 						
 						<div class="modal-footer">

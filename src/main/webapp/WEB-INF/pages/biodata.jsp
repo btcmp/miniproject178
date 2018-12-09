@@ -251,7 +251,7 @@
 							</div>
 							<div class="form-group col-md-6">
 								<input type="radio" id="gender" name="gender" value="Male" /> Male
-								<input type="radio" id="gender" name="gender" value="Female" /> Female
+								<input type="radio" id="gender1" name="gender" value="Female" /> Female
 							</div>
 				      	</div>
 				      	
@@ -310,7 +310,7 @@
 				      	</div>
 
 						<div class="form-group">
-							<input type="text" id="notes" class="form-control" placeholder="Notes" />
+							<textarea id="notes" class="form-control" rows="5" placeholder="Notes" ></textarea>
 						</div>
 						
 						<div class="modal-footer">
@@ -422,6 +422,7 @@
 		var button2=jQuery('.btn-edit').click(function(event){
 			event.preventDefault();
 			var id=$(this).attr('id');
+
 			$.ajax({
 				url : '${pageContext.request.contextPath}/biodata/editui/'+ id,
 				type :'GET',
@@ -451,13 +452,10 @@
 			$('#edit-biodata').modal();
 		})
 		
-		
-		
 		//radionbutton
 		var radiobtn;
 		$("input[type='radio']"). click(function(){
 			radiobtn=$("[name=gender]:checked").val();
-			
 		})
 		
 		//edit
