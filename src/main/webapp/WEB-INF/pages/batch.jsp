@@ -162,8 +162,9 @@ input.parsley-error {
 									<form class="navbar-form navbar-left" role ="search" action="${pageContext.request.contextPath }/batch">
 										<div class="form-group is-empty">
 											<input class="form-control" type="text" name="search"
-											placeholder="Search by batch" />
+											placeholder="Search by batch/technology" />
 										</div>
+										<span class="material-input"></span>
 										<span class="material-input"></span>
 										<span class="material-input"></span>
 										<button type= "submit" class="btn btn-primary btn-round btn-just-icon">
@@ -269,7 +270,7 @@ input.parsley-error {
 								<label for="name-batch">Name</label>
 								<input data-parsley-required="true" type="text" id="name"
 									class="form-control"
-									aria-describedby="nameHelp" placeholder="Enter Name Trainer" />
+									aria-describedby="nameHelp" placeholder="Enter Name Batch" />
 							</div>
 						<div class="form-group">
 							<input type="text" id="startDate" class="form-control" placeholder="Start Date">
@@ -305,7 +306,71 @@ input.parsley-error {
 
 				</div>
 			</div>
+		</div>
+		<div class="modal fade" id="update-batch-modal" tabindex="-1"
+			role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Batch</h5>
+					</div>
+					<div class="modal-body">
+						<input type="hidden" id="id-batch1"/>
+						<form action="${pageContext.request.contextPath}/batch/save" method="POST">
+							<div class="form-group">
+								<select id="technologyId1" name="technology" class="form-control">
+									<option>--Technology--</option>
+									<c:forEach items="${technology}" var="tech">
+										<option value="${tech.id}">${tech.name}</option>
+									</c:forEach>
+								</select>
+							</div>
+							<div class="form-group">
+								<select id="trainerId1" name="training" class="form-control">
+										<option value="select">--Trainer--</option>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="name-batch">Name</label>
+								<input data-parsley-required="true" type="text" id="name1"
+									class="form-control"
+									aria-describedby="nameHelp" placeholder="Enter Name Batch" />
+							</div>
+						<div class="form-group">
+							<input type="text" id="startDate1" class="form-control" placeholder="Start Date">
+						</div>
+							<div class="form-group">
+								<label for="name-batch">End Date</label>
+								<input data-parsley-required="true" type="text" id="endDate1"
+									class="form-control"
+									aria-describedby="nameHelp" placeholder="Enter End Date" />
+							</div>
+							<div class="form-group">
+								<select id="roomId1" name="training" class="form-control">
+									<option>--Room--</option>
+									<c:forEach items="${room}" var="room">
+										<option value="${room.id}">${room.name}</option>
+									</c:forEach>
+								</select>
+							</div>
+							<div class="form-group">
+								<label for="note-trainer">Note</label>
+								<textarea data-parsley-required="true" 
+								rows="4" cols="50" id="note1" aria-describedby="nameHelp"
+								class="form-control" placeholder="Enter note trainer" ></textarea>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									data-dismiss="modal">Close</button>
+								<button type="submit" id="btn-update-batch-submit"
+									class="btn btn-primary">update</button>
+							</div>
+						</form>
+					</div>
+
+				</div>
 			</div>
+		</div>
 							
 </body>
 <!--   Core JS Files   -->
@@ -415,52 +480,59 @@ input.parsley-error {
 				    			 success : function(data){
 				    				  console.log(data)
 			    			                 options="<option value="+data.trainer.id+">"+data.trainer.name+"</option>";
-			    			                $(options).appendTo('#trainerId');
-				    				 $('#id-batch').val(data.id);
-				    				 $('#name').val(data.name);
-				    				 $('#note').val(data.note);
-				    				 $('#technologyId').val(data.technology.id);
-				    				 $('#trainerId').val(data.trainer.id);
-				    				 $('#startDate').val(data.periodFrom);
-				    				 $('#endDate').val(data.periodTo);
+			    			                $(options).appendTo('#trainerId1');
+				    				 $('#id-batch1').val(data.id);
+				    				 $('#name1').val(data.name);
+				    				 $('#note1').val(data.note);
+				    				 $('#technologyId1').val(data.technology.id);
+				    				 $('#trainerId1').val(data.trainer.id);
+				    				 $('#startDate1').val(data.periodFrom);
+				    				 $('#endDate1').val(data.periodTo);
 				    			 },
 				    			 dataType: 'json'
 				    		 })
 				    		 
-				    		$('#add-batch-modal').modal();
+				    		$('#update-batch-modal').modal();
 				    		 
 				    	 });
 						 //update technology
-						 var button = jQuery('#btn-update-batch').click(function(event){
+						 jQuery('#btn-update-batch-submit').click(function(event){
 								event.preventDefault();
+								var date=new Date();
+								var technology=$('#technologyId1 option:selected').val();
+								var trainer=$('#trainerId1 option:selected').val();
 								var name = jQuery('#name1').val();
-						/* 		var createdBy =jQuery('#createdBy').val();
-								var active=jQuery('#active').val(); */
 							    var note = jQuery('#note1').val();
-								var id = jQuery('#id-technology').val();
-								var active=1;
-								
-								var technology = {
+							    var startDate=jQuery('#startDate1').val();
+							    var endDate=jQuery('#endDate1').val();
+								var batch = {
+										technology:{
+											id:technology,
+										},
+										trainer:{
+											id:trainer,
+										},
 										name:name,
 										note:note,
-										id:id,
-										active:active
-
+										periodFrom:startDate,
+										periodTo:endDate,
+										createdOn:date
 								}
+								
 								jQuery.ajax({
-									url : '${pageContext.request.contextPath}/technology/update',
+									url : '${pageContext.request.contextPath}/batch/save',
 									type:'POST',
 										beforeSend:function(){
-											console.log(technology);
+											console.log(batch);
 											console.log('mau contact server');
 										},
 									contentType: 'application/json',
-									data: JSON.stringify(technology),
+									data: JSON.stringify(batch),
 									success : function(data){
 										
 										console.log('data dari server');
 										console.log(data);
-										window.location='${pageContext.request.contextPath}/technology'
+										window.location='${pageContext.request.contextPath}/batch'
 									}
 								});
 								
