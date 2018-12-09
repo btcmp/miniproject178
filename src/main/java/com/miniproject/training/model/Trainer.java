@@ -31,16 +31,24 @@ public class Trainer {
 	private Date createdOn;
 	@Column(name="modified_by")
 	private long modifiedBy;
-	@Column(name="modifeid_on")
+	@Column(name="modified_on")
 	private Date modifiedOn;
 	@Column(nullable=true)
 	private boolean active;
 	
-	
 	@OneToMany(mappedBy="trainer")
+	private List<Batch> batchTran;
+	
+	@OneToMany(mappedBy="trainer",cascade=CascadeType.ALL,orphanRemoval=true)
 	private List<TechnologyTrainer> TechTran;
 
-
+	
+	public List<Batch> getBatchTran() {
+		return batchTran;
+	}
+	public void setBatchTran(List<Batch> batchTran) {
+		this.batchTran = batchTran;
+	}
 	public String getNote() {
 		return note;
 	}

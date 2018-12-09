@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -22,6 +24,26 @@ public class Class {
 	@Column(name="created_on")
 	private Date createdOn;
 	
+	@ManyToOne
+	@JoinColumn(name="batch_id")
+	private Batch batch;
+	
+	@ManyToOne
+	@JoinColumn(name="biodata_id")
+	private Biodata biodata;
+	
+	public Batch getBatch() {
+		return batch;
+	}
+	public void setBatch(Batch batch) {
+		this.batch = batch;
+	}
+	public Biodata getBiodata() {
+		return biodata;
+	}
+	public void setBiodata(Biodata biodata) {
+		this.biodata = biodata;
+	}
 	public long getCreatedBy() {
 		return createdBy;
 	}

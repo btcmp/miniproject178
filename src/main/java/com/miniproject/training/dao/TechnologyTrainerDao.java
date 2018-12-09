@@ -12,4 +12,6 @@ public interface TechnologyTrainerDao {
 	public void save(TechnologyTrainer technology);
 
 	public List<TechnologyTrainer> getTechnologyTrainerByTechnology(Technology technology);
+
+	public void delete(long id);
 }

@@ -52,6 +52,7 @@
 				<value>com.miniproject.training.model.Class</value>
 				<value>com.miniproject.training.model.GeneratedVersion</value>
 				<value>com.miniproject.training.model.Test</value>
+				<value>com.miniproject.training.model.BootcampType</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

@@ -109,6 +109,12 @@
                             <p>Category</p>
                         </a>
                     </li>
+                      <li>
+                        <a href="${pageContext.request.contextPath }/idlenews">
+                            <i class="material-icons">chat</i>
+                            <p>Idle News</p>
+                        </a>
+                    </li>
 					<li><a href="${pageContext.request.contextPath }/question">
 							<i class="material-icons">library_books</i>
 							<p>Questions</p>
