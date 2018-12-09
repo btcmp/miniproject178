@@ -25,12 +25,12 @@ public class Technology {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="technology_id",nullable=false,length=11)
 	private long id;
-	@Column(nullable=true)
+	@Column(nullable=false)
 	private String name;
 	private String note;
-	@Column(name="created_by")
+	@Column(name="created_by",nullable=false)
 	private Long createdby;
-	@Column(name="created_on",nullable=true)
+	@Column(name="created_on",nullable=false)
 	@Temporal(TemporalType.DATE)
 	private Date createdOn;
 	@Column(name="modified_By",length=11)
@@ -38,7 +38,7 @@ public class Technology {
 	private Date modifiedBy;
 	@Column(name="modified_on")
 	private String modifiedOn;
-	@Column(nullable=true)
+	@Column(nullable=false)
 	private boolean active;
 	
 	@OneToMany(mappedBy="technology")
