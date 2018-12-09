@@ -25,7 +25,7 @@ public class IdleNews {
 	@Column(length = 5000)
 	private String content;
 	@Column(name="is_publish", nullable=true)
-	private Boolean isPublish;
+	private Boolean isPublish = false;
 	@Column(name="created_by", nullable=true)
 	private Long createdBy;
 	@Temporal(TemporalType.DATE)
@@ -37,7 +37,7 @@ public class IdleNews {
 	@Column(name="modified_on")
 	private Date modifiedOn;
 	@Column(name="is_delete", nullable=true)
-	private Boolean isDelete;
+	private Boolean isDelete = true;
 	
 	@ManyToOne
 	@JoinColumn(name="category_id", nullable=false)

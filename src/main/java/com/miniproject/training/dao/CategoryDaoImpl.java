@@ -62,7 +62,7 @@ public class CategoryDaoImpl implements CategoryDao {
 
 	public List<Category> searchByName(String name) {
 		// TODO Auto-generated method stub
-		String hql = "from Category c where lower(c.name) like lower('%"+name+"%') or lower(c.code) like lower('%"+name+"%')";
+		String hql = "from Category c where c.active = '1' and lower(c.name) like lower('%"+name+"%') or lower(c.code) like lower('%"+name+"%')";
 		Session session = sessionFactory.getCurrentSession();
 		List<Category> categorys = session.createQuery(hql).list();
 		return categorys;

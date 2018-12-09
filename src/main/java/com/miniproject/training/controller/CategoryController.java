@@ -3,6 +3,8 @@ package com.miniproject.training.controller;
 import java.nio.channels.GatheringByteChannel;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -15,7 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.miniproject.training.dao.GeneratedVersionDao;
 import com.miniproject.training.model.Category;
+import com.miniproject.training.model.GeneratedVersion;
+import com.miniproject.training.model.User;
 import com.miniproject.training.service.CategoryService;
 
 @Controller
@@ -25,6 +30,12 @@ public class CategoryController {
 	@Autowired
 	CategoryService categoryService;
 	
+	@Autowired
+	GeneratedVersionDao generatedCategory;
+	
+	@Autowired
+	HttpSession httpSession;
+	
 	//list category
 	@RequestMapping
 	public String view(Model model) {
@@ -33,10 +44,18 @@ public class CategoryController {
 		return "category";
 	}
 	
+	@RequestMapping(value="/generatedversion")
+	@ResponseBody
+	public Long getGeneratedVersion() {
+		return generatedCategory.nextCat();
+	}
+	
 	//save category
 	@RequestMapping(value="/save", method=RequestMethod.POST)
 	@ResponseBody
 	public Category save(@RequestBody Category category) {
+		User user = (User) httpSession.getAttribute("application-user");
+		category.setCreatedBy(user.getId());
 		categoryService.saveCategory(category);
 		return category;
 	}
@@ -53,6 +72,8 @@ public class CategoryController {
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Category update(@RequestBody Category category) {
+		User user = (User) httpSession.getAttribute("application-user");
+		category.setModifiedBy(user.getId());
 		categoryService.update(category);
 		return category;
 	}

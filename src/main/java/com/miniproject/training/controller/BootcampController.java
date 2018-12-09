@@ -3,6 +3,7 @@ package com.miniproject.training.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.miniproject.training.model.Bootcamp;
 import com.miniproject.training.model.Office;
+import com.miniproject.training.model.User;
 import com.miniproject.training.service.BootcampService;
 
 @Controller
@@ -26,6 +28,9 @@ public class BootcampController {
 //
 	@Autowired
 	BootcampService bootcampService;
+	
+	@Autowired
+	HttpSession httpSession;
 //	
 //	//bootcamp list
 	@RequestMapping
@@ -39,6 +44,8 @@ public class BootcampController {
 	@RequestMapping(value="/save", method = RequestMethod.POST)
 	@ResponseBody
 	public Bootcamp save(@RequestBody Bootcamp bootcamp) {
+		User user = (User) httpSession.getAttribute("application-user");
+		bootcamp.setCreatedBy(user.getId());
 		bootcampService.save(bootcamp);
 		return bootcamp;
 	}
@@ -55,6 +62,8 @@ public class BootcampController {
 	@RequestMapping(value="/update", method = RequestMethod.POST)
 	@ResponseBody
 	public Bootcamp update(@RequestBody Bootcamp bootcamp) {
+		User user = (User) httpSession.getAttribute("application-user");
+		bootcamp.setModifiedBy(user.getId());
 		bootcampService.update(bootcamp);
 		return bootcamp;
 	}

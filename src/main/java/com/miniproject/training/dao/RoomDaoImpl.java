@@ -3,6 +3,8 @@ package com.miniproject.training.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.miniproject.training.model.Office;
 import com.miniproject.training.model.Room;
+import com.miniproject.training.model.User;
 
 @Repository
 public class RoomDaoImpl implements RoomDao {
@@ -18,8 +21,13 @@ public class RoomDaoImpl implements RoomDao {
 	@Autowired
 	SessionFactory sessionFactory;
 	
+	@Autowired
+	HttpSession httpSession;
+	
 	public void save(Room room) {
 		// TODO Auto-generated method stub
+		User user = (User) httpSession.getAttribute("application-user");
+		room.setCreatedBy(user.getId());
 		Session session = sessionFactory.getCurrentSession();
 		session.save(room);
 	}

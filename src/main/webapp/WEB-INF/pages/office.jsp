@@ -191,7 +191,16 @@
                                             	<tr>
                                             		<td><c:out value="${office.name }"></c:out></td>
                                             		<td><c:out value="${office.phone }"></c:out></td>
-                                            		<td><c:out value="${office.active }"></c:out></td>
+                                            		<td>
+                                            		<c:choose>
+													    <c:when test="${office.active=='0'}">
+													        non active
+													    </c:when>    
+													    <c:otherwise>
+													        active
+													    </c:otherwise>
+													</c:choose>
+                                            		</td>
 	                                            	<td>
 	                                            		<button type="button" rel="tooltip" title="Edit" value="${office.id }" class="btn btn-success btn-simple btn-xs btn-edit">
 										                    <i class="fa fa-edit"></i>
@@ -481,11 +490,11 @@
 			var tbody = oTable.find('tbody');
 			var listRoom = [];
 			var projector = true;
-			/* if (radio == 'yes') {
+			/*  if (radio == 'yes') {
 				projector = true;
 			}else{
-				projector = false; */
-			//}
+				projector = false; 
+			} */
 			$.each(tbody.find('tr'), function(index, value){
 					var code = $(this).find('.txt-code').val();
 					var nameRoom = $(this).find('.txt-name').val();
