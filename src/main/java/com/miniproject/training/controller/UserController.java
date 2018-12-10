@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.miniproject.training.model.Role;
@@ -23,7 +24,7 @@ import com.miniproject.training.service.RoleService;
 import com.miniproject.training.service.UserService;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping(value={"/","/user"})
 public class UserController {
 
 	@Autowired
@@ -65,6 +66,8 @@ public class UserController {
 	@ResponseBody
 	public User deactivate(@RequestBody User user)
 	{
+		User userlogin = (User) httpSession.getAttribute("application-user");
+		user.setModifiedBy(userlogin.getId());
 		userService.deactivate(user);
 		return user;
 	}
@@ -82,7 +85,18 @@ public class UserController {
 	@ResponseBody
 	public User update(@RequestBody User user)
 	{
+		User userlogin = (User) httpSession.getAttribute("application-user");
+		user.setModifiedBy(userlogin.getId());
 		userService.update(user);
 		return user;
+	}
+	
+	//search user for username
+	@RequestMapping(value="/search",method = RequestMethod.GET)
+	public String search(@RequestParam("srcuser") String name,Model model)
+	{
+		List<User> users = userService.searchByName(name);
+		model.addAttribute("users",users);
+		return "user";
 	}
 }

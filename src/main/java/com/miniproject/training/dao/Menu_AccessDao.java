@@ -14,4 +14,6 @@ public interface Menu_AccessDao {
 
 	public void delete(long id);
 
+	public List<Menu_Access> searchByName(String name);
+
 }

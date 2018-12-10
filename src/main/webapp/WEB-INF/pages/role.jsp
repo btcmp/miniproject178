@@ -64,30 +64,6 @@ String RndmCode = new String(pattern);
             <div class="sidebar-wrapper">
                 <ul class="nav">
                     <li>
-                        <a href="dashboard.html">
-                            <i class="material-icons">dashboard</i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
-                     <li>
-                        <a href="${pageContext.request.contextPath}/department">
-                            <i class="material-icons">library_books</i>
-                            <p>Department</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="${pageContext.request.contextPath}/employee">
-                             <i class="material-icons">bubble_chart</i>
-                            <p>Employee</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="${pageContext.request.contextPath}/account">
-                            <i class="material-icons">person</i>
-                            <p>User Account</p>
-                        </a>
-                    </li>
-                    <li>
                         <a href="${pageContext.request.contextPath}/user">
                             <i class="material-icons">person</i>
                             <p>User</p>
@@ -115,19 +91,70 @@ String RndmCode = new String(pattern);
 						<i class="material-icons">person</i>
 						<p>Biodata</p>
 					</a></li>
+					<li><a href="${pageContext.request.contextPath }/monitoring"> 
+						<i class="material-icons">work</i>
+						<p>Monitoring</p>
+					</a></li>
+					<li><a href="${pageContext.request.contextPath }/assignment"> 
+						<i class="material-icons">work</i>
+						<p>Assignment</p>
+					</a></li>
+					<li>
 					<li>
                         <a href="${pageContext.request.contextPath }/office">
                             <i class="material-icons">work</i>
                             <p>Office</p>
                         </a>
                     </li>
+                    <li>
+                        <a href="${pageContext.request.contextPath }/bootcamp">
+                            <i class="material-icons">group</i>
+                            <p>Bootcamp Test Type</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="${pageContext.request.contextPath }/category">
+                            <i class="material-icons">library_books</i>
+                            <p>Category</p>
+                        </a>
+                    </li>
+                      <li>
+                        <a href="${pageContext.request.contextPath }/idlenews">
+                            <i class="material-icons">chat</i>
+                            <p>Idle News</p>
+                        </a>
+                    </li>
 					<li><a href="${pageContext.request.contextPath }/question">
 							<i class="material-icons">library_books</i>
 							<p>Questions</p>
 					</a></li>
-					<li><a href="${pageContext.request.contextPath }/technology">
+					<li><a href="${pageContext.request.contextPath }/version">
 							<i class="material-icons">library_books</i>
+							<p>Versions</p>
+					</a></li>
+					<li><a href="${pageContext.request.contextPath }/feedback">
+							<i class="material-icons">library_books</i>
+							<p>Feedback</p>
+					</a></li>
+					<li><a href="${pageContext.request.contextPath }/technology">
+							<i class="material-icons">developer_mode</i>
 							<p>Technology</p>
+					</a></li>
+					<li><a href="${pageContext.request.contextPath }/trainer">
+							<i class="material-icons">supervisor_account</i>
+							<p>Trainer</p>
+					</a></li>
+					<li><a href="${pageContext.request.contextPath }/testimony">
+							<i class="material-icons">list</i>
+							<p>Testimony</p>
+					</a></li>
+					<li><a href="${pageContext.request.contextPath }/batch">
+							<i class="material-icons">list</i>
+							<p>Batch</p>
+					</a></li>
+					<li><a href="${pageContext.request.contextPath }/class">
+							<i class="material-icons">list</i>
+							<p>Class</p>
 					</a></li>
                     <li>
                         <a href="#" id="logout">
@@ -179,8 +206,13 @@ String RndmCode = new String(pattern);
                                     <h4 class="title">Role</h4>
                                 </div>
                                 <div class="card-content table-responsive">
-                                <input type="search" name="search" placeholder="Search by Role" />
-                                <button type="button" id="tambahRole" class="btn btn-sm btn-primary">+</button>
+                                <form action="${pageContext.request.contextPath}/role/search" method="GET">
+	                                <input type="search" id="searchRole" name="srcrole" placeholder="Search by name" />
+	                                <button type="submit" class="btn btn-sm btn-default">
+	                                		<i class="material-icons"></i>Search
+	                               	</button>
+	                                <button type="button" id="tambahRole" class="btn btn-sm btn-primary">+</button>
+                                </form>
                                     <table id="table-role" class="table table-hover">
                                         <thead class="text-warning">
                                             <th>Code</th>
@@ -362,120 +394,8 @@ String RndmCode = new String(pattern);
 <script src="${pageContext.request.contextPath}/resources/assets/js/demo.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-    	
-    	 function ajaxSetUp(){
-    		 var token = $("meta[name='_csrf']").attr("content");
-    		  var header = $("meta[name='_csrf_header']").attr("content");
-    		  $(document).ajaxSend(function(e, xhr, options) {
-    		    xhr.setRequestHeader(header, token);
-    		  });
-    	 }
     	 
     	 $('#table-role').DataTable();
-     
-    	 // Javascript method's body can be found in assets/js/demos.js
-    	 $('.view-detail').on('click', function(){
-    		 var id = $(this).attr('id');
-    		 $(this).removeAttr("checked");	 
-    		 $.ajax({
-    			 url: 'account/user/'+id,
-    			 type: 'GET',
-    			 beforeSend: function(){
-    				ajaxSetUp(); 
-    			 },
-    			 success: function(data){
-    				 console.log(data);
-    				 $("select[name='roles'] option:selected").prop("selected", false)
-    				 $('#idEdit').val(data.id);
-    				 $('input[name="user.username"]').val(data.username);
-    				 $('input[name="user.email"]').val(data.email);
-    				 
-    				 if(data.enabled == 1){
-    					$('#statusUser').attr("checked","");	 
-    				 } 
-    				 
-    				 $.each(data.roles, function(index, value){ 
-    					  $("select[name='roles'] option[value='" + value.id + "']").prop("selected", true);
-    				 });
-    			 }
-    		 });
-         	$('#modal-edit-account-view-detail').modal();
-         });
-    	 
-    	 $("#statusUser").on("click", function(){
-    		 var attr = $(this).attr('checked');
-    		 if (typeof attr !== typeof undefined && attr !== false) {
-    			 $(this).removeAttr("checked");	    
-    		 } else {
-    			 $(this).attr("checked", "");
-    		 }
-    	 });
-    	 
-    	 $("#add-statusUser").on("click", function(){
-    		 var attr = $(this).attr('checked');
-    		 if (typeof attr !== typeof undefined && attr !== false) {
-    			 $(this).removeAttr("checked");	    
-    		 } else {
-    			 $(this).attr("checked", "");
-    		 }
-    	 });
-    	 
-    	 $('#btn-edit').on('click', function(){
-    		 var attr = $("#statusUser").attr('checked');
-    		 var enable = 0;
-    		 if (typeof attr !== typeof undefined && attr !== false) {
-    			 enable = 1;
-    		 }
-    		 var user = {
-    				id : $('#idEdit').val(),
-    				username : $('input[name="user.username"]').val(),
-    				email : $('input[name="user.email"]').val(),
-    				enabled : enable,
-    				roles : []
-    		 }
-    		 
-    		 $.each($('#listRoles').val(), function(index, val){
-    			 var role = {
-    				id : val
-    			 }
-    			 user.roles.push(role);
-    		 });
-    		
-			$.ajax({
-				 url : 'account/updaterole',
-				 type: 'PUT', 
-				 contentType: 'application/json',
-				 data : JSON.stringify(user),
-				 success: function(data){
-					 window.location = "account";
-				 }
-			 });
-    	 });
-    	 
-    	 
-    	 
-    	 $('#btn-add-role').on('click', function(){
-    		 $('#add-role-modal').modal();
-    	 });
-    	 
-    	 $('#btn-add-role-submit').on('click', function(){
-    		 var validate = $('#form-add-role').parsley();
-    		 if(validate.validate()){
-    			var role = {
-    				roleName : $('#role-name').val(),
-    			}
-    			ajaxSetUp();
-    			$.ajax({
-    				url: 'account/addrole',
-    				type: 'POST',
-    				data: JSON.stringify(role),
-    				contentType: 'application/json',
-    				success: function(data){
-    					console.log(data);
-    				}
-    			});
-    		 }	 
-    	 });
     	 
     	//logout event button
     	 $('#logout').click(function(event){
@@ -483,7 +403,7 @@ String RndmCode = new String(pattern);
     		$('#logoutForm').submit();
     	 });
     	
-    	//modal tambah user
+    	//modal tambah role
  	    $('#tambahRole').click(function(event) {
  			event.preventDefault();
  			$('#addRole').modal();
@@ -516,6 +436,9 @@ String RndmCode = new String(pattern);
    										console.log(data);
    										window.location='${pageContext.request.contextPath}/role'
    										alert("Berhasil menambahkan Role")
+   									},
+   									error : function(data){
+   										alert("data tidak boleh kosong")
    									}
    								});
    								
@@ -636,6 +559,9 @@ String RndmCode = new String(pattern);
    										console.log(data);
    										window.location='${pageContext.request.contextPath}/role'
    										alert("Role berhasil update")
+   									},
+   									error : function(data){
+   										alert("data tidak boleh kosong")
    									}
    								});
    								

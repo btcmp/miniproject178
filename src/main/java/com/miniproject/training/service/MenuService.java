@@ -41,4 +41,9 @@ public class MenuService {
 		// TODO Auto-generated method stub
 		menuDao.update(menu);
 	}
+
+	public List<Menu> searchByName(String name) {
+		// TODO Auto-generated method stub
+		return menuDao.searchByName(name);
+	}
 }

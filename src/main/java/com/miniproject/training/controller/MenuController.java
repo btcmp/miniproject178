@@ -2,6 +2,8 @@ package com.miniproject.training.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,9 +12,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.miniproject.training.model.Menu;
+import com.miniproject.training.model.User;
 import com.miniproject.training.service.MenuService;
 
 @Controller
@@ -21,6 +25,9 @@ public class MenuController {
 
 	@Autowired
 	MenuService menuService;
+	
+	@Autowired
+	HttpSession httpSession;
 	
 	@ModelAttribute("menuForm")
 	public Menu getMenuForm()
@@ -40,6 +47,8 @@ public class MenuController {
 	@ResponseBody
 	public Menu saving(@RequestBody Menu menu)
 	{
+		User user = (User) httpSession.getAttribute("application-user");
+		menu.setCreatedBy(user.getId());
 		menuService.saving(menu);
 		return menu;
 	}
@@ -57,6 +66,8 @@ public class MenuController {
 	@ResponseBody
 	public Menu deactivate(@RequestBody Menu menu)
 	{
+		User user = (User) httpSession.getAttribute("application-user");
+		menu.setModifiedBy(user.getId());
 		menuService.deactivate(menu);
 		return menu;
 	}
@@ -65,7 +76,18 @@ public class MenuController {
 	@ResponseBody
 	public Menu update(@RequestBody Menu menu)
 	{
+		User user = (User) httpSession.getAttribute("application-user");
+		menu.setModifiedBy(user.getId());
 		menuService.update(menu);
 		return menu;
+	}
+	
+	//Search menu for title
+	@RequestMapping(value="/search",method = RequestMethod.GET)
+	public String search(@RequestParam("srcmenu") String name, Model model )
+	{
+		List<Menu> menus = menuService.searchByName(name);
+		model.addAttribute("menus",menus);
+		return "menu";
 	}
 }

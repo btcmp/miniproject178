@@ -40,5 +40,9 @@ public class RoleService {
 		// TODO Auto-generated method stub
 		roleDao.update(role);
 	}
+	public List<Role> searchByName(String name) {
+		// TODO Auto-generated method stub
+		return roleDao.searchByName(name);
+	}
 
 }

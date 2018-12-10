@@ -36,5 +36,10 @@ public class Menu_AccessService {
 		// TODO Auto-generated method stub
 		menu_AccessDao.delete(id);
 	}
+
+	public List<Menu_Access> searchByName(String name) {
+		// TODO Auto-generated method stub
+		return menu_AccessDao.searchByName(name);
+	}
 	
 }

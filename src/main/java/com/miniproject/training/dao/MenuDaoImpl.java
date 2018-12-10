@@ -60,4 +60,12 @@ public class MenuDaoImpl implements MenuDao{
 		session.update(menu);
 	}
 
+	public List<Menu> searchByName(String name) {
+		// TODO Auto-generated method stub'
+		String hql = "from Menu m where lower(m.title) like lower('%"+name+"%')";
+		Session session = sessionFactory.getCurrentSession();
+		List<Menu> menu = session.createQuery(hql).list();
+		return menu;
+	}
+
 }

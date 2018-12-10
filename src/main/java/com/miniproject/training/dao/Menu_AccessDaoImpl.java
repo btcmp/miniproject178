@@ -19,7 +19,7 @@ public class Menu_AccessDaoImpl implements Menu_AccessDao{
 
 	public List<Menu_Access> getAllMenu_Access() {
 		// TODO Auto-generated method stub
-		String hql = "from Menu_Access";
+		String hql = "from Menu_Access ma where ma.role.active='1'";
 		Session session = sessionFactory.getCurrentSession();
 		Query query = session.createQuery(hql);
 		List<Menu_Access> menu_access = query.list();
@@ -54,6 +54,14 @@ public class Menu_AccessDaoImpl implements Menu_AccessDao{
 		menu_access.setId(id);
 		Session session = sessionFactory.getCurrentSession();
 		session.delete(session.get(Menu_Access.class, id));
+	}
+
+	public List<Menu_Access> searchByName(String name) {
+		// TODO Auto-generated method stub
+		String hql = "from Menu_Access ma where lower(ma.role.name) like lower('%"+name+"%')";
+		Session session = sessionFactory.getCurrentSession();
+		List<Menu_Access> menu_access = session.createQuery(hql).list();
+		return menu_access;
 	}
 	
 }

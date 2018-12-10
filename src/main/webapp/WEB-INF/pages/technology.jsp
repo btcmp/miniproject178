@@ -68,22 +68,6 @@ input.parsley-error {
 			</div>
 			<div class="sidebar-wrapper">
 				<ul class="nav">
-					<li><a href="dashboard.html"> <i
-							class="material-icons">dashboard</i>
-							<p>Dashboard</p>
-					</a></li>
-					<li><a href="${pageContext.request.contextPath }/department">
-						<i class="material-icons">library_books</i>
-						<p>Department</p>
-					</a></li>
-					<li><a href="${pageContext.request.contextPath}/employee">
-							<i class="material-icons">bubble_chart</i>
-							<p>Employee</p>
-					</a></li>
-					<li><a href="${pageContext.request.contextPath}/account">
-							<i class="material-icons">person</i>
-							<p>User Account</p>
-					</a></li>
 					<li>
                         <a href="${pageContext.request.contextPath}/user">
                             <i class="material-icons">person</i>
@@ -96,19 +80,66 @@ input.parsley-error {
                             <p>Role</p>
                         </a>
                     </li>
-					<li><a href="${pageContext.request.contextPath }/biodata"> 
+                    <li>
+                        <a href="${pageContext.request.contextPath}/menu">
+                            <i class="material-icons">library_books</i>
+                            <p>Menu</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="${pageContext.request.contextPath}/menu_access">
+                            <i class="material-icons">library_books</i>
+                            <p>Menu Access</p>
+                        </a>
+                    </li>
+                    <li><a href="${pageContext.request.contextPath }/biodata"> 
 						<i class="material-icons">person</i>
 						<p>Biodata</p>
 					</a></li>
+					<li><a href="${pageContext.request.contextPath }/monitoring"> 
+						<i class="material-icons">work</i>
+						<p>Monitoring</p>
+					</a></li>
+					<li><a href="${pageContext.request.contextPath }/assignment"> 
+						<i class="material-icons">work</i>
+						<p>Assignment</p>
+					</a></li>
+					<li>
 					<li>
                         <a href="${pageContext.request.contextPath }/office">
                             <i class="material-icons">work</i>
                             <p>Office</p>
                         </a>
                     </li>
+                    <li>
+                        <a href="${pageContext.request.contextPath }/bootcamp">
+                            <i class="material-icons">group</i>
+                            <p>Bootcamp Test Type</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="${pageContext.request.contextPath }/category">
+                            <i class="material-icons">library_books</i>
+                            <p>Category</p>
+                        </a>
+                    </li>
+                      <li>
+                        <a href="${pageContext.request.contextPath }/idlenews">
+                            <i class="material-icons">chat</i>
+                            <p>Idle News</p>
+                        </a>
+                    </li>
 					<li><a href="${pageContext.request.contextPath }/question">
 							<i class="material-icons">library_books</i>
 							<p>Questions</p>
+					</a></li>
+					<li><a href="${pageContext.request.contextPath }/version">
+							<i class="material-icons">library_books</i>
+							<p>Versions</p>
+					</a></li>
+					<li><a href="${pageContext.request.contextPath }/feedback">
+							<i class="material-icons">library_books</i>
+							<p>Feedback</p>
 					</a></li>
 					<li class="active"><a href="${pageContext.request.contextPath }/technology">
 							<i class="material-icons">developer_mode</i>
@@ -121,6 +152,14 @@ input.parsley-error {
 					<li><a href="${pageContext.request.contextPath }/testimony">
 							<i class="material-icons">list</i>
 							<p>Testimony</p>
+					</a></li>
+					<li><a href="${pageContext.request.contextPath }/batch">
+							<i class="material-icons">list</i>
+							<p>Batch</p>
+					</a></li>
+					<li><a href="${pageContext.request.contextPath }/class">
+							<i class="material-icons">list</i>
+							<p>Class</p>
 					</a></li>
 					<li><a href="#" id="logout"> <i class="material-icons">block</i>
 							<p>Logout</p>
@@ -262,7 +301,7 @@ input.parsley-error {
 						<h5 class="modal-title">Technology</h5>
 					</div>
 					<div class="modal-body">
-						<form action="${pageContext.request.contextPath }/technology/save" method="POST">
+						<form id="theForm" action="${pageContext.request.contextPath }/technology/save" method="POST">
 							<div class="form-group">
 								<label for="name-technology">Name</label>
 								<input data-parsley-required="true" type="text" id="name"
@@ -370,18 +409,18 @@ input.parsley-error {
 						<h5 class="modal-title">Technology</h5>
 					</div>
 					<div class="modal-body">
-						<form
+						<form id="theForm1"
 							action="${pageContext.request.contextPath }/technology/update" method="POST">
 							<div class="form-group">
 								<label for="name-technology">Name</label>
 								<input type="hidden" id="id-technology" />
-								<input type="text" id="name1"
+								<input type="text" id="name1" data-parsley-required="true"
 									class="form-control"
 									aria-describedby="nameHelp" placeholder="Enter Name Technology" />
 							</div>
 							<div class="form-group">
 								<label>Note</label>
-								<textarea rows="4" cols="50" id="note1" class="form-control" placeholder="Enter note technology" ></textarea>
+								<textarea rows="4" cols="50" id="note1" class="form-control" placeholder="Enter note technology" data-parsley-required="true"></textarea>
 							</div>
 							<button type="button" id="tambahTrainer1" class="btn btn-primary bts-sm">+Trainer</button><br>
 							<div class="table-responsive">
@@ -554,35 +593,43 @@ input.parsley-error {
 						 //update technology
 						jQuery('#btn-update-technology').click(function(event){
 								event.preventDefault();
-							 	var name = jQuery('#name1').val();
-							    var note = jQuery('#note1').val();
-								var id = jQuery('#id-technology').val();
-								var active=1;
-								
-								var technology = {
-										name:name,
-										note:note,
-										id:id,
-										active:active
+								validate = $('#theForm').parsley();
+								validate.validate();
+								if(validate.isValid()){
+									var name = jQuery('#name1').val();
+								    var note = jQuery('#note1').val();
+									var id = jQuery('#id-technology').val();
+									var active=1;
+									
+									var technology = {
+											name:name,
+											note:note,
+											id:id,
+											active:active
 
-								} 
-								jQuery.ajax({
-									url : '${pageContext.request.contextPath}/technology/update',
-									type:'POST',
-										beforeSend:function(){
-											console.log(technology);
-											console.log('mau contact server');
-										},
-									contentType: 'application/json',
-									data: JSON.stringify(technology),
-									success : function(data){
-										
-										console.log('data dari server');
-										console.log(data);
-										window.location='${pageContext.request.contextPath}/technology'
-									}
-								});
-								
+									} 
+									jQuery.ajax({
+										url : '${pageContext.request.contextPath}/technology/update',
+										type:'POST',
+											beforeSend:function(){
+												console.log(technology);
+												console.log('mau contact server');
+											},
+										contentType: 'application/json',
+										data: JSON.stringify(technology),
+										success : function(data){
+											
+											console.log('data dari server');
+											console.log(data);
+											window.location='${pageContext.request.contextPath}/technology'
+										}
+									});
+
+								}else{
+									alert('data tidak boleh kosong')
+									return false;
+								}
+							 									
 							});
 						 
 
@@ -678,43 +725,51 @@ input.parsley-error {
 						//add technology
 						jQuery('#btn-save-technology-submit').click(function(event){
 							event.preventDefault();
-							var name = jQuery('#name').val();
-						    var note = jQuery('#note').val();
-							var active=1;
-							var technologyTrainers = [];
-				            $.each($("input[name='trainer']:hidden"), function(){
-								var technologyTrainer = {
-										trainer:{
-											id:$(this).attr("id")
-										}
+							validate = $('#theForm').parsley();
+							validate.validate();
+							if(validate.isValid()){
+								var name = jQuery('#name').val();
+							    var note = jQuery('#note').val();
+								var active=1;
+								var technologyTrainers = [];
+					            $.each($("input[name='trainer']:hidden"), function(){
+									var technologyTrainer = {
+											trainer:{
+												id:$(this).attr("id")
+											}
+									}
+									technologyTrainers.push(technologyTrainer);
+					            });
+								
+								var technology = {
+										name:name,
+										note:note,
+										active:active,
+										techTran:technologyTrainers
 								}
-								technologyTrainers.push(technologyTrainer);
-				            });
-							
-							var technology = {
-									name:name,
-									note:note,
-									active:active,
-									techTran:technologyTrainers
+								console.log(technology)
+								   jQuery.ajax({
+									url : '${pageContext.request.contextPath}/technology/save',
+									type:'POST',
+										beforeSend:function(){
+											console.log(technology);
+											console.log('mau contact server');
+										},
+									contentType: 'application/json',
+									data: JSON.stringify(technology),
+									success : function(data){
+										
+										console.log('data dari server');
+										console.log(data);
+	 									window.location='${pageContext.request.contextPath}/technology'
+	 							}
+								});  
+			 				
+							}else{
+								alert('data tidak boleh kosong')
+								return false
 							}
-							console.log(technology)
-							   jQuery.ajax({
-								url : '${pageContext.request.contextPath}/technology/save',
-								type:'POST',
-									beforeSend:function(){
-										console.log(technology);
-										console.log('mau contact server');
-									},
-								contentType: 'application/json',
-								data: JSON.stringify(technology),
-								success : function(data){
-									
-									console.log('data dari server');
-									console.log(data);
- 									window.location='${pageContext.request.contextPath}/technology'
- 							}
-							});  
-		 					
+								
 					});
 				});				    	
 						
