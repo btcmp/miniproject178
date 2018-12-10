@@ -54,28 +54,6 @@
             <div class="sidebar-wrapper">
                 <ul class="nav">
                     <li>
-                        <a href="dashboard.html">
-                            <i class="material-icons">dashboard</i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
-                    <li><a href="${pageContext.request.contextPath }/department">
-						<i class="material-icons">library_books</i>
-						<p>Department</p>
-					</a></li>
-                    <li>
-                        <a href="${pageContext.request.contextPath}/employee">
-                             <i class="material-icons">bubble_chart</i>
-                            <p>Employee</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="${pageContext.request.contextPath}/account">
-                            <i class="material-icons">person</i>
-                            <p>User Account</p>
-                        </a>
-                    </li>
-                    <li>
                         <a href="${pageContext.request.contextPath}/user">
                             <i class="material-icons">person</i>
                             <p>User</p>
@@ -87,13 +65,34 @@
                             <p>Role</p>
                         </a>
                     </li>
+                    <li>
+                        <a href="${pageContext.request.contextPath}/menu">
+                            <i class="material-icons">library_books</i>
+                            <p>Menu</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="${pageContext.request.contextPath}/menu_access">
+                            <i class="material-icons">library_books</i>
+                            <p>Menu Access</p>
+                        </a>
+                    </li>
                     <li><a href="${pageContext.request.contextPath }/biodata"> 
 						<i class="material-icons">person</i>
 						<p>Biodata</p>
 					</a></li>
+					<li><a href="${pageContext.request.contextPath }/monitoring"> 
+						<i class="material-icons">work</i>
+						<p>Monitoring</p>
+					</a></li>
+					<li><a href="${pageContext.request.contextPath }/assignment"> 
+						<i class="material-icons">work</i>
+						<p>Assignment</p>
+					</a></li>
+					<li>
 					<li class="active">
                         <a href="${pageContext.request.contextPath }/office">
-                            <i class="material-icons">meeting_room</i>
+                            <i class="material-icons">work</i>
                             <p>Office</p>
                         </a>
                     </li>
@@ -119,9 +118,33 @@
 							<i class="material-icons">library_books</i>
 							<p>Questions</p>
 					</a></li>
-					<li><a href="${pageContext.request.contextPath }/technology">
+					<li><a href="${pageContext.request.contextPath }/version">
 							<i class="material-icons">library_books</i>
+							<p>Versions</p>
+					</a></li>
+					<li><a href="${pageContext.request.contextPath }/feedback">
+							<i class="material-icons">library_books</i>
+							<p>Feedback</p>
+					</a></li>
+					<li><a href="${pageContext.request.contextPath }/technology">
+							<i class="material-icons">developer_mode</i>
 							<p>Technology</p>
+					</a></li>
+					<li><a href="${pageContext.request.contextPath }/trainer">
+							<i class="material-icons">supervisor_account</i>
+							<p>Trainer</p>
+					</a></li>
+					<li><a href="${pageContext.request.contextPath }/testimony">
+							<i class="material-icons">list</i>
+							<p>Testimony</p>
+					</a></li>
+					<li><a href="${pageContext.request.contextPath }/batch">
+							<i class="material-icons">list</i>
+							<p>Batch</p>
+					</a></li>
+					<li><a href="${pageContext.request.contextPath }/class">
+							<i class="material-icons">list</i>
+							<p>Class</p>
 					</a></li>
                     <li>
                         <a href="#" id="logout">
