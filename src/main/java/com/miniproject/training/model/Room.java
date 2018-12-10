@@ -50,6 +50,17 @@ public class Room {
 	@Column(nullable=true)
 	private Boolean active = true;
 	
+	
+	@OneToMany(mappedBy="romm")
+	private List<Batch> batch;
+	
+	
+	public List<Batch> getBatch() {
+		return batch;
+	}
+	public void setBatch(List<Batch> batch) {
+		this.batch = batch;
+	}
 	@ManyToOne
 	@JoinColumn(name="office_id", nullable=false)
 	@JsonBackReference
