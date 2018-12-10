@@ -1,12 +1,14 @@
 package com.miniproject.training.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -33,6 +35,16 @@ public class Bootcamp {
 	private Date modifiedOn;
 	@Column(nullable=true)
 	private boolean active = true;
+	
+	@OneToMany(mappedBy="bootcampTestTypeId")
+	private List<Biodata> biodatas;
+	
+	public List<Biodata> getBiodatas() {
+		return biodatas;
+	}
+	public void setBiodatas(List<Biodata> biodatas) {
+		this.biodatas = biodatas;
+	}
 	public Long getId() {
 		return id;
 	}

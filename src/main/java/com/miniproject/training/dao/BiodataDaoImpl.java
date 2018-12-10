@@ -51,7 +51,7 @@ public class BiodataDaoImpl implements BiodataDao{
 
 	public List<Biodata> searchByName(String name) {
 		// TODO Auto-generated method stub
-		String hql="from Biodata b where lower(b.name) like lower('%"+name+"%')";
+		String hql="from Biodata b where b.active= '1' and lower(b.name) like lower('%"+name+"%')";
 		Session session=sessionFactory.getCurrentSession();
 		List<Biodata> biodatas=session.createQuery(hql).list();
 		return biodatas;

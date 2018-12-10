@@ -73,8 +73,6 @@ public class TechnologyController {
 	public Technology save(@RequestBody Technology technology) {
 		User user=(User) httpSession.getAttribute("application-user");
 		technology.setCreatedby(user.getId());
-/*		System.out.println("id yg dpt:"+user.getId());
-		System.out.println("id yg dpt:"+technology.getCreatedby());*/
 		technologyService.save(technology);
 		return technology;
 	}
@@ -82,6 +80,8 @@ public class TechnologyController {
 	@RequestMapping(value="/update",method=RequestMethod.POST)
 	@ResponseBody
 	public Technology update(@RequestBody Technology technology) {
+		User user=(User) httpSession.getAttribute("application-user");
+		technology.setCreatedby(user.getId());
 		technologyService.update(technology);
 		return technology;
 	}

@@ -285,7 +285,7 @@ input.parsley-error {
 						<h5 class="modal-title">Testimony</h5>
 					</div>
 					<div class="modal-body">
-						<form action="${pageContext.request.contextPath }/testimony/update" method="POST">
+						<form id="theForm1"action="${pageContext.request.contextPath }/testimony/update" method="POST">
 							<div class="form-group">
 								<label for="name-testimony">Name</label>
 								<input type=hidden id="id-testimony">
@@ -458,36 +458,44 @@ input.parsley-error {
 						 
 						 var button = jQuery('#btn-update-testimony-submit').click(function(event){
 								event.preventDefault();
-								var name = jQuery('#titles').val();
-							    var note = jQuery('#contents').val();
-								var id = jQuery('#id-testimony').val();
-								var createdon=$('#created-on1').val()
-								var date=new Date();
-								
-								var testimony = {
-										title:name,
-										content:note,
-										id:id,
-										modifiedOn:date,
-										createdOn:createdon
-								}
-								jQuery.ajax({
-									url : '${pageContext.request.contextPath}/testimony/update',
-									type:'POST',
-										beforeSend:function(){
-											console.log(testimony);
-											console.log('mau contact server');
-										},
-									contentType: 'application/json',
-									data: JSON.stringify(testimony),
-									success : function(data){
-										
-										console.log('data dari server');
-										console.log(data);
-										window.location='${pageContext.request.contextPath}/testimony'
+								validate = $('#theForm1').parsley();
+								validate.validate();
+								if(validate.isValid()){
+									var name = jQuery('#titles').val();
+								    var note = jQuery('#contents').val();
+									var id = jQuery('#id-testimony').val();
+									var createdon=$('#created-on1').val()
+									var date=new Date();
+									
+									var testimony = {
+											title:name,
+											content:note,
+											id:id,
+											modifiedOn:date,
+											createdOn:createdon
 									}
-								});
+									jQuery.ajax({
+										url : '${pageContext.request.contextPath}/testimony/update',
+										type:'POST',
+											beforeSend:function(){
+												console.log(testimony);
+												console.log('mau contact server');
+											},
+										contentType: 'application/json',
+										data: JSON.stringify(testimony),
+										success : function(data){
+											
+											console.log('data dari server');
+											console.log(data);
+											window.location='${pageContext.request.contextPath}/testimony'
+										}
+									});
 								
+								}else{
+									alert('data tidak boleh kosong!!');
+									return false;
+								}
+									
 							});
 						  
 						$('#tambahTestimony').click(function(event) {
