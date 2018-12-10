@@ -272,7 +272,7 @@
 		      
 		      <div class="modal-body">
 			      <form  action="#" id="form-bootcamp" method="POST">
-			      	<input type="text" id="action" value="add"/>
+			      	<input type="hidden" id="action" value="add"/>
 			      	<input type="hidden" id="id" />
 			      
 			      <div class="form-group">

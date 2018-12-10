@@ -266,7 +266,7 @@
 		      
 		      <div class="modal-body">
 			      <form  action="#" id="form-idle" method="POST">
-			      	<input type="text" id="action" value="add"/>
+			      	<input type="hidden" id="action" value="add"/>
 			      	<input type="hidden" name="createdOn" id="createdOn"/>
 			      	<input type="hidden" id="id" />
 			      	<input type="hidden" id="publish" name="isPublish" value="false">
