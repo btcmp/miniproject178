@@ -17,9 +17,20 @@
 		<intercept-url pattern="/menu**" access="hasRole('ROLE_USER')"/>
 		<intercept-url pattern="/menu_access**" access="hasRole('ROLE_USER')"/>
 		<intercept-url pattern="/biodata**" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/monitoring**" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/assignment**" access="hasRole('ROLE_USER')"/>
 		<intercept-url pattern="/office**" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/bootcamp**" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/idlenews**" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/category**" access="hasRole('ROLE_USER')"/>
 		<intercept-url pattern="/technology**" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/trainer**" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/testimony**" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/batch**" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/class**" access="hasRole('ROLE_USER')"/>
 		<intercept-url pattern="/question**" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/version**" access="hasRole('ROLE_USER')"/>
+		<intercept-url pattern="/feedback**" access="hasRole('ROLE_USER')"/>
 		<form-login
 		    login-page="/login"
 		    default-target-url="/user"
