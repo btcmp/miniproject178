@@ -448,7 +448,7 @@
 						window.location='${pageContext.request.contextPath}/monitoring'
 					},
 					error: function(){
-						alert('Idle failed added')
+						alert('Please fill all form!!')
 					}
 				});
 			}

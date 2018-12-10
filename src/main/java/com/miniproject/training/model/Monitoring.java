@@ -22,11 +22,11 @@ public class Monitoring {
 	private Long id; //1. Long, 11,PK, No
 	
 	@ManyToOne
-	@JoinColumn(name="biodata_id", nullable=true)
+	@JoinColumn(name="biodata_id", nullable=false)
 	private Biodata testId; //2. Long, 11, No
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name="idle_date", nullable=true)
+	@Column(name="idle_date", nullable=false)
 	private Date idleDate; //3. dateTime, No
 	
 	@Column(name="last_project", length=50)

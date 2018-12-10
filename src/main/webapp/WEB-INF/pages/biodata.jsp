@@ -468,7 +468,7 @@
 					window.location='${pageContext.request.contextPath}/biodata'
 				},
 				error: function(){
-					alert('Data biodata failed added')
+					alert('Please fill all form!!')
 				}
 			})
 		});

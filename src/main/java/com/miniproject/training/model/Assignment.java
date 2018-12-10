@@ -22,18 +22,18 @@ public class Assignment {
 	private Long id; //1. Long, 11, PK, No
 	
 	@ManyToOne
-	@JoinColumn(name="biodata_id", nullable=true)
+	@JoinColumn(name="biodata_id", nullable=false)
 	private Biodata testId; //2. Long, 11, No
 	
-	@Column(nullable=true)
+	@Column(nullable=false)
 	private String title; //3. VarChar, 255, No
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name="start_date", nullable=true)
+	@Column(name="start_date", nullable=false)
 	private Date startDate; //4. dateTime, No
 	
 	@Temporal(TemporalType.DATE)
-	@Column(name="end_date", nullable=true)
+	@Column(name="end_date", nullable=false)
 	private Date endDate; //5. dateTime, No
 	
 	private String description;//6. Varchar, 255, Allow

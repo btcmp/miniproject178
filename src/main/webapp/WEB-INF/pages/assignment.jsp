@@ -477,7 +477,7 @@
 						window.location='${pageContext.request.contextPath}/assignment'
 					},
 					error: function(){
-						alert('Data assignment failed added')
+						alert('Please fill all form!!')
 					}
 				});
 			}
