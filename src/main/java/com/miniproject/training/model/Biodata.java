@@ -92,6 +92,18 @@ public class Biodata {
 	
 	@OneToMany(mappedBy="testId")
 	private List<Assignment> assignment;
+	
+	@OneToMany(mappedBy="biodata")
+	private List<Class> classBio;
+
+	
+	public List<Class> getClassBio() {
+		return classBio;
+	}
+
+	public void setClassBio(List<Class> classBio) {
+		this.classBio = classBio;
+	}
 
 	public Long getId() {
 		return id;
